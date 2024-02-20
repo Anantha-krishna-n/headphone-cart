@@ -1,0 +1,23 @@
+body {
+    background: url('https://images.pexels.com/photos/159472/headphones-instagram-video-games-razer-159472.jpeg?auto=compress&cs=tinysrgb&w=600') no-repeat center center fixed; /* Add your background image URL */
+    background-size: cover;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px); /* Adjust the blur intensity as needed */
+}
+
+.login-form-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-form {
+    margin-top: 20px;
+}

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Button</title>
+    <style>
+        /* Styles for the popup container */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        /* Styles for the overlay background */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Styles for the "Block" and "Unblock" buttons */
+        .bttn {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .bttn.block {
+            background-color: red;
+        }
+
+        .bttn.unblock {
+            background-color: green;
+        }
+
+        /* Styles for the confirmation message */
+        #confirmationMessage {
+            color: #333; /* Customize the text color */
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        /* Styles for the "Yes" and "No" buttons in the popup */
+        .popup-btn {
+            margin-right: 10px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .popup-btn.yes {
+            background-color: green;
+            color: #fff;
+        }
+
+        .popup-btn.no {
+            background-color: red;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="toggleButton" class="bttn block" onclick="toggleUnlist()">Block</button>
+
+    <!-- Popup container -->
+    <div id="popup" class="popup-container">
+        <p id="confirmationMessage"></p>
+        <button class="popup-btn yes" onclick="confirmAction()">Yes</button>
+        <button class="popup-btn no" onclick="cancelAction()">No</button>
+    </div>
+
+    <!-- Overlay background -->
+    <div id="overlay" class="overlay"></div>
+
+    <script>
+        function toggleUnlist() {
+            var button = document.getElementById('toggleButton');
+            var buttonText = button.innerText;
+
+            if (buttonText === 'Block') {
+                // Show the popup and overlay for blocking
+                showConfirmationPopup('Are you sure you want to block?', 'Unblock');
+            } else {
+                // Show the popup and overlay for unblocking
+                showConfirmationPopup('Are you sure you want to unblock?', 'Block');
+            }
+        }
+
+        function showConfirmationPopup(message, newButtonText) {
+            // Display the popup and overlay
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+
+            // Set the confirmation message
+            document.getElementById('confirmationMessage').innerText = message;
+
+            // Store the new button text for later use
+            document.getElementById('toggleButton').newButtonText = newButtonText;
+        }
+
+        function confirmAction() {
+            // Perform the action (block or unblock) here
+            var newButtonText = document.getElementById('toggleButton').newButtonText;
+            var button = document.getElementById('toggleButton');
+            button.innerText = newButtonText;
+
+            // Toggle button style between "block" and "unblock"
+            button.classList.toggle('block');
+            button.classList.toggle('unblock');
+
+            // Hide the popup and overlay
+            hideConfirmationPopup();
+        }
+
+        function cancelAction() {
+            // Provide feedback or do nothing
+
+            // Hide the popup and overlay
+            hideConfirmationPopup();
+        }
+
+        function hideConfirmationPopup() {
+            // Hide the popup and overlay
+            document.getElementById('popup').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

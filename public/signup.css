@@ -1,0 +1,114 @@
+body {
+    background: #c0c0c0;
+    font-family: Raleway, sans-serif;
+    color: #666;
+    margin: 0;
+    padding: 0;
+}
+
+.background-image {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1556196148-1fb724238998?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+    filter: blur(8px);
+    z-index: -1;
+}
+
+.login-container {
+    position: relative;
+    z-index: 1;
+}
+
+.login {
+    margin: 20px auto;
+    padding: 40px 20px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 1px 1px 1px #666;
+}
+
+.login input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    padding: 14px 12px;
+    font-size: 16px;
+    border-radius: 2px;
+    font-family: Raleway, sans-serif;
+}
+
+.login input[type="text"],
+.login input[type="password"],
+.login input[type="email"] {
+    border: 1px solid #c0c0c0;
+    transition: .2s;
+}
+
+.login input[type="text"]:hover,
+.login input[type="password"]:hover,
+.login input[type="email"]:hover {
+    border-color: #F44336;
+    outline: none;
+    transition: all .2s ease-in-out;
+}
+
+.login input[type="submit"] {
+    border: none;
+    background: #EF5350;
+    color: white;
+    font-weight: bold;
+    transition: 0.2s;
+    margin: 20px 0px;
+    cursor: pointer;
+}
+
+.login input[type="submit"]:hover {
+    background: #F44336;
+}
+
+.login h2 {
+    margin: 20px 0 0;
+    color: #EF5350;
+    font-size: 28px;
+}
+
+.login p {
+    margin-bottom: 20px;
+}
+
+.links {
+    margin-bottom: 10px;
+}
+
+.links a {
+    margin: 0 10px;
+    text-decoration: none;
+    color: blue;
+}
+
+.login h2,
+.login p,
+.login a {
+    text-align: center;
+}
+
+.login a {
+    text-decoration: none;
+    font-size: .8em;
+}
+
+.login a:visited {
+    color: inherit;
+}
+
+.login a:hover {
+    text-decoration: underline;
+}
+.very-weak {
+    color: red;
+}
+
+.weak {
+    color: red;
+}

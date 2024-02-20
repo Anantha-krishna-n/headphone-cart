@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <!--GOOGLE FONTS-->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo+Narrow&display=swap" rel="stylesheet"> 
+
+<!--FONT AWESOME-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+</head>
+<body>
+    
+<style>
+    body{
+margin:0;
+overflow-x:hidden;
+font-family: 'Archivo Narrow', sans-serif;
+}
+
+
+/*DEFAULT*/
+a{
+text-decoration:none;
+}
+.title{
+font-size:1.5em;
+font-family: 'Archivo Black', sans-serif;
+}
+.sub-title{
+display:block;
+}
+li{
+list-style:none;
+}
+input,button{
+outline:none;
+}
+.btn1{
+padding:10px 20px;
+border-radius:20px;
+text-align:center;
+color:#fff;
+background:#000;
+width:90%;
+border:0;
+}
+.btn2{
+padding:10px 20px;
+text-align:center;
+color:#fff;
+background:#f79500;
+width:100%;
+border:0;
+}
+.btn3{
+padding:10px 20px;
+text-align:center;
+color:#fff;
+background:#384aeb;
+width:100%;
+border:0;
+}
+.btn4{
+padding:10px 20px;
+text-align:center;
+color:#000;
+border-radius:20px;
+background:#fff;
+width:150px;
+border:0;
+margin:0 20px;
+box-shadow:0px 6px 16px -6px rgba(1,1,1,0.5);
+}
+label{
+color:gray;
+}
+.checked{
+color:#f79500;
+}
+
+/*ANIMATION*/
+.animate {
+-webkit-animation: animatezoom 0.6s;
+animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+from {-webkit-transform: scale(0)} 
+to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+from {transform: scale(0)} 
+to {transform: scale(1)}
+}
+.inline-photo {
+opacity: 0;
+transform: translateY(4em) rotateZ(-0deg);
+transition: transform 4s .25s cubic-bezier(0,1,.3,1),opacity .3s .25s ease-out;
+will-change: transform, opacity;
+}
+.inline-photo.is-visible {
+opacity: 1;
+transform: rotateZ(-0deg);
+}
+.inline-photo2 {
+opacity: 0;
+transform: translateX(-15em) rotateZ(-0deg);
+transition: transform 4s .25s cubic-bezier(0,1,.3,1),opacity .3s .25s ease-out;
+will-change: transform, opacity;
+}
+.inline-photo2.is-visible2 {
+opacity: 1;
+transform: rotateZ(-0deg);
+}
+
+
+
+
+.banner{
+width:100%;
+height:150px;
+background-image:url("https://i.ibb.co/vcBQN6m/aboutus-header.webp");
+background-repeat:no-repeat;
+background-size:cover;
+background-attachment:fixed;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.banner section,.banner a{
+color:#fff;
+margin:0 10px;
+}
+
+
+
+
+/*PRODUCT CONTAINER*/
+.product_container{
+width:90%;
+margin:auto;
+position:relative;
+padding:5vh 0;
+margin:5vh auto;
+}
+
+.slide_image_color{
+border:2px solid #384aeb;
+}
+
+.sidebar{
+position:absolute;
+left:0;
+top:0;
+width:10%;
+padding:10px;
+}
+
+.sidebar img{
+display:block;
+margin:2px 0;
+}
+
+.Product_tumbnail{
+width:50%;
+margin:auto;
+}
+
+.product_tumbnail img{
+width:90%;
+height:90%;
+}
+
+.details{
+width:35%;
+position:absolute;
+top:0;
+right:0;
+float:right;
+padding:5vh 0;
+}
+
+.price{
+color:#384aeb;
+font-size:1.5em;
+}
+
+.sub-details li{
+padding:10px 0;
+}
+
+.sub-details li i{
+color:#384aeb;
+margin:0 5px;
+}
+
+table{
+width:100%;
+}
+
+table td{
+width:30%;
+padding:10px;
+}
+
+#pincode{
+border:0;
+border-bottom:1px solid gray;
+padding:0 10px;
+}
+
+.star-ratings-css {
+unicode-bidi: bidi-override;
+color: #fff;
+font-size: 1.6rem;
+display: inline-block;
+margin: 0 auto;
+position: relative;
+padding: 0;
+margin:0 10%;
+}
+.star-ratings-css-top {
+color: #3b5998;
+padding: 0;
+position: absolute;
+z-index: 1;
+display: block;
+top: 0;
+left: 0;
+overflow: hidden;
+animation: rating 2s forwards;
+}
+.star-ratings-css-bottom {
+padding: 0;
+display: block;
+z-index: 0;
+}
+@keyframes rating {
+from {
+width: 0;
+}
+to {
+width: 70%;
+}
+}
+@font-face {
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 400;
+src: url(https://fonts.gstatic.com/s/opensans/v18/mem8YaGs126MiZpBA-UFVZ0e.ttf) format('truetype');
+}
+@font-face {
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 600;
+src: url(https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UNirkOUuhs.ttf) format('truetype');
+}
+@font-face {
+font-family: 'Open Sans';
+font-style: normal;
+font-weight: 700;
+src: url(https://fonts.gstatic.com/s/opensans/v18/mem5YaGs126MiZpBA-UN7rgOUuhs.ttf) format('truetype');
+}
+
+em {
+font-style: italic;
+}
+@media (max-width:1180px){
+.product_container{
+min-width:95%;
+  width:100%;
+}
+.sidebar{
+position:static;
+width:100%;
+margin:auto;
+display:block;
+padding:10px;
+}
+.sidebar img{
+display:inline-block;
+margin:0px 2px;
+max-width:33%;
+max-height:100px;
+}
+.Product_tumbnail{
+width:100%;
+margin:auto;
+}
+
+.Product_tumbnail img{
+max-width:100%;
+margin:auto;
+}
+
+.details{
+width:100%;
+position:static;
+float:none;
+padding:5vh 0;
+}
+}
+
+
+
+.reviews{
+width:100%;
+background:#f2f2f2;
+padding:5vh 0;
+position:relative;
+}
+
+.review_sidebar{
+width:90%;
+margin:auto;
+}
+
+.review_sidebar button{
+display:inline-block;
+}
+
+.review_container{
+width:90%;
+margin:auto;
+padding:5vh 0;
+}
+
+.active_button{
+background:#384aeb;
+color:#fff;
+transition:0.5s;
+}
+.specification_table{
+border-collapse:collapse;
+}
+.specification_table td{
+width:50%;
+padding:10px 25px;
+color:gray;
+border-bottom:1px solid rgba(1,1,1,0.1);
+}
+
+.user_star_ratings{
+width:50%;
+}
+
+.overall_rating,.rating_blocks{
+width:40%;
+display:inline-block;
+text-align:center;
+}
+.overall_rating{
+background:#fff;
+padding:30px 20px;
+width:30%;
+position:relative;
+top:-40px;
+}
+.rating_blocks ul{
+position:relative;
+left:-20px;
+}
+
+.rating_blocks ul li{
+padding:5px 0;
+}
+
+.reviews_recorded ul li img{
+border-radius:50%;
+}
+
+.reviews_recorded ul li b{
+display:block;
+}
+
+.enter_user_star_ratings{
+width:40%;
+position:absolute;
+top:20vh;
+right:3vh;
+background:#fff;
+padding:30px;
+}
+
+.enter_user_star_ratings textarea{
+width:90%;
+padding:5%;
+height:150px;
+display:block;
+margin:20px 0; 
+resize:none;
+outline:none;
+} 
+
+@media (max-width:1000px){
+.specification_table td{
+width:95%;
+padding:10px 25px;
+color:gray;
+border-bottom:1px solid rgba(1,1,1,0.1);
+}
+
+.user_star_ratings{
+width:95%;
+margin:15vh 0;
+}
+.review_sidebar button{
+margin:0 5px;
+width:100px;
+font-size:11px;
+display:inline-block;
+}
+.overall_rating,.rating_blocks{
+width:95%;
+display:block;
+}
+.enter_user_star_ratings{
+width:90%;
+position:static;
+background:#fff;
+padding:20px;
+}
+}
+
+.rating-box {
+display: inline-block;
+}
+.rating-box .rating-container {
+direction: rtl !important;
+}
+.rating-box .rating-container label {
+display: inline-block;
+margin: 15px 0;
+color: #d4d4d4;
+cursor: pointer;
+font-size: 30px;
+transition: color 0.2s;
+}
+.rating-box .rating-container input {
+display: none;
+}
+.rating-box .rating-container label:hover, .rating-box .rating-container label:hover ~ label, .rating-box .rating-container input:checked ~ label {
+color: gold;
+}
+</style>
+
+<!--BANNER-->
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo+Narrow&display=swap" rel="stylesheet"> 
+
+<!--FONT AWESOME-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+<!--CONTAINER-->
+<div class="product_container">
+<div class="sidebar product_slides slide_border border-radius:2px">
+<img src="/public/upload/tws1.jpg " class="product_slides-item slide_images slide_option slide_image_color inline-photo2 show-on-scroll2" onclick="changeSlide(event,'Slide1')">
+<img src="https://source.unsplash.com/150x150/?handwatch" class="product_slides-item slide_images slide_option inline-photo2 show-on-scroll2" onclick="changeSlide(event,'Slide2')">
+<img src="https://source.unsplash.com/150x150/?wallclock" class="product_slides-item slide_images slide_option inline-photo2 show-on-scroll2" onclick="changeSlide(event,'Slide3')">
+</div>
+
+
+<div id="Slide1" class="Slider_Container SLider_border Product_tumbnail animate" style="border: 2px;;">
+<img src="/public/upload/tws1.jpg" style="border-radius: 2px;">
+</div>
+
+<div id="Slide2" class="Slider_Container SLider_border Product_tumbnail animate" style="display:none">
+<img src="https://source.unsplash.com/450x450/?handwatch">
+</div>
+
+<div id="Slide3" class="Slider_Container SLider_border Product_tumbnail animate" style="display:none">
+<img src="https://source.unsplash.com/450x450/?wallclock">
+</div>
+<div class="details">
+<h1 class="title">Faded SkyBlu Unisex Watch</h1>
+<span class="price">$149.99</span> <strike class="strike">$160</strike>
+<div class="star-ratings-css">
+<div class="star-ratings-css-top"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+<div class="star-ratings-css-bottom"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+</div>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<ul class="sub-details">
+<li><i class="fa fa-shield"></i> Secured Payment</li>
+<li><i class="fa fa-truck"></i> Delivered in 2-5 working days</li>
+</ul>
+<table>
+<tr>
+<td><label for="pincode">Check Availability</label></td>
+</tr>
+<tr>
+<td><input type="tel" name="pincode" id="pincode" placeholder="Pincode"></td><td><button class="btn1" type="submit">CHECK</button></td>
+</tr>
+<tr>
+<td><button class="btn2">ADD TO CART</button></td><td><button class="btn3">BUY NOW</button></td>
+</tr>
+</table>
+
+</div>
+</div>
+
+<div class="reviews inline-photo show-on-scroll">
+<div class="review_sidebar review_bar_block review_gray review_card"><center>
+<!-- <button class="review-bar-item review-button tablink btn4 active_button" onclick="opentab_type(event, 'Description')">Description</button> -->
+<button class="review-bar-item review-button tablink btn4" onclick="opentab_type(event, 'Specification')">Specification</button>
+</center></div>
+
+<div>
+
+
+
+<div id="Specification" class="review_container tab_type" style="display:none">
+<h2>Specification</h2>
+<table class="specification_table">
+<tr>
+<td>Dimension</td>
+<td>24cm</td>
+</tr>
+<tr>
+<td>Material</td>
+<td>Stainless Steel</td>
+</tr>
+<tr>
+<td>Warrenty</td>
+<td>1 Year</td>
+</tr>
+<tr>
+<td>Waterproof</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Return</td>
+<td>No</td>
+</tr>
+</table>
+</div>
+
+
+</div>
+</div>
+<script>
+    function changeSlide(evt, Product_tumbnailName) {
+var i, x, slide_options;
+x = document.getElementsByClassName("Product_tumbnail");
+for (i = 0; i < x.length; i++) {
+x[i].style.display = "none";
+}
+slide_options = document.getElementsByClassName("slide_option");
+for (i = 0; i < x.length; i++) {
+slide_options[i].className = slide_options[i].className.replace(" slide_image_color", "");
+}
+document.getElementById(Product_tumbnailName).style.display = "block";
+evt.currentTarget.className += " slide_image_color";
+}
+
+
+function opentab_type(evt, tab_typeName) {
+var i, x, tablinks;
+x = document.getElementsByClassName("tab_type");
+for (i = 0; i < x.length; i++) {
+x[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablink");
+for (i = 0; i < x.length; i++) {
+tablinks[i].className = tablinks[i].className.replace("active_button", ""); 
+}
+document.getElementById(tab_typeName).style.display = "block";
+evt.currentTarget.className += " active_button";
+}
+
+
+
+
+
+//SCROLL ANIMATE
+var scroll = window.requestAnimationFrame ||
+function(callback){ window.setTimeout(callback, 1000/60)};
+var elementsToShow = document.querySelectorAll('.show-on-scroll'); 
+function loop() {
+
+Array.prototype.forEach.call(elementsToShow, function(element){
+if (isElementInViewport(element)) {
+element.classList.add('is-visible');
+} else {
+element.classList.remove('is-visible');
+}
+});
+
+scroll(loop);
+}
+loop();
+
+function isElementInViewport(el) {
+// special bonus for those using jQuery
+if (typeof jQuery === "function" && el instanceof jQuery) {
+el = el[0];
+}
+var rect = el.getBoundingClientRect();
+return (
+(rect.top <= 0
+&& rect.bottom >= 0)
+||
+(rect.bottom >= (window.innerHeight || document.documentElement.clientHeight) &&
+rect.top <= (window.innerHeight || document.documentElement.clientHeight))
+||
+(rect.top >= 0 &&
+rect.bottom <= (window.innerHeight || document.documentElement.clientHeight))
+);
+}
+
+
+
+
+//SCROLL ANIMATE
+var scroll2 = window.requestAnimationFrame ||
+function(callback2){ window.setTimeout(callback2, 1000/60)};
+var elementsToShow2 = document.querySelectorAll('.show-on-scroll2'); 
+function loop2() {
+
+Array.prototype.forEach.call(elementsToShow2, function(element){
+if (isElementInViewport(element)) {
+element.classList.add('is-visible2');
+} else {
+element.classList.remove('is-visible2');
+}
+});
+
+scroll2(loop2);
+}
+loop2();
+
+function isElementInViewport(el) {
+// special bonus for those using jQuery
+if (typeof jQuery === "function" && el instanceof jQuery) {
+el = el[0];
+}
+var rect2 = el.getBoundingClientRect();
+return (
+(rect2.top <= 0
+&& rect2.bottom >= 0)
+||
+(rect2.bottom >= (window.innerHeight || document.documentElement.clientHeight) &&
+rect2.top <= (window.innerHeight || document.documentElement.clientHeight))
+||
+(rect2.top >= 0 &&
+rect2.bottom <= (window.innerHeight || document.documentElement.clientHeight))
+);
+}
+</script>
+</body>
+</html>

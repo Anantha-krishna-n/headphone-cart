@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/sinleproductpage.css">
+   <link rel="stylesheet" href="/footer.css">
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js" integrity="sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+
+</head>
+<style>
+
+.img-select{
+  border: 2px solid #000;
+}
+.img-item{
+  border: 2px solid #000
+}
+.img-display{
+  border: 2px solid #000
+}
+.navbar {
+            background-color: #2c2f32;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            margin: 0 25px; /* Adjust the space between links */
+        }
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .navbar-links-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand span {
+            color: #007bff;
+            margin-left: 5px;
+        }
+        .zoom-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        display: none;
+    }
+
+    .zoomed-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transform-origin: top left;
+        transition: transform 0.5s;
+    }
+</style>
+<body>
+
+  <div class="navbar">
+    <div class="navbar-brand">
+        <a class="navbar-brand" href="">headphonecart<span> <i class="fas fa-headphones"></i></span></a>
+    </div>
+    <div class="navbar-links">
+        <a href="/home">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="">About us</a>
+        <a href="">Contact us</a>
+
+    </div>
+    <div class="navbar-links-right">
+        <li><a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+        <li><a class="nav-link" href=""><i class="fas fa-user"></i> Profile</a></li>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+    <div class = "card-wrapper">
+        <div class = "card">
+          <!-- card left -->
+          <div class = "product-imgs">
+            <div class = "img-display">
+              <div class = "img-showcase border-2 " >
+                <!-- Inside your img-showcase div -->
+                <!-- <img id="mainImage" src="<%= product.image[0] %>" alt="shoe image"> -->
+                <img src="<%= product.image[0] %>" alt="shoe image" class="zoom-image" data-zoom-image="<%= product.image[0] %>">
+                <img src = "<%= product.image[1] %>"   class="zoom-image" alt = "shoe image">
+                <img src = "<%= product.image[2] %>"  class="zoom-image" alt = "shoe image">
+                <img src = "<%= product.image[3] %>"  class=" zoom-image" alt = "shoe image">
+              </div>
+            </div>
+            <div id="zoom-container" class="zoom-container"></div>
+
+            <div class = "img-select">
+              <div class = "img-item">
+                <a href = "#" data-id = "1">
+                  <img  src='<%= product.image[0] %>' style="width:100%; height:auto;" class="zoom-image" alt="<%= product.name %>">
+                </a>
+              </div>
+              <div class = "img-item">
+                <a href = "#" data-id = "2">
+                  <img src = "<%= product.image[1] %>" alt = "shoe image">
+                </a>
+              </div>
+              <div class = "img-item">
+                <a href = "#" data-id = "3">
+                  <img src = "<%= product.image[2] %>" alt = "shoe image">
+                </a>
+              </div>
+              <div class = "img-item">
+                <a href = "#" data-id = "4">
+                  <img src = "<%= product.image[3] %>" alt = "shoe image">
+                </a>
+              </div>
+            </div>
+          </div>
+           
+
+          <!-- card right -->
+          <div class = "product-content">
+            <h2 class = "product-title"><%=product.name %></h2>
+            <a href = "#" class = "product-link">headphonecart</a>
+            <div class = "product-rating">
+              <i class = "fas fa-star"></i>
+              <i class = "fas fa-star"></i>
+              <i class = "fas fa-star"></i>
+              <i class = "fas fa-star"></i>
+              <i class = "fas fa-star-half-alt"></i>
+              <!-- <span>4.7(21)</span> -->
+            </div>
+
+
+            
+      
+            <div class = "product-price">
+              <!-- <p class = "last-price">Old Price: <span>$257.00</span></p> -->
+              <p class = "new-price">New Price: <span><%=product.price %></span></p>
+            </div>
+         
+
+            <div class="product-price size">
+              <div id="zoom" class="zoom"></div>
+            </div>
+            <div class = "product-detail">
+              <h2><%=product.description %> </h2>
+              <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo eveniet veniam tempora fuga tenetur placeat sapiente architecto illum soluta consequuntur, aspernatur quidem at sequi ipsa!</p>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, perferendis eius. Dignissimos, labore suscipit. Unde.</p>
+              <ul> -->
+                <li>Available: <span style="color: green;"><%=product.stock_status %></span></li>
+                <!-- <li>category :<span><%=product.category%></span></li> -->
+
+                <li>Shipping Area: <span>All over the world</span></li>
+                <li>Shipping Fee: <span>Free</span></li> 
+              </ul>
+            </div>
+      
+            <div class = "purchase-info">
+              <button type="button" class="btn add-to-cart-btn" 
+              data-product-id="<%= product._id %>">Add to Cart <i class="fas fa-shopping-cart">
+
+              </i></button>
+
+              <button type = "button" class = "btn">Buy now</button>
+            </div>
+      
+            <!-- <div class = "social-links">
+              <p>Share At: </p>
+              <a href = "#">
+                <i class = "fab fa-facebook-f"></i>
+              </a>
+              <a href = "#">
+                <i class = "fab fa-twitter"></i>
+              </a>
+              <a href = "#">
+                <i class = "fab fa-instagram"></i>
+              </a>
+              <a href = "#">
+                <i class = "fab fa-whatsapp"></i>
+              </a>
+              <a href = "#">
+                <i class = "fab fa-pinterest"></i>
+              </a>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+
+      <footer class="section-footer py-4 bg-sucess">
+        <div class="container">
+          <div>
+            <h2 class="text-2 mb-1">headphonecart.</h2>
+            <a href="http://twitter.com">
+              <i class="fab fa-twitter fa-2x"></i>
+            </a>
+            <a href="http://facebook.com">
+              <i class="fab fa-facebook fa-2x"></i>
+            </a>
+            <a href="http://youtube.com">
+              <i class="fab fa-youtube fa-2x"></i>
+            </a>
+          </div>
+          <div>
+            <h3>Company Info</h3>
+            <ul>
+              <!-- <li><a href="#">All Products</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+              <li><a href="#">Terms of Service</a></li> -->
+            </ul>
+          </div>
+          <div>
+            <h3>Blog Posts</h3>
+            <ul>
+              <!-- <li><a href="#">Lorem ipsum dolor.</a></li>
+              <li><a href="#">Lorem ipsum dolor.</a></li>
+              <li><a href="#">Lorem ipsum dolor.</a></li>
+              <li><a href="#">Lorem ipsum dolor.</a></li> -->
+            </ul>
+          </div>
+          <div>
+            <h3>Subscribe</h3>
+            <p>
+              subscribe for begin with our newsteller
+            </p>
+            <form
+              class="mt-1"
+              name="email-form"
+              method="POST"
+              data-netlify="true"
+            >
+              <div class="email-form">
+                <span class="form-control-wrap"
+                  ><input
+                    type="email"
+                    name="email"
+                    id="email"
+                    size="40"
+                    class="form-control"
+                    placeholder="E-mail"/></span
+                ><button type="submit" value="Submit" class="form-control submit">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </footer>
+    
+            <!-- For image choosing -->
+            <script>
+              
+       const imgs = document.querySelectorAll('.img-select a');
+const imgBtns = [...imgs];
+let imgId = 1;
+
+imgBtns.forEach((imgItem) => {
+    imgItem.addEventListener('click', (event) => {
+        event.preventDefault();
+        imgId = imgItem.dataset.id;
+        slideImage();
+    });
+});
+
+function slideImage(){
+    const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+
+    document.querySelector('.img-showcase').style.transform = `translateX(${- (imgId - 1) * displayWidth}px)`;
+}
+
+window.addEventListener('resize', slideImage);
+
+
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const productId = btn.dataset.productId;
+        const quantity = 1
+                // Make a POST request to your backend
+        const response = await fetch('/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId: '<%=userId%>', productId, quantity })
+        });
+
+        // Handle the response
+        const data = await response.json();
+        if (data.success) {
+            alert('Product added to cart successfully');
+        } else {
+            alert('Failed to add product to cart');
+        }
+    });
+});
+
+       
+    </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,700">
+    <link rel="stylesheet" href="/signup.css">
+</head>
+<body>
+    
+    <div class="background-image"></div>
+
+    <div class="container login-container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="/signup" method="POST" class="login" onsubmit="return validateForm()">
+                    <h2>Welcome, User!</h2>
+                    <p>Please sign up</p>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" class="form-control" placeholder="Number" name="number" maxlength="10" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Password" name="password" id="password" required oninput="checkPasswordStrength()">
+                        <small id="passwordStrength" class="form-text text-muted" style="color: green;"></small>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="Confirm-Password" name="confirmpassword" id="confirmpassword" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="Sign Up">
+                    </div>
+                                        <p id="errorMsg" style="color: red;"><%= msg %></p>
+                                     <p id="errMsg" style="color: red;"></p>
+
+                    <p>Already a User: <a href="/">login</a></p>
+                
+                 </form>
+
+
+
+
+  
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+  function validateForm() {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmpassword').value;
+
+        if (password !== confirmPassword) {
+            document.getElementById('errMsg').innerText = "Password does not match";
+            return false;
+        }
+
+        // You can add more validation rules here if needed
+
+        return true;
+    }
+
+    function checkPasswordStrength() {
+        var password = document.getElementById('password').value;
+        var strength = 0;
+
+        // Check for length
+        if (password.length >= 8) {
+            strength += 1;
+        }
+
+        // Check for uppercase letters
+        if (/[A-Z]/.test(password)) {
+            strength += 1;
+        }
+
+        // Check for lowercase letters
+        if (/[a-z]/.test(password)) {
+            strength += 1;
+        }
+
+        // Check for numbers
+        if (/\d/.test(password)) {
+            strength += 1;
+        }
+
+        // Check for special characters
+        if (/[^A-Za-z0-9]/.test(password)) {
+            strength += 1;
+        }
+
+        // Display strength message based on score
+        var passwordStrength = document.getElementById('passwordStrength');
+        switch (strength) {
+            case 0:
+                passwordStrength.innerText = "Password strength: Very weak";
+                passwordStrength.style.color = "red !important";
+                break;
+            case 1:
+                passwordStrength.innerText = "Password strength: Weak";
+                passwordStrength.style.color = "red !important";
+                break;
+            case 2:
+                passwordStrength.innerText = "Password strength: Medium";
+                passwordStrength.style.color = "orange";
+                break;
+            case 3:
+                passwordStrength.innerText = "Password strength: Strong";
+                passwordStrength.style.color = "green";
+                break;
+            case 4:
+                passwordStrength.innerText = "Password strength: Very strong";
+                passwordStrength.style.color = "green";
+                break;
+            default:
+                break;
+        }
+    }
+     
+
+  
+
+  </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

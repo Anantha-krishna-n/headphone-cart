@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/productdesc.css">
+    <link rel="stylesheet" href="../css/userhome.css">
+
+    <link rel="stylesheet" href="/css/footeruser.css">
+
+    <script src="/prodesc.js"></script>
+
+
+
+</head>
+
+<body>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap');
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-family: 'Open Sans', sans-serif;
+}
+body{
+    line-height: 1.5;
+}
+.container-fluid{
+    display: flex;
+}
+.card-wrapper{
+    max-width: 1100px;
+    margin: 0 5%;
+}
+img{
+    width: 100%;
+    display: block;
+}
+.card-wrapper{
+    margin-top: 2%
+}
+.size{
+    font-size: 1.5em;
+}
+
+.img-display{
+    overflow: hidden;
+}
+.img-showcase{
+    display: flex;
+    width: 100%;
+    transition: all 0.5s ease;
+}
+.img-showcase img{
+    min-width: 100%;
+}
+.img-select{
+    display: flex;
+}
+.img-item{
+    margin: 0.3rem;
+}
+.img-item:nth-child(1),
+.img-item:nth-child(2),
+.img-item:nth-child(3){
+    margin-right: 0;
+}
+.img-item:hover{
+    opacity: 0.8;
+}
+.product-content{
+    padding: 2rem 1rem;
+}
+.product-title{
+    font-size: 2rem;
+    text-transform: capitalize;
+    font-weight: 700;
+    position: relative;
+    color: #12263a;
+    margin: 1rem 0;
+}
+.product-title::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 80px;
+    background: #12263a;
+}
+.product-link{
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    background: #256eff;
+    color: #fff;
+    padding: 0 0.3rem;
+    transition: all 0.5s ease;
+}
+.product-link:hover{
+    opacity: 0.9;
+}
+.product-rating{
+    color: #ffc107;
+}
+.product-rating span{
+    font-weight: 600;
+    color: #252525;
+}
+.product-price{
+    margin: 1rem 0;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.product-price span{
+    font-weight: 400;
+}
+.last-price span{
+    color: #f64749;
+    text-decoration: line-through;
+}
+.new-price span{
+    color: #256eff;
+}
+.product-detail h2{
+    text-transform: capitalize;
+    color: #12263a;
+    padding-bottom: 0.6rem;
+}
+.product-detail p{
+    font-size: 0.9rem;
+    padding: 0.3rem;
+    opacity: 0.8;
+}
+.product-detail ul{
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+.product-detail ul li{
+    margin: 0;
+    list-style: none;
+    background: url(https://fadzrinmadu.github.io/hosted-assets/product-detail-page-design-with-image-slider-html-css-and-javascript/checked.png) left center no-repeat;
+    background-size: 18px;
+    padding-left: 1.7rem;
+    margin: 0.4rem 0;
+    font-weight: 600;
+    opacity: 0.9;
+}
+.product-detail ul li span{
+    font-weight: 400;
+}
+.purchase-info{
+    margin: 1.5rem 0;
+}
+.purchase-info input,
+.purchase-info .btn{
+    border: 1.5px solid #ddd;
+    border-radius: 25px;
+    text-align: center;
+    outline: 0;
+    margin-right: 0.2rem;
+    margin-bottom: 1rem;
+    width: 45%;
+    height: 45px;
+    font-size: 1.5em;
+}
+.purchase-info input{
+    width: 60px;
+}
+.purchase-info .btn{
+    cursor: pointer;
+    color: #fff;
+}
+.purchase-info .btn:first-of-type{
+    background: #256eff;
+}
+.purchase-info .btn:last-of-type{
+    background: #f64749;
+}
+.purchase-info .btn:hover{
+    opacity: 0.9;
+}
+.social-links{
+    display: flex;
+    align-items: center;
+}
+.social-links a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #000;
+    border: 1px solid #000;
+    margin: 0 0.2rem;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all 0.5s ease;
+}
+.social-links a:hover{
+    background: #000;
+    border-color: transparent;
+    color: #fff;
+}
+
+@media screen and (min-width: 992px){
+    .card{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1.5rem;
+    }
+    .card-wrapper{
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .product-imgs{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .product-content{
+        padding-top: 0;
+    }
+}
+/* 
+
+#zoom-container {
+    position: relative;
+    display: inline-block;
+   }
+   
+   #zoom-container:hover #zoom-glass {
+    visibility: visible;
+   } */
+
+
+
+
+
+   .image-zoom-container {
+    /* position: relative;
+    overflow: hidden; */
+    /* width: 300px; Set width of the image container */
+    height: 300px; /* Set height of the image container */
+  }
+  
+  #product-image {
+    width: 100%; /* Make sure the image fills its container */
+    height: auto;
+  }
+  
+  .zoom {
+    position: absolute;
+    width: 50vh; /* Width of the zoomed area */
+    height: 50%; /* Height of the zoomed area */
+    background: rgba(0, 0, 0, 0.1); /* Background color of the zoomed area */
+    border: 1px solid #ccc; /* Border around the zoomed area */
+    display: none;
+    z-index: 1;
+  }
+  
+
+
+
+  @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap");
+
+
+  
+  a {
+    text-decoration: none;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #dbe1e8;
+    border-radius: 1rem;
+    font-weight: bold;
+
+  }
+  
+  header a.logo {
+    font-weight: bold;
+    color: #0460bc;
+  }
+  
+  nav ul {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+
+  }
+  
+  nav ul li a {
+    color: #000;
+    margin: 5em;
+
+  }
+  
+  nav ul li a:hover {
+    color: #0460bc;
+    transition: all 0.3s;
+  }
+  
+
+  button {
+    border: none;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #c3ccd7;
+    padding: 0.4em 0.8em;
+    cursor: pointer;
+    border-radius: 0.4em;
+    color: #000;
+    font-size: 1.8rem;
+  }
+  
+  button p {
+    margin: 0;
+  }
+  
+  button:hover {
+    color: #fff;
+    background-color: #0460bc;
+  }
+  
+  span {
+      /* width: 450px; */
+      height: 35px;
+      margin-top: 9.7em;
+      margin-left: .2em;
+  }
+  
+  .spTwo {
+      width: 300px;
+      margin-top: 2.4em;
+  }
+  </style>
+    <header>
+        <a href="/home" style="margin-left: 5%;color:black; font-size: 2em;">TJ Watches</a>
+        <nav>
+            <ul>
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <!-- <button type="submit">
+      <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+      <p>Cart</p>
+    </button> -->
+    </header>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="card-wrapper">
+        <div class="card">
+            <!-- card left -->
+            <div class="product-imgs" style="height: 100%;">
+                <div class="img-display">
+                    <div class="img-showcase" id="productImage" style="height: 100%;">
+                        <img class="product-image" src="/<%= dataproduct.images[0] %>" alt="image">
+                        <img class="product-image" src="/<%= dataproduct.images[1] %>" alt="image">
+                        <img class="product-image" src="/<%= dataproduct.images[2] %>" alt=" image">
+
+
+                    </div>
+                </div>
+                <div class="img-select">
+                    <div class="img-item" style="width: 50%;">
+                        <a href="#" data-id="1">
+              <img class="product-image" src = "/<%= dataproduct.images[1] %>" alt = " image" style="width: 100%; height: 70%;">
+            </a>
+                    </div>
+
+                    <div class="img-item" style="width: 50%;">
+                        <a href="#" data-id="3">
+              <img class="product-image" src = "/<%= dataproduct.images[2] %>" alt = "image" style="width: 100%; height: 70%;" >
+            </a>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- card right -->
+            <div class="product-content">
+
+                <h6 class="product-title">
+                    <%= dataproduct.name %>
+                </h6>
+                <a href="#" class="product-link">visit TJ watches</a>
+
+
+                <div class="product-rating size">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>Rating:<%= dataproduct.rating %></span>
+                </div>
+
+
+                <div class="product-price size">
+                    <div id="zoom" class="zoom"></div>
+
+                    <!-- <p class = "last-price">Old Price: <span>$257.00</span></p> -->
+                    <p class="new-price size">New Price: <span>Rs <%= dataproduct.price %></span></p>
+                </div>
+
+                <div class="product-detail size">
+                    <h1>About this item: </h1>
+                    <h5>
+                        <%= dataproduct.description %>
+                    </h5>
+                    <h5>This product is available exclusive in TJ watches</h5>
+                    <ul>
+                        <li class="size">Dial shape: <span><%= dataproduct.dialshape %></span></li>
+                        <!-- <li>Available: <span>in stock</span></li> -->
+                        <li class="size">Category: <span><%= dataproduct.category %></span></li>
+                        <li class="size">Shipping Area: <span>All over the world</span></li>
+                        <li class="size">Shipping Fee: <span>Free</span></li>
+                    </ul>
+                </div>
+
+
+                <!-- <div class = "purchase-info">
+          
+          <button type = "button" class = "btn save">
+            Add to Cart <i class = "fas fa-shopping-cart"></i>
+          </button>
+          <button type = "button" class = "btn save">Buy Now</button>
+        </div> -->
+                <div class="purchase-info">
+                    <!-- <form action="/addtocart/<%=productid %>/<%= userid %>" method="POST">
+                        <button type="submit" id="addToCartButton" class="btn save" data-product-id="<%= productid %>" data-user-id="<%= userid %>">Add to Cart</button>
+                    </form> -->
+                    <!-- <button type = "button" class = "btn save">Buy Now</button> -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </section>
+    <%- include ('footer')%>
+        <script>
+            const imgs = document.querySelectorAll('.img-select a');
+            const imgBtns = [...imgs];
+            let imgId = 1;
+
+            imgBtns.forEach((imgItem) => {
+                imgItem.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    imgId = imgItem.dataset.id;
+                    slideImage();
+                });
+            });
+
+            function slideImage() {
+                const displayWidth = document.querySelector('.img-showcase img:first-child').clientWidth;
+
+                document.querySelector('.img-showcase').style.transform = translateX(${- (imgId - 1) * displayWidth}px);
+            }
+
+            window.addEventListener('resize', slideImage);
+
+
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                const productImages = document.querySelectorAll('.product-image');
+                const zoomContainer = document.getElementById('zoom-container');
+                const zoom = document.getElementById('zoom');
+
+                productImages.forEach((image, index) => {
+                    image.addEventListener('mousemove', function(e) {
+                        const {
+                            left,
+                            top,
+                            width,
+                            height
+                        } = image.getBoundingClientRect();
+                        const x = e.clientX - left;
+                        const y = e.clientY - top;
+
+                        const zoomX = (x / width) * 100;
+                        const zoomY = (y / height) * 100;
+
+                        zoom.style.backgroundImage = url('${image.src}');
+                        zoom.style.backgroundSize = ` ${width *2.5}px ${height * 2}px`; // Adjust the zoom factor here
+`
+                        zoom.style.backgroundPosition = `${zoomX}%  ${zoomY}%`;
+                        zoom.style.display = 'block';
+                    });
+
+                    image.addEventListener('mouseleave', function() {
+                        zoom.style.display = 'none';
+                    });
+                });
+            });
+        </script>
+</body>
+
+</html>

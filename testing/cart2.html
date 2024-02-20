@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/public/cart2.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<body>
+    <header id="site-header">
+		<div class="container">
+			<h1>Shopping cart <span>[</span> <em><a href="https://codepen.io/tag/rodeo-007" target="_blank">     Go To  Home Page</a></em> <span class="last-span is-open">]</span></h1>
+		</div>
+	</header>
+
+	<div class="container">
+
+		<section id="cart"> 
+			<article class="product">
+				<header>
+					<a class="remove">
+						<img src="http://www.sneakerfreaker.com/content/uploads/2014/03/sekure-d-custom-air-jordan-10-teal-graffiti-5.jpg" alt="">
+
+						<h3>Remove product</h3>
+					</a>
+				</header>
+
+				<div class="content">
+
+					<h1>Air Jordan 10 “Teal Graffiti” Custom</h1>
+
+Transforming a classic colorway into an Air Jordan 10 “Teal Graffiti” Custom that sports an Air Tech Challenge-inspired print throughout the upper, complementing the Graffiti print.
+
+					<!-- <div title="You have selected this product to be shipped in the color yellow." style="top: 0" class="color yellow"></div>
+					<div style="top: 43px" class="type small">Size 11.5</div> -->
+				</div>
+
+				<footer class="content">
+					<span class="qt-minus">-</span>
+					<span class="qt">2</span>
+					<span class="qt-plus">+</span>
+
+					<h2 class="full-price">
+						69.98
+					</h2>
+
+					<h2 class="price">
+						34.99
+					</h2>
+				</footer>
+			</article>
+
+			<article class="product">
+				<header>
+					<a class="remove">
+						<img src="http://4.kicksonfire.net/wp-content/uploads/2013/06/air-jordan-5-noah-1-640x395.jpeg" alt="">
+
+						<h3>Remove product</h3>
+					</a>
+				</header>
+
+				<div class="content">
+
+					<h1>Air Jordan 5 “Noah's Ark"</h1>
+
+          Air Jordan 5 “Noah’s Ark” is certainly one of the most amazing customs he has ever created. The sneaker is inspired by the events within the story of Noah’s Ark, utilizing various animal prints.
+
+					<div title="You have selected this product to be shipped in the color red." style="top: 0" class="color red"></div>
+					<div title="You have selected this product to be shipped sized Small."  style="top: 43px" class="type small">Size 12</div>
+				</div>
+
+				<footer class="content">
+					
+					<span class="qt-minus">-</span>
+					<span class="qt">1</span>
+					<span class="qt-plus">+</span>
+
+					<h2 class="full-price">
+						79.99
+					</h2>
+
+					<h2 class="price">
+						79.99
+					</h2>
+				</footer>
+			</article>
+
+			<article class="product">
+				<header>
+					<a class="remove">
+						<img src="data:image/jpeg;base64,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" alt="">
+
+						<h3>Remove product</h3>
+					</a>
+				</header>
+
+				<div class="content">
+
+					<h1>Air Jordan 3 “Miami Nights” Custom</h1>
+
+The custom transforms the original Crimson base into a well received custom viewable above so take a look at the Air Jordan 3 “Miami Nights” Custom and inquire for your own pair.
+
+					<div title="You have selected this product to be shipped in the color blue." style="top: 0" class="color blue"></div>
+					<div style="top: 43px" class="type small">Large</div>
+				</div>
+
+				<footer class="content">
+					
+					<span class="qt-minus">-</span>
+					<span class="qt">3</span>
+					<span class="qt-plus">+</span>
+
+					<h2 class="full-price">
+						53.99
+					</h2>
+
+					<h2 class="price">
+						17.99
+					</h2>
+				</footer>
+			</article>
+
+		</section>
+
+	</div>
+
+	<footer id="site-footer">
+		<div class="container clearfix">
+
+			<div class="left">
+				<h2 class="subtotal">Subtotal: <span>163.96</span>€</h2>
+				<h3 class="tax">Taxes (5%): <span>8.2</span>€</h3>
+				<h3 class="shipping">Shipping: <span>5.00</span>€</h3>
+			</div>
+
+			<div class="right">
+				<h1 class="total">Total: <span>177.16</span>€</h1>
+				<a class="btn">Checkout</a>
+			</div>
+
+		</div>
+	</footer>
+    <script src="/public/srcjs.js/cart2.js"></script>
+   
+</body>
+</html>

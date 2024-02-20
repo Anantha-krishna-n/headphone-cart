@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Box</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .product-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1000px;
+            margin: 20px;
+        }
+
+        .product-box {
+            width: calc(25% - 20px);
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+
+        .product-box:hover .product-img {
+            content: url('data:image/jpeg;base64,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');
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: #007bff;
+        }
+
+        @media (max-width: 768px) {
+            .product-box {
+                width: calc(50% - 20px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="product-container">
+    <div class="product-box">
+        <img class="product-img" src="https://images.pexels.com/photos/17664053/pexels-photo-17664053/free-photo-of-bose-quiet-comfort-45-headphones.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Product Image">
+        <div class="product-details">
+            <div class="product-title">Product Name 1</div>
+            <div class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            <div class="product-price">$19.99</div>
+        </div>
+    </div>
+
+    <div class="product-box">
+        <img class="product-img" src="https://images.pexels.com/photos/17664053/pexels-photo-17664053/free-photo-of-bose-quiet-comfort-45-headphones.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Product Image">
+        <div class="product-details">
+            <div class="product-title">Product Name 2</div>
+            <div class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            <div class="product-price">$19.99</div>
+        </div>
+    </div>
+
+    <div class="product-box">
+        <img class="product-img" src="https://images.pexels.com/photos/17664053/pexels-photo-17664053/free-photo-of-bose-quiet-comfort-45-headphones.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Product Image">
+        <div class="product-details">
+            <div class="product-title">Product Name 3</div>
+            <div class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            <div class="product-price">$19.99</div>
+        </div>
+    </div>
+
+    <div class="product-box">
+        <img class="product-img" src="https://images.pexels.com/photos/17664053/pexels-photo-17664053/free-photo-of-bose-quiet-comfort-45-headphones.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Product Image">
+        <div class="product-details">
+            <div class="product-title">Product Name 4</div>
+            <div class="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
+            <div class="product-price">$19.99</div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

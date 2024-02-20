@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Raleway', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #f8f9fa;
+        }
+
+        .navbar-brand img {
+            height: 15px;
+            margin-right: 5px;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-toggler-icon {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="https://i.pngimg.me/thumb/f/720/m2H7d3N4b1K9i8d3.jpg" height="15" alt="MDB Logo" loading="lazy"/>Headphone
+        </a>
+
+        <!-- Toggle button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto"> <!-- Use mr-auto to move items to the left -->
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Shop</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Category
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">TWS</a>
+                        <a class="dropdown-item" href="#">Over head</a>
+                        <a class="dropdown-item" href="#">Neck-Band</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Right elements -->
+            <ul class="navbar-nav"> <!-- Use ml-auto to move items to the right -->
+                <!-- Wishlist Icon -->
+                <li class="nav-item">
+                    <a class="nav-link" href="wishlist-page.html">
+                        <i class="fas fa-heart"></i> Wishlist
+                    </a>
+                </li>
+
+                <!-- Cart Icon -->
+                <li class="nav-item">
+                    <a class="nav-link" href="cart-page.html">
+                        <i class="fas fa-shopping-cart"></i> Cart
+                    </a>
+                </li>
+
+                <!-- Avatar -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow profile-icon" href="#" id="navbarDropdownMenuAvatar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="25" alt="Black and White Portrait of a Man" loading="lazy"/>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                        <a class="dropdown-item" href="#">My profile</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="#">Logout</a>
+                    </div>
+                </li>
+            </ul>
+            <!-- Right elements -->
+        </div>
+        <!-- Collapsible wrapper -->
+    </div>
+</nav>
+<!-- Navbar -->
+
+<!-- Include the necessary Bootstrap JS and Font Awesome JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+</body>
+</html>

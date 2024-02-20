@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="/usermanagement.css"> -->
+</head>
+<body>
+
+    <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+        <h2>Search</h2>
+        <form action="" method="">
+            <div style="position: relative;">
+                <input id="userSearch" class="bg-gray-300 h-9" type="search" name="search" placeholder="Search..." style="padding: 8px; border-radius: 5px; border: 1px solid #ccc;">
+                <button type="submit" style="position: absolute; right: 0; top: 0; bottom: 0; background-color: #007bff; color: #fff; padding: 8px 12px; border: none; cursor: pointer; border-radius: 0 5px 5px 0;">
+                    Search
+                </button>
+            </div>
+        </form>
+    </div>
+    
+    <div style="margin-top: 20px; padding-left: 80px;">
+        <h1 style="text-align: center;">User Details</h1>
+        <div class="content">
+
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (Users && Users.length > 0) { %>
+                    <% Users.forEach((row, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td class="userName"><%= row.name %></td>
+                            <td><%= row.email %></td>
+                            <td><%= row.number %></td>
+                            <td>
+                                <button id="toggleButton_<%= index %>" class="bttn block" onclick="toggleUnlist(<%= index %>)">Block</button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="5">No users found</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        </div>
+    
+        <div class="popup-container">
+            <p id="confirmationMessage"></p>
+            <button class="popup-btn yes" onclick="confirmAction()">Yes</button>
+            <button class="popup-btn no" onclick="cancelAction()">No</button>
+        </div>
+        <div class="overlay"></div>
+    
+        <script>
+            function toggleUnlist(index) {
+                var button = document.getElementById(`toggleButton_${index}`);
+                var buttonText = button.innerText;
+    
+                if (buttonText === 'Block') {
+                    // Show the popup and overlay for blocking
+                    showConfirmationPopup('Are you sure you want to block?', 'Unblock', index);
+                } else {
+                    // Show the popup and overlay for unblocking
+                    showConfirmationPopup('Are you sure you want to unblock?', 'Block', index);
+                }
+            }
+    
+            function showConfirmationPopup(message, newButtonText, index) {
+                // Display the popup and overlay
+                document.querySelector('.popup-container').style.display = 'block';
+                document.querySelector('.overlay').style.display = 'block';
+    
+                // Set the confirmation message
+                document.getElementById('confirmationMessage').innerText = message;
+    
+                // Store the new button text and index for later use
+                document.querySelector('.popup-container').newButtonText = newButtonText;
+                document.querySelector('.popup-container').currentIndex = index;
+            }
+    
+            function confirmAction() {
+                // Perform the action (block or unblock) here
+                var newButtonText = document.querySelector('.popup-container').newButtonText;
+                var index = document.querySelector('.popup-container').currentIndex;
+    
+                var button = document.getElementById(`toggleButton_${index}`);
+                button.innerText = newButtonText;
+    
+                // Toggle button style between "block" and "unblock"
+                button.classList.toggle('block');
+                button.classList.toggle('unblock');
+    
+                // Hide the popup and overlay
+                hideConfirmationPopup();
+            }
+    
+            function cancelAction() {
+                // Provide feedback or do nothing
+    
+                // Hide the popup and overlay
+                hideConfirmationPopup();
+            }
+    
+            function hideConfirmationPopup() {
+                // Hide the popup and overlay
+                document.querySelector('.popup-container').style.display = 'none';
+                document.querySelector('.overlay').style.display = 'none';
+            }
+        </script>
+    </div>
+    
+        </script>
+        
+        <script src="/js/search.js"></script>
+    
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+
+
+</body>
+</html>

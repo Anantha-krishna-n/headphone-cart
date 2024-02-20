@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Pontano Sans', sans-serif;
+            font-size: 1.125rem;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            color: #888;
+            background: #fff;
+            text-rendering: optimizeLegibility;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        a {
+            color: #888;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        a:hover {
+            color: #333;
+        }
+
+        h1, h2, h3, h4 {
+            color: #333;
+            font-weight: normal;
+            margin: 1.75rem 0 1rem 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2.125rem;
+            margin: 0;
+        }
+
+        h3 {
+            font-size: 2rem;
+        }
+
+        h4 {
+            font-size: 1.5rem;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        /* Add the rest of your styles here */
+
+        @keyframes fadeImg {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div>
+            <div>
+                <p id="highlight">ShopShop</p>
+            </div>
+            <div>
+                <a href="#" class="toggle-nav">Menu <i class="ion-navicon-round"></i></a>
+                <ul>
+                    <li class="nav-item"><a href="#">Products</a></li>
+                    <li class="nav-item"><a href="#">About</a></li>
+                    <li class="nav-item"><a href="#">My Account</a></li>
+                    <li class="nav-item"><a href="#">Cart (0)</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main>
+        <div>
+            <div>
+                <nav>
+                    <ol>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Household Plants</a></li>
+                        <li class="active">Bonsai</li>
+                    </ol>
+                </nav>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        <img class="active" src="https://source.unsplash.com/W1yjvf5idqA">
+                    </div>
+                    <ul>
+                        <li><img src="https://source.unsplash.com/W1yjvf5idqA"></li>
+                        <li><img src="https://source.unsplash.com/VgbUxvW3gS4"></li>
+                        <li><img src="https://source.unsplash.com/5WbYFH0kf_8"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div>
+            <p class="copyright">&copy; Copyright 2018 <a href="https://katherinekato.com" title="Katherine Kato"  target="_blank">Katherine Kato</a></p>
+        </div>
+    </footer>
+    <script>
+        const activeImage = document.querySelector(".product-image .active");
+        const productImages = document.querySelectorAll(".image-list img");
+        const navItem = document.querySelector('a.toggle-nav');
+
+        function changeImage(e) {
+            activeImage.src = e.target.src;
+        }
+
+        function toggleNavigation(){
+            this.nextElementSibling.classList.toggle('active');
+        }
+
+        productImages.forEach(image => image.addEventListener("click", changeImage));
+        navItem.addEventListener('click', toggleNavigation);
+    </script>
+</body>
+</html>

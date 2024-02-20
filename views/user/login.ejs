@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <link rel="stylesheet" href="/userlogin.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,700">
+</head>
+<body>
+    <div class="background-image"></div>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form action="/" method="POST" class="login" >
+            <h2>Welcome, User!</h2>
+            <p>Please log in</p>
+            <div class="form-group">
+              <input type="email" class="form-control" placeholder="email" name="email" id="email">
+              <small id="emailError" style="color: red;"></small>
+            </div>
+            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Password" name="password">
+            </div>
+            <div class="form-group">
+              <input type="submit" class="btn btn-primary" value="Log In">
+            </div>
+            <p id="errorMsg" style="color: red;"><%= msg %></p>
+
+            <% if(error) { %>
+              <p class="error" style="color: red;">
+                <%=error %>
+              </p>
+              <%} %>
+
+            <div class="links">
+              <p>Are you new? <a href="signup">Sign Up</a></p>
+              <a href="/forgotpassword">Forgot Password</a>
+            </div>
+          </form>
+
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
+
+  <script>
+
+
+
+
+
+  </script>
+</body>
+</html>

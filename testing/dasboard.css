@@ -1,0 +1,137 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;1,700&display=swap');
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container{
+    position: relative;
+}
+
+.sidebar {
+    background: #0D1117;
+    transition: all .5s;
+    max-width: 1000px;
+    width: 190px;
+    height: 100vh;
+    border-right: 5px solid #7B61FF;
+}
+.sidebar.collapsed {
+    max-width: 0;
+    overflow: hidden;
+    border-right: 0;
+}
+.content{
+    position: absolute;
+}
+.content button{
+    margin: 10px;
+    background-color: #7B61FF;
+    border: none;
+    border-radius: 2px;
+}
+.content button div {
+    width: 20px;
+    height: 3px;
+    background-color: aliceblue;
+    margin: 3px 0;
+}
+
+#head{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    top: 30px;
+}
+
+#head .logo{
+    font-size: 22px;
+    font-weight: 700;
+    font-style: italic;
+    padding-right: 15px;
+    color: aliceblue;
+}
+
+.list{
+    list-style: none;
+    padding: 5px 0;
+}
+
+.list li{
+    margin: 5px;
+    padding: 5px 35px;
+}
+
+.list li:hover{
+    border-radius: 5px;
+    background-color: #7B61FF;
+}
+
+.list a{
+    text-decoration: none;
+    color: aliceblue;
+}
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.product-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 20px;
+}
+
+.product-box {
+    width: calc(25% - 20px);
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.product-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.product-details {
+    padding: 20px;
+}
+
+.product-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.product-description {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+
+.product-box:hover .product-img {
+    content: url('');
+}
+
+.product-price {
+    font-size: 18px;
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .product-box {
+        width: calc(50% - 20px);
+    }
+}
