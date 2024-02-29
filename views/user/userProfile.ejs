@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Font Awesome for icons -->
+
+    <style>
+        /* Your CSS styles */
+        .container {
+            display: flex;
+            height: 100vh;
+            margin-left: 0px;
+        }
+
+        .sidebar {
+            background-color: #f0f0f0;
+            width: 200px;
+            /* Adjust as needed */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 60vh;
+            /* Adjust the height here */
+            margin-left: 0px;
+        }
+
+        .content-box {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .field {
+            margin-top: 20px;
+            /* Adjust the margin top inside the sidebar */
+            margin-bottom: 10px;
+            flex-grow: 1;
+            /* Allow the field to grow to fill remaining space */
+        }
+
+        .field-items {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            /* Adjust the margin between items */
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .field-items:hover {
+            background-color: #f0f0f0;
+        }
+
+        .field-items.active {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .navbar {
+            background-color: #2c2f32;
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1rem;
+            margin: 0 25px;
+            /* Adjust the space between links */
+        }
+
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .navbar-links-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-brand span {
+            color: #007bff;
+            margin-left: 5px;
+        }
+        .cancel-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.cancel-btn:hover {
+    background-color: rgb(252, 196, 196);
+}
+.sidebar .field:nth-child(2) {
+    margin-top: 10px; /* Adjust the value as needed */
+}
+.sidebar .field:first-child {
+    margin-bottom: -196px; /* Adjust the value as needed */
+}
+
+.profile-info {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 20px;
+        height: 400px;
+    }
+    .profile-info > div {
+    margin-bottom: 20px; /* Add margin-bottom for spacing between div elements */
+}
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-brand">
+            <a class="navbar-brand" href="">headphonecart<span> <i class="fas fa-headphones"></i></span></a>
+        </div>
+        <div class="navbar-links">
+            <a href="/home">Home</a>
+            <a href="/shop">Shop</a>
+            <a href="">About us</a>
+            <a href="">Contact us</a>
+        </div>
+        <div class="navbar-links-right">
+            <li><a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+            <li><a class="nav-link" href=""><i class="fas fa-user"></i> Profile</a></li>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="field">
+                <a href="#" class="field-items" onclick="showOrders()">Orders</a>
+            </div>
+            <div class="field">
+                <a href="#" class="field-items" onclick="showProfile()">profile</a>
+            </div>
+        </div>
+    <!-- profile -->
+   <!-- Orders Table (Initially Hidden) -->
+
+        <!-- Orders Table (Initially Hidden) -->
+   <!-- Orders Table (Initially Hidden) -->
+   <div class="content-box" id="ordersTable">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Payment Method</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% Orders.forEach((order) => { %>
+                <tr>
+                    <td>
+                        <% order.items.forEach((item) => { %>
+                            <%= item.product.name %><br>
+                        <% }); %>
+                    </td>
+                    <td>
+                        <% order.items.forEach((item) => { %>
+                            <%= item.quantity %><br>
+                        <% }); %>
+                    </td>
+                    <td>
+                        <% order.items.forEach((item) => { %>
+                            <%= item.product.price %><br>
+                        <% }); %>
+                    </td>
+                    <td>
+                        <%= order.total %>
+                    </td>
+                    <td>
+                        <span class="
+                            <% if (order.status === 'cancelled') { %>
+                                text-danger
+                            <% } else if (order.status === 'pending') { %>
+                                text-warning
+                            <% } else if (order.status.toLowerCase() === 'success') { %>
+                                text-success
+                            <% } %>">
+                            <%= order.status %>
+                        </span>
+                    </td>
+                    
+                    <td>
+                        <%= order.paymentMethod %>
+                    </td>
+                    <td>
+                        <button class="btn-btn cancel-btn" onclick="cancelOrder('<%= order._id %>')">Cancel</button>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Orders Table (Initially Hidden) -->
+<!-- Profile Container (Initially Hidden) -->
+
+
+<div class="content-box" id="profileContainer" style="display: none;">
+        <div class="profile-info">
+            <h2>User Details</h2>
+            <div>
+                <strong>Name:</strong> <span id="userName"><%= User.name %></span>
+            </div>
+            <div>
+                <strong>Email:</strong> <span id="userEmail"><%= User.email %></span>
+            </div>
+
+            <div>
+                <strong>Phone:</strong> <span id="userPhone"><%= User.number %></span>
+            </div>
+            <% addresses.forEach((address,i)=>{ %>
+                <div>
+                    <strong>Address<%=i+1%>:</strong> <span id="userAddress"><%= address.address %>, <%= address.street %>,<%= address.city %>,<%= address.state %>,<%= address.country%>,<%= address.zipCode%></span>
+                </div>
+           <% }) %>
+           
+        </div>
+</div>
+
+
+
+
+
+        <!-- JavaScript to toggle visibility of orders table -->
+        <script>
+ function showOrders() {
+    var ordersTable = document.getElementById("ordersTable");
+    var profileContainer = document.getElementById("profileContainer");
+    
+    // Hide profile container
+    profileContainer.style.display = "none";
+    
+    // Toggle visibility of orders table
+    if (ordersTable.style.display === "none") {
+        ordersTable.style.display = "block";
+        // Here you can add code to fetch and populate the table with orders data dynamically
+    } else {
+        ordersTable.style.display = "none";
+    }
+}
+
+function showProfile() {
+    var profileContainer = document.getElementById("profileContainer");
+    var ordersTable = document.getElementById("ordersTable");
+    
+    // Hide orders table
+    ordersTable.style.display = "none";
+    
+    // Toggle visibility of profile container
+    if (profileContainer.style.display === "none") {
+        profileContainer.style.display = "block";
+    } else {
+        profileContainer.style.display = "none";
+    }
+}
+
+        </script>
+
+</body>
+
+</html>

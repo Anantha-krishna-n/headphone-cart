@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body, html {
+            height: 100%;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 400px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <!-- Your header content here -->
+    </header>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow" style="width: 600px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Address</h5>
+                        <form  id="addressForm"  action="/addresses/<%= address._id %>/" method="POST">
+                            <div class="mb-3">
+                                <label for="typeText" class="form-label">Address</label>
+                                <input type="text" id="typeText" placeholder="Type here" name="address" class="form-control" value="<%= address.address %>" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="deliveryAddress" class="form-label">Street</label>
+                                <input type="text" id="deliveryAddress" placeholder="Type here" name="street" class="form-control" value="<%= address.street %>"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" id="state" placeholder="Type here" name="state" class="form-control" value="<%= address.state %>" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" id="city" placeholder="Type here" name="city" class="form-control" value="<%= address.city %>" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" id="country" placeholder="Type here" name="country" class="form-control" value="<%= address.country %>" />
+                            </div>
+                            <div class="mb-3">
+                                <label for="zipcode" class="form-label">Zipcode</label>
+                                <input type="text" id="zipcode" placeholder="Type here" name="zipcode" class="form-control"value="<%= address.zipCode %>"/>
+                            </div>
+                            <small id="zipCodeError" class="text-danger"></small>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Add Address</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <!-- Your footer content here -->
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+        
+        <script>
+            document.getElementById("addressForm").addEventListener("submit", function(event) {
+        var zipcode = document.getElementById("zipcode").value.trim();
+        var zipCodeError = document.getElementById("zipCodeError");
+
+        if (zipcode === "") {
+            zipCodeError.innerText = "Zipcode cannot be empty";
+            event.preventDefault(); // Prevent form submission
+        } else if (!/^\d+$/.test(zipcode)) {
+            zipCodeError.innerText = "Zipcode must contain only numbers";
+            event.preventDefault(); // Prevent form submission
+        } else {
+            zipCodeError.innerText = ""; // Clear error message if validation passes
+        }
+    });
+        </script>
+</body>
+</html>
+
+

@@ -3,6 +3,8 @@ const {userCollection}=require('../model/usermodel');
 const {categoryCollection}=require("../model/catagorymodel")
 const {productCollection}=require("../model/productModel")
 const {cart}=require("../model/cartModel");
+const orderCollection=require('../model/oderModel');
+const addressCollection=require('../model/addressModel');
 
 
 const bcrypt = require("bcrypt");
@@ -445,3 +447,28 @@ exports.toggleBlockProduct=async(req, res)=> {
         res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
 }     
+
+    
+
+exports.orderManagementGet=async (req,res)=>{
+    if(req.session.adminID){
+     const orders=await orderCollection.find().populate('user').populate('items.product').populate('addresses');
+        res.render('admin/orderManagement',{orders})
+    }
+}
+exports.updateOrderStatus = async (req, res) => {
+    console.log("update");
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    try {
+        // Update order status in the database
+        await orderCollection.findByIdAndUpdate(orderId, { status }, { new: true });
+
+        // Respond with success message
+        res.json({ success: true, message: 'Order status updated successfully' });
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};

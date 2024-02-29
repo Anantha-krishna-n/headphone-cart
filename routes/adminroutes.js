@@ -34,7 +34,7 @@ const upload = multer({
 });
 
 
-const { loginGet, dashboardGet, loginPost,userGet,productManagementGet ,categoryManagementGet ,userBlockedGet, logoutGet,addcatagoryGet,addProductGet,createCategoryPOST,createproductPOST,editproductGET,editproductPOST,editcatagoryPOST,editcatagoryGET,deleteCategory, toggleBlockProduct }=require('../controller/admincontroller');
+const { loginGet, dashboardGet, loginPost,userGet,productManagementGet ,categoryManagementGet ,userBlockedGet, logoutGet,addcatagoryGet,addProductGet,createCategoryPOST,createproductPOST,editproductGET,editproductPOST,editcatagoryPOST,editcatagoryGET,deleteCategory, toggleBlockProduct, orderManagementGet,updateOrderStatus }=require('../controller/admincontroller');
 
 
 
@@ -61,6 +61,11 @@ router.post('/createCategory',upload.fields([{ name: 'logo_image', maxCount: 1 }
 router.post('/toggleblockproduct/:id', toggleBlockProduct)
 
 
-module.exports=router;
+
+router.get("/orderManagement",orderManagementGet)
+router.post('/orders/:orderId/status', updateOrderStatus);
+
+
+module.exports=router;     
 
 

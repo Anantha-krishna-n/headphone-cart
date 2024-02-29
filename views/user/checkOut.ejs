@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .checkout-form {
+            height: 100vh; /* Adjust the height as needed */
+            overflow-y: auto; /* Add vertical scrollbar if needed */
+        }
+       
+    </style>
+</head>
+
+<body>
+    <%-include('../partials/nav.ejs') %>
+
+
+    <header>
+        <!-- Jumbotron -->
+        <div class=" text-center bg-white border-bottom">
+            <div class="container">
+                <div class="d-flex justify-content-between">
+                    <!-- Left elements -->
+                    <div class="">
+                        
+                    </div>
+                    <!-- Left elements -->
+
+
+                    <!-- right elements -->
+                </div>
+            </div>
+        </div>
+     
+
+
+       
+        </div>
+        </div>
+        <!-- Heading -->
+    </header>
+
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 mb-4">
+
+<!-- Modal for success message -->
+
+<!-- Modal for success message -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Success</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Your address has been successfully added.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>            <!-- Checkout -->
+                    <div class="card shadow-0 border checkout-form">
+                        <form id="addressForm" action="/save-address" method="POST">
+                            <div class="p-4">
+                                <h5 class="card-title mb-3">Address</h5>
+                                <div class="row">
+                                    <div class="col-sm-12 mb-3">
+                                        <p class="mb-0">Address</p>
+                                        <div class="form-outline">
+                                            <input type="text" id="typeText" placeholder="Type here" name="address" class="form-control" required>
+                                        </div>
+                                    </div>
+                                      
+                                    <div class="col-sm-4 mb-3">
+                                        <p class="mb-0">Street</p>
+                                        <div class="form-outline">
+                                            <input type="text" id="deliveryAddress" placeholder="Type here" name="street" class="form-control"  required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mb-3">
+                                        <p class="mb-0">State</p>
+                                        <div class="form-outline">
+                                            <input type="text" id="state" placeholder="Type here" name="state" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mb-3">
+                                        <p class="mb-0">City</p>
+                                        <div class="form-outline">
+                                            <input type="text" id="city" placeholder="Type here" name="city" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mb-3">
+                                        <p class="mb-0">Country</p>
+                                        <div class="form-outline">
+                                            <input type="text" id="country" placeholder="Type here" name="country" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4 mb-3">
+                                        <p class="mb-0">Zipcode</p>
+                                        <div class="form-outline">
+                                            <input type="text" id="zipcode" placeholder="Type here" name="zipCode" class="form-control" />
+                                        </div>
+                                        <small id="zipCodeError" class="text-danger"></small>
+
+                                    </div>
+                                </div>
+
+                              
+
+                                <hr />
+
+                                <div class="float-end">
+                                    <button type="submit" class="btn btn-primary" id="addAddressBtn">Add Address</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="container-fluid">
+                        <% if (addresses.length > 0) { %>
+                    
+                            <% addresses.forEach((address, index) => { %>
+                                <div class="addressstore border border-black border-2 rounded p-4 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="form-check mb-3" data-address-id="<%= address._id %>" data-index="<%= index %>">
+                                                <input class="selectad" data-address-id="<%= address._id %>" type="radio" name="addressSelection" id="addressSelection<%= index %>" value="<%= index %>">
+                                                <label class="form-check-label" for="addressSelection<%= index %>">
+                                                    Select this address
+                                                </label>
+                                            </div>
+                                            <p><strong>Address:</strong> <%= address.address %>, <%= address.street %>, <%= address.city %></p>
+                                            <p> <%= address.state %>, <%= address.country %>, <%= address.zipCode %></p>
+                                        </div>
+                                        <div>
+                                            <a href="/addresses/<%= address._id %>" class="btn-sm me-2"><i class="fas fa-pen-to-square fa-lg"></i></a>
+                                            <a href="#" class="btn-sm" onclick="deleteAddress('<%= address._id %>')">
+                                                <i class="fas fa-trash fa-lg"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }); %>
+                    
+                        <% } else { %>
+                        <p>No addresses found.</p>
+                        <% } %>
+                    </div>
+                    
+              
+
+
+                    
+                    <!-- Checkout -->
+                    
+                    
+                    <% let subtotal = 0; %>
+       
+                </div>
+              
+ 
+                <div class="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
+                    <div class="ms-lg-4 mt-4 mt-lg-0" style="max-width: 320px;">
+                        <h6 class="mb-3">Summary</h6>
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-2">Total price:</p>
+                            <p class="mb-2"><%=cart.totalprice%></p>
+                        </div>
+                       
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-2">Discount:</p>
+                            <p class="mb-2 text-danger"></p>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-2">Shipping cost:</p>
+                            <p class="mb-2">0.00</p>
+                        </div>
+                        <hr />
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-2">Total price:</p>
+
+                            <p class="mb-2 fw-bold"><%= (cart.totalprice ).toFixed(2) %></p>
+                        </div>
+
+                        <div class="input-group mt-3 mb-4">
+                            <input type="text" class="form-control border" name="" placeholder="Promo code" />
+                            <button class="btn btn-light text-primary border" style="width: 80px; height: 40px; display: flex; justify-content: center; align-items: center;">Apply</button>
+                        </div>
+                        <hr />
+                        
+                        <h6 class="text-dark my-4">Items in cart</h6>
+           <%cart.items.forEach((item)=>{ %>
+
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="me-3 position-relative">
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-secondary">
+                                    1
+                                </span>
+                                <img src="<%= item.productId.image[0] %>"
+                                    style="height: 96px; width: 96x;" class="img-sm rounded border" />
+                            </div>
+                            <% const fullPrice = item.qty * item.productId.price; %>
+
+
+                            <div class="">
+                                <span>
+                                <%= item.productId.name %> <br />
+                                  </span>
+                                <span><%=item.qty%></span>
+                                <div class="price text-muted"><span><%= fullPrice.toFixed(2) %></span></div>
+                            </div>
+                        </div>
+                        <%})%>
+
+
+
+                        <hr />
+
+                        <!-- Payment Options -->
+                        <h6 class="mb-3">Select Payment Method</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentOption" id="netbanking" value="netbanking">
+                            <label class="form-check-label" for="netbanking">
+                                Net Banking
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentOption" id="wallet" value="wallet">
+                            <label class="form-check-label" for="wallet">
+                                Wallet
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="paymentOption" id="cashOnDelivery" value="cashOnDelivery">
+                            <label class="form-check-label" for="cashOnDelivery">
+                                Cash on Delivery
+                            </label>
+                        </div>
+                        <!-- End Payment Options -->
+
+                        <!-- Place Order Button -->
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-success" id="placeOrderBtn" data-userid="<%= userId %>">Place Order</button>
+                        </div>
+                        <!-- End Place Order Button -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to add a new address box
+            $("#addAddressBtn").click(function () {
+                var newAddressHtml = '<div class="form-check border-bottom mb-3">' +
+                    '<input class="form-check-input" type="radio" name="existingAddress" id="existingAddress' + ($('input[name="existingAddress"]').length + 1) + '">' +
+                    '<label class="form-check-label" for="existingAddress' + ($('input[name="existingAddress"]').length + 1) + '">' +
+                    '<div class="address-box p-3">' +
+                    $("#typeText").val() + ', ' +
+                    $("#deliveryAddress").val() + ', ' +
+                    $("#city").val() + ', ' +
+                    $("#state").val() + ', ' +
+                    $("#country").val() + ', ' +
+                    $("#zipcode").val() +
+                    '</div>' +
+                    '</label>' +
+                    '</div>';
+                $("#existingAddressList").append(newAddressHtml);
+            });
+        })
+
+            // Function to place order
+        
+        function deleteAddress(addressId) {
+    if (confirm('Are you sure you want to delete this address?')) {
+        fetch(`/addresses/${addressId}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                // Address deleted successfully
+                // You can update the UI or reload the page here
+                location.reload(); // For example, reload the page
+            } else {
+                console.error('Failed to delete address:', response.statusText);
+                // Handle error (display error message, etc.)
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting address:', error.message);
+            // Handle error (display error message, etc.)
+        });
+    }
+}
+document.getElementById("addressForm").addEventListener("submit", function(event) {
+        var zipcode = document.getElementById("zipcode").value.trim();
+        var zipCodeError = document.getElementById("zipCodeError");
+
+        if (zipcode === "") {
+            zipCodeError.innerText = "Zipcode cannot be empty";
+            event.preventDefault(); // Prevent form submission
+        } else if (!/^\d+$/.test(zipcode)) {
+            zipCodeError.innerText = "Zipcode must contain only numbers";
+            event.preventDefault(); // Prevent form submission
+        } else {
+            zipCodeError.innerText = ""; // Clear error message if validation passes
+        }
+    });
+     ////////////////////////////////////////////////////////////////////////////////////////////////////////place order/////////////////////////////////////
+   // Accessing the value in script
+   window.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('.form-check').forEach(formCheck => {
+            const addressId = formCheck.getAttribute('data-address-id');
+            const index = formCheck.getAttribute('data-index');
+            console.log(`Address ID: ${addressId}, Index: ${index}`);
+            // You can use the values as needed, e.g., sending them to the server, manipulating them, etc.
+        });
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+    const placeOrderBtn = document.getElementById('placeOrderBtn');
+
+    if (placeOrderBtn) {
+        placeOrderBtn.addEventListener('click', async () => {
+            try {
+                const userId = placeOrderBtn.getAttribute('data-userid'); // Get userId from data attribute
+                const selectedAddress = document.querySelector('input[name="addressSelection"]:checked'); // Get the selected address input element
+                const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked'); // Get the selected payment option input element
+
+                if (selectedAddress) {
+                    const addressId = selectedAddress.getAttribute('data-address-id'); // Get the addressId from the selected address input element
+                    console.log(addressId, 'address');
+
+                    if (selectedPaymentOption) {
+                        const paymentMethod = selectedPaymentOption.value; // Get the value of the selected payment method
+                        console.log(paymentMethod, 'payment method');
+
+                        const response = await fetch('/place-order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                userId: userId,
+                                addressId: addressId,
+                                paymentMethod: paymentMethod // Include the selected payment method in the request body
+                            })
+                        });
+
+                        if (response) {
+                            const responseData = await response.json();
+                            console.log('Order placed:', responseData);
+                            window.location.href="/sucessOrder"
+                            // Optionally, redirect the user or show a success message
+                        } else {
+                            console.error('Failed to place order:', response.statusText);
+                            // Handle errors
+                        }
+                    } else {
+                        console.error('No payment method selected');
+                    }
+                } else {
+                    console.error('No address selected');
+                }
+            } catch (error) {
+                console.error('Error placing order:', error);
+                // Handle unexpected errors
+            }
+        });
+    }
+});
+
+
+    </script>
+    <%-include('../partials/footer.ejs') %>
+
+</body>
+</html>

@@ -2,6 +2,8 @@ const { userCollection } = require("../model/usermodel");
 const {categoryCollection}=require("../model/catagorymodel")
 const {productCollection}=require("../model/productModel")
 const {cart}=require("../model/cartModel");
+const orderCollection=require('../model/oderModel');
+const addressCollection=require('../model/addressModel');
 
 const nodemailer=require("nodemailer");
 
@@ -85,10 +87,15 @@ exports.homeGet=async (req,res)=>{
       
     res.render('user/home',{products,category})
 } 
-
 exports.shopGet = async (req, res) => {
     const PAGE_SIZE = 6; // Number of products per page
     const page = parseInt(req.query.page) || 1; // Get the page number from query parameters, default to 1 if not provided
+    let sort = 1; // Default sorting order
+
+    // Check if sorting order is specified in query parameters
+    if (req.query.sort === 'desc') {
+        sort = -1; // Set sorting order to descending if specified
+    }
 
     try {
         const count = await productCollection.countDocuments({ blocked: false }); // Get total count of products
@@ -96,13 +103,14 @@ exports.shopGet = async (req, res) => {
 
         const products = await productCollection.find({ blocked: false })
             .populate('category')
+            .sort({ price: sort }) // Sort products by price
             .skip((page - 1) * PAGE_SIZE) // Skip products based on page number
             .limit(PAGE_SIZE); // Limit number of products per page
 
         const categories = await categoryCollection.find();
         const userId = req.session.userId ? req.session.userId._id : null; // Assuming userId is stored in req.session.userId
 
-        res.render("user/shop", { products, categories, userId, totalPages, currentPage: page });
+        res.render("user/shop", { products, categories, userId, totalPages, currentPage: page,req });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -491,5 +499,145 @@ exports.setNewPassword = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send("Server Error");
+    }
+};
+
+
+
+exports.saveAddressPost = async (req, res) => {
+    try {
+      // Get user ID from request or session
+      const userId = req.session.userId
+  
+      // Create a new address object
+      const newAddress = new addressCollection({
+        user: userId,
+        address:req.body.address, 
+        street: req.body.street,
+        city: req.body.city,
+        state: req.body.state,
+        country: req.body.country,
+        zipCode: req.body.zipCode
+      });
+  
+      // Save the address to the database
+      await newAddress.save();
+  
+      // Assuming you want to associate the address with the user
+      // You can push the address to the user's addresses array
+      const user = await userCollection.findById(userId);
+      user.addresses.push(newAddress);
+      await user.save();
+  res.redirect('/checkout?success=true')
+    //   res.status(201).json({ message: 'Address saved successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+  exports.deleteAddress = async (req, res) => {
+    try {
+        const userId = req.session.userId; // Get user ID from session
+        const addressId = req.params.addressId; // Get address ID from request parameters
+
+        // Find the address in the address collection
+        const address = await addressCollection.findOne({ _id: addressId, user: userId });
+
+        if (!address) {
+            return res.status(404).json({ message: 'Address not found' });
+        }
+
+        // Delete the address from the address collection
+        await addressCollection.deleteOne({ _id: addressId });
+
+        // Remove the address reference from the user's addresses array
+        const user = await userCollection.findById(userId);
+        user.addresses = user.addresses.filter(addr => addr.toString() !== addressId.toString());
+        await user.save();
+
+        return res.status(200).json({ message: 'Address deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+// Controller to render edit address form with existing address details
+exports.editAddressGet = async (req, res) => {
+    try {
+        const userId = req.session.userId; // Get user ID from session
+        const addressId = req.params.id; // Get address ID from request parameters
+        
+         
+        // console.log('hjkhjk',addressId);
+        // Find the address in the address collection
+        const address = await addressCollection.findOne({ _id: addressId, user: userId });
+                                        
+        if (!address) {
+            return res.status(404).json({ message: 'Address not found' });
+        }
+                   
+        // Render the edit address form with the address details
+        res.render('user/addressEdit', { address });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+/////edit controller post
+// Controller to handle editing the address
+exports.editAddressPost = async (req, res) => {
+    try {
+        const userId = req.session.userId; // Get user ID from session
+        const addressId = req.params.id; // Get address ID from request parameters
+
+        // Update the address in the database
+        await addressCollection.findOneAndUpdate(
+            { _id: addressId, user: userId }, // Filter criteria
+            { $set: { 
+                address: req.body.address,
+                street: req.body.street,
+                city: req.body.city,
+                state: req.body.state,
+                country: req.body.country,
+                zipCode: req.body.zipcode
+            }},
+            { new: true } // Return the updated document
+        );
+
+        // Redirect the user to a success page or another appropriate route
+        res.redirect('/checkout'); // Change this to your desired route
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+ exports.sucessOrder=async(req,res)=>{
+    res.render("user/sucessOrder")
+ }
+ exports.userProfileGet = async (req, res) => {
+    if (req.session.userId) {
+        const userId = req.session.userId;
+
+        try {
+            // Find the user's addresses
+            const addresses = await addressCollection.find({ user: userId });
+            // Find the user 
+            const User=await userCollection.findById(userId).populate("addresses")
+            // Find the user's orders 
+            const Orders = await orderCollection.find({ user: userId })
+                .populate('items.product')
+                .populate('addresses'); // Populate addresses as well
+                console.log(Orders,"oo")
+
+            console.log(User,"user")
+
+             // Log orders to check the retrieved data structure
+             console.log(addresses,'add');
+
+            res.render("user/userProfile", { addresses, Orders,User });
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            res.status(500).send('Internal Server Error');
+        }
     }
 };

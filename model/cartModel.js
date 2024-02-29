@@ -16,13 +16,19 @@ const cartSchema = new mongoose.Schema({
         qty: {
             type: Number,
             default: 1
+        },
+        price:{
+            type:Number
         }
     }],
+    totalprice:{
+           type:Number,
+    },
     createdAt: {
         type: Date,
         default: Date.now
     }
-});
+});                             
 
 const Cart = mongoose.model('Cart', cartSchema);
 

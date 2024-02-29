@@ -13,6 +13,8 @@ const userCollection=require('./model/usermodel')
 const categoryCollection=require("./model/catagorymodel")
 const productCollection=require("./model/productModel")
 const cart=require("./model/cartModel");
+const orderCollection=require('./model/oderModel');
+const addressCollection=require('./model/addressModel');
 
 const mongoose=require('mongoose');
 const env=require('dotenv');

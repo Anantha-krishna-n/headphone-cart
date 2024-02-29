@@ -7,7 +7,19 @@ const {cart}=require("../model/cartModel");
 const {addToCart, cartGet,removeFromCart,updateCartItemQuantity}=require('../controller/cartController.js')
 
 
-const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword}=require('../controller/usercontroller')
+const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword,saveAddressPost,deleteAddress,editAddressGet,editAddressPost,sucessOrder,userProfileGet}=require('../controller/usercontroller')
+
+
+
+
+const{ checkOutGet,placeOrderPost}=require("../controller/orderController")
+
+
+
+
+  
+ 
+
 
 router.get('/',loginGet);
 router.post('/',checkBlocked,loginPost)
@@ -35,9 +47,25 @@ router.get('/forgotpassword',forgotPasswordGET)
 
 
 router.post('/cart',addToCart)
-router.get('/cart',cartGet)
+router.get('/cart',checkBlocked,cartGet)
 router.post('/cart/remove', removeFromCart);
 router.post('/cart/updateQuantity', updateCartItemQuantity);
 
+
+
+router.get('/checkout',checkBlocked,checkOutGet)
+router.post('/save-address', saveAddressPost);
+router.delete('/addresses/:addressId', deleteAddress);
+router.get('/addresses/:id', editAddressGet);
+router.post('/addresses/:id', editAddressPost);
+
+router.post('/place-order', placeOrderPost);
+router.get('/sucessOrder',sucessOrder)
+
+
+router.get('/userProfile',checkBlocked,userProfileGet)
+
+                  
+
 module.exports=router;
- 
+  

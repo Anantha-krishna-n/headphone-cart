@@ -204,14 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const subtotalElement = document.querySelector('.subtotal span');
       subtotalElement.textContent = subtotal.toFixed(2);
 
-      // Calculate taxes
-      const taxes = subtotal * 0.05;
-      const taxElement = document.querySelector('.tax span');
-      taxElement.textContent = taxes.toFixed(2);
-
-      // Calculate total including taxes and shipping
-      const shipping = 5.00;
-      const total = subtotal + taxes + shipping;
+      const total = subtotal 
 
       const totalElement = document.querySelector('.total span');
       totalElement.textContent = total.toFixed(2);
@@ -221,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function updateCartItemQuantity(productId, quantity) {
+    console.log('dfjidhif');
       fetch('/cart/updateQuantity', {
               method: 'POST',
               headers: {

@@ -35,7 +35,10 @@ const UserSchema = new mongoose.Schema({
         required: true
     },
 resetToken:String,
-resetTokenExpires:Date
+resetTokenExpires:Date,
+addresses: [{
+     type: mongoose.Schema.Types.ObjectId,
+     ref: 'Address' }] // Array of references to Address documents
     
 });
 

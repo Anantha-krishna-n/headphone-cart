@@ -21,9 +21,9 @@
     <%-include('../partials/nav.ejs') %>
    
     <section id="cart"> 
-        
-        
-<% if(cart && cart.items) {%>
+ 
+    
+<% if(cart && cart.items[0]) {%>
   <% let subtotal = 0; %>
   
         <% cart.items.forEach((item)=>{%>
@@ -105,17 +105,16 @@
             <div class="container clearfix">
     
                 <div class="left">
-                  <h2 class="subtotal">Subtotal: <span><%= subtotal.toFixed(2) %>€</span></h2>
-                  <h3 class="tax">Taxes (5%): <span><%= (subtotal * 0.05).toFixed(2) %></span>€</h3>
-                    <h3 class="shipping">Shipping: <span>5.00</span>€</h3>
+                  <h2 class="subtotal">Subtotal: <span><%= subtotal.toFixed(2) %> Rs</span></h2>
+              
                 </div>
     
                 <div class="right">
-                  <% const total = subtotal + (subtotal * 0.05) + 5.00; %>
+                  <% const total = subtotal  %>
 
                     <h1 class="total">Total: <span><%= total.toFixed(2) %>
-                    </span>€</h1>
-                    <a class="btn">Checkout</a>
+                    </span> Rs</h1>
+                    <a class="btn" id="checkoutBtn">Checkout</a>
                 </div>
     
             </div>
@@ -137,7 +136,7 @@
     <script src="/srcjs.js/cart2.js"></script>
     <script>
         // Example initialization
-
+//...........................................................................fetch for remove.................................................................................
 document.addEventListener('DOMContentLoaded', function() {
   // Add event listeners to each remove form
   const removeForms = document.querySelectorAll('.remove-form');
@@ -188,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
-
+//.............................................................................emptycart Animation.......................................................................................................
 document.addEventListener('DOMContentLoaded', function () {
     const animationContainer = document.getElementById('empty-cart-animation');
     
@@ -216,11 +215,29 @@ document.addEventListener('DOMContentLoaded', function () {
     // Send the request
     xhr.send();
   });
+
+
+//.........................................................................fetch for checkout..........................................................................................................
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function() {
+      window.location.href = '/checkout'; // Redirect to the checkout page
+    });
+  }
+});
+
+
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<%-include('../partials/footer.ejs') %>
+
 </body>
 </html>
