@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script> <!-- Font Awesome for icons -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <style>
         /* Your CSS styles */
@@ -129,6 +132,15 @@
     .profile-info > div {
     margin-bottom: 20px; /* Add margin-bottom for spacing between div elements */
 }
+.address-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
     </style>
 </head>
 
@@ -226,33 +238,72 @@
     </table>
 </div>
 
+
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel">Edit User Details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editUserForm" action="/editUser" method="POST">
+            <input type="number" hidden id="val" name="val" value="1">
+
+            <div class="form-group">
+              <label for="editName">Name</label>
+              <input type="text" class="form-control" id="editName" name="editName" placeholder="Enter Name" value="<%= User.name %>"  required>
+            </div>
+            <div class="form-group">
+              <label for="editEmail">Email address</label>
+              <input type="email" class="form-control" id="editEmail" name="editEmail" aria-describedby="emailHelp" value="<%=User.email%>"  placeholder="Enter Email" required>
+            </div>
+            <div class="form-group">
+              <label for="editPhoneNumber">Phone Number</label>
+              <input type="tel" class="form-control" id="editPhoneNumber" name="editPhoneNumber" placeholder="Enter Phone Number" value="<%=User.number%>"  required>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 <!-- Orders Table (Initially Hidden) -->
 <!-- Profile Container (Initially Hidden) -->
 
 
 <div class="content-box" id="profileContainer" style="display: none;">
+    
         <div class="profile-info">
-            <h2>User Details</h2>
             <div>
-                <strong>Name:</strong> <span id="userName"><%= User.name %></span>
+                <strong>Name:</strong> <span id="userName"  ><%= User.name %></span>
             </div>
             <div>
-                <strong>Email:</strong> <span id="userEmail"><%= User.email %></span>
+                <strong>Email:</strong> <span id="userEmail" ><%= User.email %></span>
             </div>
-
             <div>
-                <strong>Phone:</strong> <span id="userPhone"><%= User.number %></span>
+                <strong>Phone:</strong> <span id="userPhone" ><%= User.number %></span>
             </div>
             <% addresses.forEach((address,i)=>{ %>
-                <div>
-                    <strong>Address<%=i+1%>:</strong> <span id="userAddress"><%= address.address %>, <%= address.street %>,<%= address.city %>,<%= address.state %>,<%= address.country%>,<%= address.zipCode%></span>
+                <div class="address-box">
+                    <strong>Address<%=i+1%>:</strong> <span id="userAddress"><%= address.address %>, <%= address.street %>,<%= address.city %>, <br><%= address.state %>,<%= address.country%>,<%= address.zipCode%></span>
+                   <a href="/addresses/<%= address._id %>">  <i class="fa-solid fa-pen-to-square"></i></a>
                 </div>
-           <% }) %>
-           
+            <% }) %>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editUserModal">
+                Edit User Details
+            </button>
         </div>
+    
 </div>
 
 
+ 
 
 
 
@@ -290,7 +341,9 @@ function showProfile() {
 }
 
         </script>
-
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>

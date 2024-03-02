@@ -14,17 +14,23 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align: center; /* Center the content horizontally */
+
 }
 
 #animation-container {
     width: 50%; /* Adjust width as needed */
     padding: 20px;
     border: 1px solid #ccc; /* Example border */
-    text-align: center; /* Center the content horizontally */
+    display: inline-block;
+   
 }
 #animation{
     width: 500px;
     height: 500px;
+    display: block;
+    margin: 0;
+   
 }
 .button-like {
             display: inline-block;
@@ -53,6 +59,7 @@
 
     <!-- Container for the animation -->
     <div id="animation"></div>
+
          
     <script>
         // Load the Lottie animation

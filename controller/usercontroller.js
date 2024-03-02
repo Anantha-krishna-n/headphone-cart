@@ -508,6 +508,7 @@ exports.saveAddressPost = async (req, res) => {
     try {
       // Get user ID from request or session
       const userId = req.session.userId
+      req.session.addressOrigin = "profile";
   
       // Create a new address object
       const newAddress = new addressCollection({
@@ -567,9 +568,7 @@ exports.editAddressGet = async (req, res) => {
         const userId = req.session.userId; // Get user ID from session
         const addressId = req.params.id; // Get address ID from request parameters
         
-         
-        // console.log('hjkhjk',addressId);
-        // Find the address in the address collection
+   
         const address = await addressCollection.findOne({ _id: addressId, user: userId });
                                         
         if (!address) {
@@ -589,7 +588,6 @@ exports.editAddressPost = async (req, res) => {
     try {
         const userId = req.session.userId; // Get user ID from session
         const addressId = req.params.id; // Get address ID from request parameters
-
         // Update the address in the database
         await addressCollection.findOneAndUpdate(
             { _id: addressId, user: userId }, // Filter criteria
@@ -603,9 +601,13 @@ exports.editAddressPost = async (req, res) => {
             }},
             { new: true } // Return the updated document
         );
+        if (req.session.addressOrigin === "checkout") {
+            res.redirect("/checkout");
+          } else {
+            res.redirect("/userProfile");
+          }
+      
 
-        // Redirect the user to a success page or another appropriate route
-        res.redirect('/checkout'); // Change this to your desired route
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -616,28 +618,53 @@ exports.editAddressPost = async (req, res) => {
  }
  exports.userProfileGet = async (req, res) => {
     if (req.session.userId) {
+        req.session.addressOrigin = "profile";
         const userId = req.session.userId;
 
-        try {
+        try { 
             // Find the user's addresses
             const addresses = await addressCollection.find({ user: userId });
             // Find the user 
             const User=await userCollection.findById(userId).populate("addresses")
+            
+          
             // Find the user's orders 
             const Orders = await orderCollection.find({ user: userId })
                 .populate('items.product')
                 .populate('addresses'); // Populate addresses as well
-                console.log(Orders,"oo")
+                // console.log(Orders,"oo")
 
-            console.log(User,"user")
+            // console.log(User,"user")
 
              // Log orders to check the retrieved data structure
-             console.log(addresses,'add');
+            //  console.log(addresses,'add');
 
             res.render("user/userProfile", { addresses, Orders,User });
         } catch (error) {
             console.error('Error fetching user profile:', error);
             res.status(500).send('Internal Server Error');
         }
+    }
+};
+
+exports.editUserDetails = async (req, res) => {
+    console.log("hdhdh");
+    const { editName, editEmail, editPhoneNumber } = req.body;
+        console.log(editName,"jjd")
+
+    try {
+        // Find the user by their ID
+        const userId = req.session.userId;
+        
+        const user = await userCollection.findByIdAndUpdate(userId, {
+            name: editName,
+            email: editEmail,
+            number: editPhoneNumber
+        }, { new: true });
+
+        res.redirect('/userProfile'); 
+    } catch (error) {
+        console.error('Error editing user details:', error);
+        res.status(500).send('Internal Server Error');
     }
 };

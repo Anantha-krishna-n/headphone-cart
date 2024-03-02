@@ -9,6 +9,8 @@ const { render } = require("ejs");
 
 exports.checkOutGet = async (req, res) => {
     try {
+        req.session.addressOrigin = "checkout";
+
         console.log("entered into check out")
         if (req.session.userId) {
             // Find the user's cart
@@ -18,7 +20,7 @@ exports.checkOutGet = async (req, res) => {
              const addresses = await addressCollection.find({ user: req.session.userId });
 
             if (cart&& addresses) {
-                res.render('user/checkOut', { userId: req.session.userId,cart,addresses }); // Pass the cart details to the checkout page
+                res.render('user/checkOut', { userId: req.session.userId,cart,addresses}); // Pass the cart details to the checkout page
             } else {
                 res.status(404).send('Cart not found');
             }

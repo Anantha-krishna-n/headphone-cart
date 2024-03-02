@@ -7,7 +7,7 @@ const {cart}=require("../model/cartModel");
 const {addToCart, cartGet,removeFromCart,updateCartItemQuantity}=require('../controller/cartController.js')
 
 
-const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword,saveAddressPost,deleteAddress,editAddressGet,editAddressPost,sucessOrder,userProfileGet}=require('../controller/usercontroller')
+const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword,saveAddressPost,deleteAddress,editAddressGet,editAddressPost,sucessOrder,userProfileGet,editUserDetails}=require('../controller/usercontroller')
 
 
 
@@ -64,6 +64,8 @@ router.get('/sucessOrder',sucessOrder)
 
 
 router.get('/userProfile',checkBlocked,userProfileGet)
+router.post('/editUser', editUserDetails);
+
 
                   
 
