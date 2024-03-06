@@ -495,38 +495,6 @@ img{
 
 
 
-
-            document.addEventListener('DOMContentLoaded', function() {
-                const productImages = document.querySelectorAll('.product-image');
-                const zoomContainer = document.getElementById('zoom-container');
-                const zoom = document.getElementById('zoom');
-
-                productImages.forEach((image, index) => {
-                    image.addEventListener('mousemove', function(e) {
-                        const {
-                            left,
-                            top,
-                            width,
-                            height
-                        } = image.getBoundingClientRect();
-                        const x = e.clientX - left;
-                        const y = e.clientY - top;
-
-                        const zoomX = (x / width) * 100;
-                        const zoomY = (y / height) * 100;
-
-                        zoom.style.backgroundImage = url('${image.src}');
-                        zoom.style.backgroundSize = ` ${width *2.5}px ${height * 2}px`; // Adjust the zoom factor here
-`
-                        zoom.style.backgroundPosition = `${zoomX}%  ${zoomY}%`;
-                        zoom.style.display = 'block';
-                    });
-
-                    image.addEventListener('mouseleave', function() {
-                        zoom.style.display = 'none';
-                    });
-                });
-            });
         </script>
 </body>
 

@@ -132,7 +132,7 @@ exports.removeFromCart = async (req, res) => {
     res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
-   
+      
      //update quantity of products in cart
      exports.updateCartItemQuantity = async (req, res) => {
       try {

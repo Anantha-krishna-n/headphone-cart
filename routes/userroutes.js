@@ -12,7 +12,7 @@ const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProdu
 
 
 
-const{ checkOutGet,placeOrderPost}=require("../controller/orderController")
+const{ checkOutGet,placeOrderPost,cancelOrder,returnOrder}=require("../controller/orderController")
 
 
 
@@ -65,6 +65,8 @@ router.get('/sucessOrder',sucessOrder)
 
 router.get('/userProfile',checkBlocked,userProfileGet)
 router.post('/editUser', editUserDetails);
+router.post('/cancelOrder/:orderId', cancelOrder);
+router.post('/returnOrder/:orderId', returnOrder);
 
 
                   

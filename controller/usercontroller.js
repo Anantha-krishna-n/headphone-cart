@@ -508,8 +508,8 @@ exports.saveAddressPost = async (req, res) => {
     try {
       // Get user ID from request or session
       const userId = req.session.userId
-      req.session.addressOrigin = "profile";
-  
+    //   req.session.addressOrigin = "profile";
+
       // Create a new address object
       const newAddress = new addressCollection({
         user: userId,
@@ -529,7 +529,12 @@ exports.saveAddressPost = async (req, res) => {
       const user = await userCollection.findById(userId);
       user.addresses.push(newAddress);
       await user.save();
-  res.redirect('/checkout?success=true')
+
+ if (req.session.addressOrigin === "checkout") {
+            res.redirect("/checkout");
+          } else {
+            res.redirect("/userProfile");
+          }
     //   res.status(201).json({ message: 'Address saved successfully' });
     } catch (error) {
       console.error(error);
@@ -598,7 +603,7 @@ exports.editAddressPost = async (req, res) => {
                 state: req.body.state,
                 country: req.body.country,
                 zipCode: req.body.zipcode
-            }},
+            }},   
             { new: true } // Return the updated document
         );
         if (req.session.addressOrigin === "checkout") {
@@ -616,30 +621,38 @@ exports.editAddressPost = async (req, res) => {
  exports.sucessOrder=async(req,res)=>{
     res.render("user/sucessOrder")
  }
+
  exports.userProfileGet = async (req, res) => {
     if (req.session.userId) {
         req.session.addressOrigin = "profile";
         const userId = req.session.userId;
+        const page = req.query.page || 1; // Get the current page from query parameters or default to page 1
+        const ordersPerPage = 6; // Number of orders per page
 
         try { 
             // Find the user's addresses
             const addresses = await addressCollection.find({ user: userId });
-            // Find the user 
-            const User=await userCollection.findById(userId).populate("addresses")
             
-          
-            // Find the user's orders 
+            // Find the user 
+            const User = await userCollection.findById(userId).populate("addresses");
+            
+            // Find the total count of orders
+            const totalOrders = await orderCollection.countDocuments({ user: userId });
+
+            // Calculate the skip value based on the current page and orders per page
+            const skip = (page - 1) * ordersPerPage;
+
+            // Find the user's orders for the current page
             const Orders = await orderCollection.find({ user: userId })
                 .populate('items.product')
-                .populate('addresses'); // Populate addresses as well
-                // console.log(Orders,"oo")
+                .populate('addresses')
+                .skip(skip)
+                .limit(ordersPerPage);
 
-            // console.log(User,"user")
+            // Calculate the total number of pages
+            const totalPages = Math.ceil(totalOrders / ordersPerPage);
 
-             // Log orders to check the retrieved data structure
-            //  console.log(addresses,'add');
-
-            res.render("user/userProfile", { addresses, Orders,User });
+            res.render("user/userProfile", { addresses, Orders, User, currentPage: page, totalPages });
         } catch (error) {
             console.error('Error fetching user profile:', error);
             res.status(500).send('Internal Server Error');

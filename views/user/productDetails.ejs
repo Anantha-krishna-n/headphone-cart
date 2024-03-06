@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js" integrity="sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 
@@ -26,7 +27,7 @@
   border: 2px solid #000
 }
 .navbar {
-            background-color: #2c2f32;
+            background-color: #212529;
             padding: 20px 0;
             display: flex;
             justify-content: space-between;
@@ -93,8 +94,8 @@
 
     </div>
     <div class="navbar-links-right">
-        <li><a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-        <li><a class="nav-link" href=""><i class="fas fa-user"></i> Profile</a></li>
+        <a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
+        <a class="nav-link" href="/userProfile"><i class="fas fa-user"></i> Profile</a>
         <a href="/logout">Logout</a>
     </div>
 </div>
@@ -178,10 +179,13 @@
             </div>
       
             <div class = "purchase-info">
-              <button type="button" class="btn add-to-cart-btn" 
-              data-product-id="<%= product._id %>">Add to Cart <i class="fas fa-shopping-cart">
-
-              </i></button>
+              <% if (product.quantity > 0) { %>
+                <!-- If product is in stock, display add to cart button -->
+                <button type="button" class="btn add-to-cart-btn" data-product-id="<%= product._id %>">Add to Cart <i class="fas fa-shopping-cart"></i></button>
+            <% } else { %>
+                <!-- If product is out of stock, display out of stock message -->
+                <p class="out-of-stock-message">Out of Stock</p>
+            <% } %>
 
               <button type = "button" class = "btn">Buy now</button>
             </div>
@@ -293,12 +297,12 @@ function slideImage(){
 
 window.addEventListener('resize', slideImage);
 
-
-        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
         const productId = btn.dataset.productId;
-        const quantity = 1
-                // Make a POST request to your backend
+        const quantity = 1;
+
+        // Make a POST request to your backend
         const response = await fetch('/cart', {
             method: 'POST',
             headers: {
@@ -310,12 +314,32 @@ window.addEventListener('resize', slideImage);
         // Handle the response
         const data = await response.json();
         if (data.success) {
-            alert('Product added to cart successfully');
+            // Use SweetAlert success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Product added to cart successfully',
+            });
         } else {
-            alert('Failed to add product to cart');
+            if (data.outOfStock) {
+                // Use SweetAlert to show out of stock message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Requested quantity exceeds available stock',
+                });
+            } else {
+                // Use SweetAlert error message for other errors
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to add product to cart',
+                });
+            }
         }
     });
 });
+
 
        
     </script>

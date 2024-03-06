@@ -450,12 +450,27 @@ exports.toggleBlockProduct=async(req, res)=> {
 
     
 
-exports.orderManagementGet=async (req,res)=>{
-    if(req.session.adminID){
-     const orders=await orderCollection.find().populate('user').populate('items.product').populate('addresses');
-        res.render('admin/orderManagement',{orders})
+exports.orderManagementGet = async (req, res) => {
+    try {
+        const page = parseInt(req.query.page) || 1; // Current page number, default to 1 if not provided
+        const perPage = 5; // Number of orders per page
+
+        // Calculate the number of documents to skip based on the current page
+        const skip = (page - 1) * perPage;
+
+        // Fetch orders for the current page
+        const orders = await orderCollection.find().skip(skip).limit(perPage).populate('user').populate('items.product').populate('addresses');
+
+        // Calculate total number of orders (for pagination)
+        const totalOrders = await orderCollection.countDocuments();
+
+        res.render('admin/orderManagement', { orders, currentPage: page, totalPages: Math.ceil(totalOrders / perPage) });
+    } catch (error) {
+        console.error("Error getting orders:", error);
+        res.status(500).send("Internal Server Error");
     }
-}
+};
+
 exports.updateOrderStatus = async (req, res) => {
     console.log("update");
     const { orderId } = req.params;

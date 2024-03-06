@@ -47,6 +47,11 @@
 
     <link rel="stylesheet" href="/assets/css/toastify.css">
 
+<!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+
+<!-- SweetAlert JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 
 
@@ -214,47 +219,60 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr style="text-align: center;">
-                                                
-                                                <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Name</th>
-                                                <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Email</th>
-                                                <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                Phone</th>
-                                                <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                 Action </th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phone</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                        <% Users.forEach(user=>{%>
+                                        <% Users.forEach(user => { %>
                                             <tr style="text-align: center;">
-                                               
+                                                <td><%= user.name %></td>
+                                                <td><%= user.email %></td>
+                                                <td><%= user.number %></td>
                                                 <td>
-                                                    <%= user.name %>
+                                                    <% if (!user.isBlocked) { %>
+                                                        <a href="#" class="btn btn-danger blockUserBtn" data-email="<%= user.email %>">Unblock</a>
+                                                    <% } else { %>
+                                                        <a href="#" class="btn btn-success blockUserBtn" data-email="<%= user.email %>">Block</a>
+                                                    <% } %>
                                                 </td>
-                                               
-                                                <td>
-                                                    <%= user.email %>
-                                                </td>
-                                                <td>
-                                                    <%= user.number %>
-                                                </td>
-                                                <td><% if (!user.isBlocked) { %>
-                                                    <a href="/blockUser?email=<%=user.email%>" class="btn btn-danger" >Unblock</a>
-                                                <% } else { %>
-                                                    <a href="/blockUser?email=<%=user.email%>" class="btn btn-success" id="blockUser">Block</a>
-                                                    
-                                                <% } %></td>
-                                              
                                             </tr>
-                                            <% }) %>
+                                        <% }) %>
                                     </tbody>
                                 </table>
                                 
-                          
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const blockUserButtons = document.querySelectorAll('.blockUserBtn');
+                                        
+                                        blockUserButtons.forEach(btn => {
+                                            btn.addEventListener('click', function(event) {
+                                                event.preventDefault(); // Prevent the default action
+                                
+                                                const email = this.getAttribute('data-email');
+                                                const action = email ? (this.innerText === 'Block' ? 'block' : 'unblock') : null;
+                                
+                                                if (action) {
+                                                    swal({
+                                                        title: action === 'block' ? 'Block User' : 'Unblock User',
+                                                        text: `Are you sure you want to ${action} ${email}?`,
+                                                        icon: 'warning',
+                                                        buttons: true,
+                                                        dangerMode: action === 'block' ? true : false,
+                                                    }).then((confirm) => {
+                                                        if (confirm) {
+                                                            // Redirect to block/unblock user route
+                                                            window.location.href = `/blockUser?email=${email}`;
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                                
 
 
         <!-- Include Bootstrap JS and jQuery -->

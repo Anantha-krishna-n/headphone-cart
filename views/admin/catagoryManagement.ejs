@@ -47,6 +47,12 @@
 
 
     <link rel="stylesheet" href="/assets/css/toastify.css">
+    <!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+
+<!-- SweetAlert JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
 
 
 
@@ -296,15 +302,25 @@
         
         <script>
             function confirmDelete(categoryId, categoryName) {
-                // Display a confirmation dialog
-                const confirmation = window.confirm(`Are you sure you want to delete the category ${categoryName}?`);
-        
-                // If user confirms, redirect to the delete route
-                if (confirmation) {
-                    window.location.href = '/deletecatagory/' + categoryId;
-                }
+                // Display a SweetAlert confirmation dialog
+                swal({
+                    title: `Are you sure you want to delete the category ${categoryName}?`,
+                    text: "Once deleted, you will not be able to recover this category!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        // If user confirms, redirect to the delete route
+                        window.location.href = '/deletecatagory/' + categoryId;
+                    } else {
+                        // If user cancels, do nothing
+                    }
+                });
             }
         </script>
+        
 </body>
 
 </html>
