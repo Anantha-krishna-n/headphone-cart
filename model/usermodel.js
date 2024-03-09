@@ -38,7 +38,8 @@ resetToken:String,
 resetTokenExpires:Date,
 addresses: [{
      type: mongoose.Schema.Types.ObjectId,
-     ref: 'Address' }] // Array of references to Address documents
+     ref: 'Address' }],
+    
     
 });
 

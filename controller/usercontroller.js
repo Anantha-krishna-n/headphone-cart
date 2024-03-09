@@ -646,6 +646,7 @@ exports.editAddressPost = async (req, res) => {
             const Orders = await orderCollection.find({ user: userId })
                 .populate('items.product')
                 .populate('addresses')
+                .sort({ createdAt: -1 }) // Sort by creation date descending
                 .skip(skip)
                 .limit(ordersPerPage);
 

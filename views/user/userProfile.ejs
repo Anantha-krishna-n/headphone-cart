@@ -22,7 +22,7 @@
         /* Your CSS styles */
         .container {
             display: flex;
-            height: 100vh;
+            height: 80vh;
             margin-left: 0px;
         }
 
@@ -192,7 +192,9 @@
 }
 .content-box {
     position: relative;
+    
 }
+
 
 .options-menu {
     position: absolute;
@@ -233,6 +235,68 @@
 
 .options-dropdown a:hover {
     background-color: #f5f5f5; /* Background color on hover */
+}.bottom-div {
+    background-color: #1574f8; /* Example background color */
+    margin-top: 20px; /* Add margin top for spacing */
+    display: flex; /* Use flexbox to align items */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: flex-start; /* Align items vertically at the start */
+    align-items: center; /* Center items horizontally */
+    color: white; /* Set text color to white */
+    padding: 20px; /* Add padding */
+}
+
+.headers {
+    display: flex; /* Use flexbox to align headers */
+    justify-content: space-between; /* Evenly space headers */
+    width: 100%; /* Ensure headers span full width */
+}
+
+.subscribe-text {
+    margin-bottom: 10px; /* Add margin bottom for spacing */
+}
+
+.email-field {
+    display: flex; /* Use flexbox to align items */
+    align-items: center; /* Center items vertically */
+    justify-content: flex-end; /* Align items to the right */
+    border-radius: 20px; /* Add border radius */
+    overflow: hidden; /* Hide overflow content */
+    align-self: flex-end; /* Align email field to the flex-end of the bottom div */
+}
+
+#emailInput {
+    padding: 10px; /* Add padding */
+    border: none; /* Remove border */
+    border-top-left-radius: 20px; /* Add border radius for top-left */
+    background-color: #555; /* Dark grey background color */
+    color: white; /* Text color */
+    border-bottom-left-radius: 20px; /* Add border radius for bottom-left */
+}
+
+#submitEmailBtn {
+    background-color: #fff; /* Button background color */
+    color: #1574f8; /* Button text color */
+    border: none; /* Remove border */
+    padding: 10px; /* Add padding */
+    cursor: pointer; /* Change cursor to pointer */
+    border-top-right-radius: 20px; /* Add border radius for top-right */
+    border-bottom-right-radius: 20px; /* Add border radius for bottom-right */
+}
+
+#submitEmailBtn:hover {
+    background-color: #f0f0f0; /* Change background color on hover */
+}
+.icon-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Adjust as needed */
+    color: #555;
+    font-size: 28px; /* Increase the size of the icons */
+}
+
+.icon-container i {
+    margin: 0 5px; /* Adjust as needed */
 }
 
 
@@ -243,7 +307,7 @@
     <!-- Navbar -->
     <div class="navbar">
         <div class="navbar-brand">
-            <a class="navbar-brand" href="">headphonecart<span> <i class="fas fa-headphones"></i></span></a>
+      <a class="navbar-brand" href="">headphonecart<span> <i class="fas fa-headphones"></i></span></a>
         </div>
         <div class="navbar-links">
             <a href="/home">Home</a>
@@ -271,9 +335,9 @@
         </div>
        <!-- pagination for table -->
 
+    
 
-
-
+<!-- ////////////////////////////////////////////////////////order table/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
    <div class="content-box" id="ordersTable">
     <div class="table-header">
@@ -354,14 +418,13 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-   // Modify existing JavaScript code
    document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
         console.log('Form submitted:', this.id);
         swal({
             title: 'Are you sure?',
-            text: this.id.includes('returnForm') ? `Are you sure you want to return ${this.dataset.productname}?` : 'Once cancelled, you will not be able to undo this action!',
+            text: this.id.includes('returnForm') ? `Are you sure you want to return ${this.querySelector('.btn-return').dataset.productname}?` : 'Once cancelled, you will not be able to undo this action!',
             icon: 'warning',
             buttons: true,
             dangerMode: true,
@@ -395,6 +458,7 @@
         });
     });
 });
+
 
 
 </script>
@@ -452,36 +516,48 @@
             <div class="form-group">
               <label for="address">Address:</label>
               <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" required>
+              <div class="invalid-feedback">Empty space is not allowed</div>
+
             </div>
             <div class="form-group">
               <label for="street">Street:</label>
               <input type="text" class="form-control" id="street" name="street" placeholder="Enter street" required>
+              <div class="invalid-feedback">Empty space is not allowed</div>
+
             </div>
             <div class="form-group">
               <label for="city">City:</label>
               <input type="text" class="form-control" id="city" name="city" placeholder="Enter city" required>
+              <div class="invalid-feedback">Empty space is not allowed</div>
+
             </div>
             <div class="form-group">
               <label for="state">State:</label>
               <input type="text" class="form-control" id="state" name="state" placeholder="Enter state" required>
+              <div class="invalid-feedback">Empty space is not allowed</div>
+
             </div>
             <div class="form-group">
               <label for="country">Country:</label>
               <input type="text" class="form-control" id="country" name="country" placeholder="Enter country" required>
+              <div class="invalid-feedback">Empty space is not allowed</div>
+
             </div>
             <div class="form-group">
               <label for="zipCode">Zip Code:</label>
-              <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="Enter zip code" required>
+              <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="Enter zip code" pattern="\d*" title="Please enter only numbers" required>
+              <div class="invalid-feedback">Empty space is not allowed</div>
+
             </div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save Address</button>
+            <button type="submit" class="btn btn-primary"  onclick="validateAndSubmit()">Save Address</button>
           </form>
         </div>
       </div>
     </div>
 </div>
 
-<!-- mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm   -->
+<!-- mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmprofilecongtainermmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm   -->
 
 
 <!-- Orders Table (Initially Hidden) -->
@@ -492,15 +568,14 @@
         <div class="profile-picture">
             <!-- Placeholder for profile picture -->
             <div class="profile-img">
-                <img src="https://www.svgrepo.com/show/382105/male-avatar-boy-face-man-user-5.svg" alt="img">
+                <img src="https://t4.ftcdn.net/jpg/05/89/93/27/360_F_589932782_vQAEAZhHnq1QCGu5ikwrYaQD0Mmurm0N.jpg" alt="img">
             </div>
         </div>
         <div class="options-menu">
             <i class="fa-solid fa-ellipsis-vertical" onclick="toggleOptions()"></i>
             <div id="options-dropdown" class="options-dropdown" style="display: none;">
                 <a href="#" onclick="showAddAddress()">Add Address</a>
-                <a href="#" onclick="showAddProfilePicture()">Add Profile Picture</a>
-                <a href="#" onclick="removeProfilePicture()">Remove Profile Picture</a>
+               
             </div>
         </div>
         <div>
@@ -524,9 +599,33 @@
         </button>
     </div>
 </div>
+    
+</div>
 
 
- 
+
+<div class="bottom-div">
+    <div class="headers">
+        <div>
+            <h3>headphone cart</h3>
+            <div class="icon-container">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
+        <h3>Blog info</h3>
+        <h3>Company info</h3>
+    </div>
+    <div class="subscribe-text">
+        <p>Subscribe</p>
+    </div>
+    <div class="email-field">
+        <input type="email" id="emailInput" placeholder="Enter your email">
+        <button id="submitEmailBtn">Submit</button>
+    </div>
+</div>
+
 
 
 
@@ -634,12 +733,50 @@ function showPrevPage() {
             const nextPage = <%= currentPage %> + 1;
             window.location.href = `/userProfile?page=${nextPage}`;
         }
+    } 
+    function validateAndSubmit(event) {
+        const inputs = document.querySelectorAll('#addAddressForm input');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (input.value.trim() === '') {
+                isValid = false;
+                input.classList.add('is-invalid');
+            } else {
+                input.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission if any field is empty
+            return;
+        }
     }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add event listener to form submission
+        const form = document.getElementById('addAddressForm');
+        form.addEventListener('submit', validateAndSubmit);
+
+        // Add event listener to each input field to remove error message on input
+        const inputs = document.querySelectorAll('#addAddressForm input');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    this.classList.remove('is-invalid');
+                }
+            });
+        });
+    });
         </script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
 
 </body>
 

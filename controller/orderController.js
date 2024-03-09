@@ -118,6 +118,13 @@ exports.cancelOrder = async (req, res) => {
         // Update the order status to 'cancelled'
         order.status = 'cancelled';
         await order.save();
+        
+        for (const item of order.items) {
+            await productCollection.findOneAndUpdate(
+                { _id: item.product },
+                { $inc: { quantity: item.quantity } } // Increase quantity by item.quantity
+            );
+        }
 
         // Respond with success message
         res.status(200).json({ success: true, message: 'Order canceled successfully' });
@@ -143,6 +150,13 @@ exports.returnOrder = async (req, res) => {
         order.status = 'returned';
         await order.save();
 
+            // Update product quantity based on items in the order
+            for (const item of order.items) {
+                await productCollection.findOneAndUpdate(
+                    { _id: item.product },
+                    { $inc: { quantity: item.quantity } } // Increase quantity by item.quantity
+                );
+            }
         res.status(200).json({ success: true, message: 'Order returned successfully' });
     } catch (error) {
         console.error('Error returning order:', error);

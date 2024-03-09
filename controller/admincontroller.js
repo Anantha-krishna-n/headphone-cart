@@ -167,6 +167,12 @@ exports.createCategoryPOST = async (req, res) => {
     const logo_image  = req.files['logo_image'] ? req.files['logo_image'][0].path : null;
 
     try {
+          // Check if a category with the same name already exists
+          const existingCategory = await categoryCollection.findOne({ category_name });
+          if (existingCategory) {
+              // Category with the same name already exists
+              return res.status(400).send('<script>alert("Category with this name already exists. Please choose a different name."); window.location="/catagoryManagement";</script>');
+          }
         console.log('name',category_name);
         const newCategory = new categoryCollection({category_name,description,logo_image });
         await newCategory.save();
@@ -459,7 +465,7 @@ exports.orderManagementGet = async (req, res) => {
         const skip = (page - 1) * perPage;
 
         // Fetch orders for the current page
-        const orders = await orderCollection.find().skip(skip).limit(perPage).populate('user').populate('items.product').populate('addresses');
+        const orders = await orderCollection.find().sort({ createdAt: -1 }).skip(skip).limit(perPage).populate('user').populate('items.product').populate('addresses');
 
         // Calculate total number of orders (for pagination)
         const totalOrders = await orderCollection.countDocuments();
