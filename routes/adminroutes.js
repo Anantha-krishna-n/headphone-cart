@@ -35,6 +35,9 @@ const upload = multer({
 
 
 const { loginGet, dashboardGet, loginPost,userGet,productManagementGet ,categoryManagementGet ,userBlockedGet, logoutGet,addcatagoryGet,addProductGet,createCategoryPOST,createproductPOST,editproductGET,editproductPOST,editcatagoryPOST,editcatagoryGET,deleteCategory, toggleBlockProduct, orderManagementGet,updateOrderStatus }=require('../controller/admincontroller');
+const { couponManagementGet,addcouponPost,editCouponPost,deleteCoupon } = require('../controller/couponController');
+const {bannerManagementGet, addbannerGet, addbannerPost,deleteBanner}=require('../controller/bannerController')
+const{ offerManagementGet, addofferGet}=require("../controller/offerController")
 
 
 
@@ -66,6 +69,26 @@ router.get("/orderManagement",orderManagementGet)
 router.post('/orders/:orderId/status', updateOrderStatus);
 
 
+
+router.get('/couponManagement',couponManagementGet) 
+router.post('/addcoupon',addcouponPost)
+router.post('/editcoupon', editCouponPost);
+router.post('/deletecoupon/:id', deleteCoupon);
+
+router.get('/bannerManagement',bannerManagementGet)
+router.delete('/banners/:id', deleteBanner);
+
+router.get('/addbanner',addbannerGet)
+router.post('/addbanner', upload.array("bannerImage", 3), addbannerPost);
+
+
+
+
+router.get('/offerManagement',offerManagementGet)
+router.get('/addoffer',addofferGet)
+
+
 module.exports=router;     
 
 
+   

@@ -39,7 +39,10 @@ resetTokenExpires:Date,
 addresses: [{
      type: mongoose.Schema.Types.ObjectId,
      ref: 'Address' }],
-    
+     usedCoupons: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'couponCollection'
+    }]
     
 });
 

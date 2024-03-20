@@ -203,13 +203,37 @@
                         <div class="d-flex justify-content-between">
                             <p class="mb-2">Total price:</p>
 
-                            <p class="mb-2 fw-bold"><%= cart.totalprice %></p>
+                            <p id="totalPriceDisplay" class="mb-2 fw-bold"><%= cart.totalprice %></p>
                         </div>
 
                         <div class="input-group mt-3 mb-4">
-                            <input type="text" class="form-control border" name="" placeholder="Promo code" />
-                            <button class="btn btn-light text-primary border" style="width: 80px; height: 40px; display: flex; justify-content: center; align-items: center;">Apply</button>
+                            <input type="text" class="form-control border" id="couponCodeInput" placeholder="Promo code" />
+<div class="input-group-append">
+    <button class="btn btn-light text-primary border" id="applyCouponBtn" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">Apply</button>
+</div>
                         </div>
+                       <div class="removeCoupon" style="text-align: right;margin-bottom: 3px;">
+                        <a href="/removeCoupon" style="color: red; text-decoration: none;">
+                            Remove coupon
+                        </a>
+                       </div>
+                        <!-- Coupon Dropdown -->
+<!-- Coupon Dropdown -->
+<div class="input-group mb-3">
+    <select class="form-select" id="couponDropdown">
+        <option selected>Available Coupons</option>
+        <% coupons.forEach(coupon => { %>
+            <option value="<%= coupon.couponCode %>"><%= coupon.couponCode %> - 
+                <% if (coupon.discountType === 'Percentage') { %> 
+                    <%= coupon.discountValue %>% off 
+                <% } else { %> 
+                    $<%= coupon.discountValue %> off 
+                <% } %>
+            </option>
+        <% }) %>
+    </select>
+</div>
+
                         <hr />
                         
                         <h6 class="text-dark my-4">Items in cart</h6>
@@ -243,9 +267,9 @@
                         <!-- Payment Options -->
                         <h6 class="mb-3">Select Payment Method</h6>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="paymentOption" id="netbanking" value="netbanking">
-                            <label class="form-check-label" for="netbanking">
-                                Net Banking
+                            <input class="form-check-input" type="radio" name="paymentOption" id="onlinepayment" value="online">
+                            <label class="form-check-label" for="onlinepayment">
+                                Online Payment(razorpay)
                             </label>
                         </div>
                         <div class="form-check">
@@ -369,38 +393,45 @@ document.getElementById("addressForm").addEventListener("submit", function(event
     if (placeOrderBtn) {
         placeOrderBtn.addEventListener('click', async () => {
             try {
-                const userId = placeOrderBtn.getAttribute('data-userid'); // Get userId from data attribute
-                const selectedAddress = document.querySelector('input[name="addressSelection"]:checked'); // Get the selected address input element
-                const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked'); // Get the selected payment option input element
+                const userId = placeOrderBtn.getAttribute('data-userid');
+                const selectedAddress = document.querySelector('input[name="addressSelection"]:checked');
 
                 if (selectedAddress) {
-                    const addressId = selectedAddress.getAttribute('data-address-id'); // Get the addressId from the selected address input element
+                    const addressId = selectedAddress.getAttribute('data-address-id');
                     console.log(addressId, 'address');
 
+                    const selectedPaymentOption = document.querySelector('input[name="paymentOption"]:checked');
+
                     if (selectedPaymentOption) {
-                        const paymentMethod = selectedPaymentOption.value; // Get the value of the selected payment method
+                        const paymentMethod = selectedPaymentOption.value;
                         console.log(paymentMethod, 'payment method');
 
-                        const response = await fetch('/place-order', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                userId: userId,
-                                addressId: addressId,
-                                paymentMethod: paymentMethod // Include the selected payment method in the request body
-                            })
-                        });
+                        if (paymentMethod === 'cashOnDelivery') {
+                            // If cash on delivery is selected, directly place the order
+                            const response = await fetch('/place-order', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    userId: userId,
+                                    addressId: addressId,
+                                    paymentMethod: paymentMethod
+                                })
+                            });
 
-                        if (response) {
-                            const responseData = await response.json();
-                            console.log('Order placed:', responseData);
-                            window.location.href="/sucessOrder"
-                            // Optionally, redirect the user or show a success message
+                            if (response.ok) {
+                                const responseData = await response.json();
+                                console.log('Order placed:', responseData);
+                                window.location.href = "/sucessOrder";
+                            } else {
+                                console.error('Failed to place order:', response.statusText);
+                            }
+                        } else if (paymentMethod === 'online') {
+                            // If Online Payment is selected, initiate Razorpay payment
+                            initiateRazorpayPayment(userId, addressId, paymentMethod);
                         } else {
-                            console.error('Failed to place order:', response.statusText);
-                            // Handle errors
+                            console.error('Invalid payment method');
                         }
                     } else {
                         console.error('No payment method selected');
@@ -410,14 +441,116 @@ document.getElementById("addressForm").addEventListener("submit", function(event
                 }
             } catch (error) {
                 console.error('Error placing order:', error);
-                // Handle unexpected errors
             }
         });
     }
 });
 
 
+// Function to initiate Razorpay payment
+async function initiateRazorpayPayment(userId, addressId) {
+    try {
+        const response = await fetch('/create-order', {
+            method: 'POST'
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            var options = {
+                key: 'rzp_test_ccxHgWWTrm3eOa',
+                amount: data.amount,
+                currency: data.currency,
+                name: 'headphone cart',
+                description: 'Payment for Order',
+                order_id: data.id,
+                handler: async function (response) {
+                    console.log('Payment success:', response);
+                    const placeOrderResponse = await fetch('/place-order', {
+               
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            userId: userId,
+                            addressId: addressId,
+                            paymentMethod: "online"
+                        })
+                    });
+                    // Redirect or show success message
+                    window.location.href = "/sucessOrder";
+                },
+                prefill: {
+                    name: 'John Doe',
+                    email: 'john@example.com',
+                    contact: '+919876543210'
+                },
+                theme: {
+                    color: '#3399cc'
+                }
+            };
+            var rzp = new Razorpay(options);
+            rzp.open();
+        } else {
+            console.error('Failed to create order:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error initiating Razorpay payment:', error);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('applyCouponBtn').addEventListener('click', function() {
+        var couponCode = document.getElementById('couponCodeInput').value;
+        fetch('/applyCoupon', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ couponCode: couponCode })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to apply coupon');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update the total price on the frontend with the updatedTotalPrice received from the backend
+            document.getElementById('totalPriceDisplay').textContent = data.updatedTotalPrice;
+            // Show a success message using SweetAlert2
+            Swal.fire({
+                icon: 'success',
+                title: 'Coupon Applied',
+                text: 'Coupon applied successfully!',
+                timer: 2000 // Set the timer to automatically close the alert after 2 seconds
+            });
+        })
+        .catch(error => {
+            console.error('Error applying coupon:', error.message);
+            // Handle error response, show error message, etc.
+            if (error.message === 'You have already used a coupon.' || error.message === 'You have already used this coupon.') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Apply Coupon',
+                    text: error.message
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Apply Coupon',
+                    text: 'Failed to apply coupon'
+                });
+            }
+        });
+    });
+});
+
+
+
     </script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <%-include('../partials/footer.ejs') %>
 
 </body>

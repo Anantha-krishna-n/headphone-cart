@@ -15,6 +15,10 @@ const productCollection=require("./model/productModel")
 const cart=require("./model/cartModel");
 const orderCollection=require('./model/oderModel');
 const addressCollection=require('./model/addressModel');
+const whishListCollection=require('./model/whishList')
+const couponCollection=require('./model/couponModel')
+const offerCollection=require('./model/offerModel')
+const WalletModel=require('./model/walletModel')
 
 const mongoose=require('mongoose');
 const env=require('dotenv');

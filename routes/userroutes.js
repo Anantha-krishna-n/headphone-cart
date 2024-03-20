@@ -4,6 +4,7 @@ const session=require('../middleware/usersession')
 const checkBlocked=require("../middleware/userAuth")
 const {categoryCollection}=require("../model/catagorymodel")
 const {cart}=require("../model/cartModel");
+const whishListCollection=require('../model/whishList')
 const {addToCart, cartGet,removeFromCart,updateCartItemQuantity}=require('../controller/cartController.js')
 
 
@@ -12,10 +13,12 @@ const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProdu
 
 
 
-const{ checkOutGet,placeOrderPost,cancelOrder,returnOrder}=require("../controller/orderController")
+const{ checkOutGet,placeOrderPost,cancelOrder,returnOrder,createOrder}=require("../controller/orderController")
 
 
-
+const {addToWishlist,WishlistGet,removeFromWishlist}=require("../controller/whishlistController");
+const { applyCoupon } = require('../controller/couponController.js');
+const{addToWallet }=require('../controller/walletController')
 
   
  
@@ -68,8 +71,15 @@ router.post('/editUser', editUserDetails);
 router.post('/cancelOrder/:orderId', cancelOrder);
 router.post('/returnOrder/:orderId', returnOrder);
 
+router.post('/addtowallet',addToWallet )
 
-                  
 
+
+router.post('/wishlist/add', addToWishlist);
+router.get('/wishlist',WishlistGet)
+router.post('/wishlist/remove',removeFromWishlist);
+
+router.post('/applyCoupon',applyCoupon)
+router.post('/create-order', createOrder);
 module.exports=router;
   

@@ -17,7 +17,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 
-
     <style>
         /* Your CSS styles */
         .container {
@@ -27,15 +26,16 @@
         }
 
         .sidebar {
-            background-color: #f0f0f0;
+            background-color: #2791fc;
             width: 200px;
+            margin-top: 50px;
             /* Adjust as needed */
             padding: 20px;
             display: flex;
             flex-direction: column;
-            height: 60vh;
+            height: 70%;
             /* Adjust the height here */
-            margin-left: 0px;
+           
         }
 
         .content-box {
@@ -45,11 +45,13 @@
     padding: 20px;
     margin-bottom: 20px;
 }
+        }
 
 /* Optional: Add styling to the table */
 .table {
     width: 100%;
     border-collapse: collapse;
+    margin-left: 5px;
 }
 
 .table th, .table td {
@@ -59,7 +61,8 @@
 }
 
 .table th {
-    background-color: #f2f2f2;
+    background-color: #252729;
+    color: #fff;
 }
        flex: 1;
             padding: 20px;
@@ -74,20 +77,24 @@
         }
 
         .field-items {
-            display: block;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            /* Adjust the margin between items */
-            cursor: pointer;
-            text-decoration: none;
-            color: #333;
-        }
+    display: block;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    /* Adjust the margin between items */
+    cursor: pointer;
+    text-decoration: none;
+    color: #333;
+    font-size: 19px;
+    transition: background-color 0.3s; /* Add transition for smooth effect */
+}
 
-        .field-items:hover {
-            background-color: #f0f0f0;
-        }
+.field-items:hover {
+    background-color: #f0f0f0; /* Set the background color on hover */
+    text-decoration: none;
+    color: #000; /* Change text color on hover */
+}
 
         .field-items.active {
             background-color: #007bff;
@@ -143,11 +150,13 @@
 .cancel-btn:hover {
     background-color: rgb(252, 196, 196);
 }
-.sidebar .field:nth-child(2) {
-    margin-top: 10px; /* Adjust the value as needed */
+/* Adjust margin for the first and last fields */
+.field:first-child {
+    margin-top: 10px;
 }
-.sidebar .field:first-child {
-    margin-bottom: -196px; /* Adjust the value as needed */
+
+.field:last-child {
+    margin-bottom: 0;
 }
 
 .profile-info {
@@ -155,6 +164,7 @@
         padding: 10px;
         margin-top: 20px;
         height: 400px;
+        width: 850px;
     }
     .profile-info > div {
     margin-bottom: 20px; /* Add margin-bottom for spacing between div elements */
@@ -192,6 +202,8 @@
 }
 .content-box {
     position: relative;
+    margin-top: 40px;
+  
     
 }
 
@@ -298,6 +310,33 @@
 .icon-container i {
     margin: 0 5px; /* Adjust as needed */
 }
+.pagination button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 50px;
+}
+
+.pagination button:hover {
+    background-color: #afd2f7;
+}
+#walletContainer {
+    display: none; /* Hide the container by default */
+    position: absolute;
+    top: 50%; /* Center vertically */
+    right: 1100px; /* Adjust the distance from the right side of the page */
+    transform: translateY(-50%); /* Adjust vertically */
+    width: 200px; /* Adjust width as needed */
+    height: 200px; /* Adjust height as needed */
+    background-color: #fff; /* Background color of the wallet container */
+    border: 2px solid #110101; /* Border of the wallet container */
+    padding: 20px; /* Padding inside the wallet container */
+    z-index: 999; /* Ensure the wallet container is above other elements */
+    margin-bottom: 100px;
+}
 
 
     </style>
@@ -316,6 +355,7 @@
             <a href="">Contact us</a>
         </div>
         <div class="navbar-links-right">
+            <a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i> Fav</a>
             <a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
             <a class="nav-link" href=""><i class="fas fa-user"></i> Profile</a>
             <a href="/logout">Logout</a>
@@ -327,11 +367,15 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="field">
-                <a href="#" class="field-items" onclick="showOrders()">Orders</a>
+                <a href="#" class="field-items" onclick="showOrders()"><i class="fa-solid fa-bag-shopping"></i> Orders</a>
             </div>
             <div class="field">
-                <a href="#" class="field-items" onclick="showProfile()">profile</a>
+                <a href="#" class="field-items" onclick="showProfile()"><i class="fa-solid fa-user"></i>  profile</a>
             </div>
+            <div class="field">
+                <a href="#" class="field-items" onclick="showWallet()"><i class="fa-solid fa-wallet"></i> wallet</a>
+            </div>
+         
         </div>
        <!-- pagination for table -->
 
@@ -458,9 +502,6 @@
         });
     });
 });
-
-
-
 </script>
 
 
@@ -601,9 +642,22 @@
 </div>
     
 </div>
+<!-- //////////////////////////////////////////////////////////////////////forCoupoons/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
+<!-- Coupons Container (Initially Hidden) -->
+<div class="content-box" id="walletContainer" style="display: none;">
+    <div class="wallet">
+        <h4>Wallet Balance:</h4>
+        <% if (wallet) { %>
+            <p><%= wallet.balance %> INR</p> <!-- Assuming the balance is in USD -->
+        <% } else { %>
+            <p>No wallet balance available</p>
+        <% } %>
+    </div> 
+  
+</div>
 
-
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <div class="bottom-div">
     <div class="headers">
         <div>
@@ -631,36 +685,56 @@
 
         <!-- JavaScript to toggle visibility of orders table -->
         <script>
- function showOrders() {
-    var ordersTable = document.getElementById("ordersTable");
+function showOrders() {
+    var walletContainer = document.getElementById("walletContainer");
     var profileContainer = document.getElementById("profileContainer");
-    
-    // Hide profile container
+    var ordersTable = document.getElementById("ordersTable");
+
+    // Hide wallet container and profile container
+    walletContainer.style.display = "none";
     profileContainer.style.display = "none";
-    
+
     // Toggle visibility of orders table
-    if (ordersTable.style.display === "none") {
-        ordersTable.style.display = "block";
-        // Here you can add code to fetch and populate the table with orders data dynamically
+    if (ordersTable.style.display === "none" || ordersTable.style.display === "") {
+        ordersTable.style.display = "block"; // Show the container
     } else {
-        ordersTable.style.display = "none";
+        ordersTable.style.display = "none"; // Hide the container
     }
 }
 
 function showProfile() {
+    var walletContainer = document.getElementById("walletContainer");
+    var profileContainer = document.getElementById("profileContainer");
+    var ordersTable = document.getElementById("ordersTable");
+
+    // Hide wallet container and orders table
+    walletContainer.style.display = "none";
+    ordersTable.style.display = "none";
+
+    // Toggle visibility of profile container
+    if (profileContainer.style.display === "none" || profileContainer.style.display === "") {
+        profileContainer.style.display = "block"; // Show the container
+    } else {
+        profileContainer.style.display = "none"; // Hide the container
+    }
+}
+function showWallet() {
+    var walletContainer = document.getElementById("walletContainer");
     var profileContainer = document.getElementById("profileContainer");
     var ordersTable = document.getElementById("ordersTable");
     
-    // Hide orders table
+    // Hide profile container and orders table
+    profileContainer.style.display = "none";
     ordersTable.style.display = "none";
-    
-    // Toggle visibility of profile container
-    if (profileContainer.style.display === "none") {
-        profileContainer.style.display = "block";
+
+    // Toggle visibility of wallet container
+    if (walletContainer.style.display === "none" || walletContainer.style.display === "") {
+        walletContainer.style.display = "block"; // Show the container
     } else {
-        profileContainer.style.display = "none";
+        walletContainer.style.display = "none"; // Hide the container
     }
 }
+
  // Define the deleteAddress function
  function deleteAddress(addressId) {
         // Display confirmation dialog

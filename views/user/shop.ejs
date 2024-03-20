@@ -70,6 +70,7 @@
                     
                 </ul>
                 <ul class="navbar-nav mb-2 mb-md-0 ml-auto">
+                    <li><a class="nav-link" href="/wishlist"><i class="fa-solid fa-heart"></i> Fav</a></li>
                     <li><a class="nav-link" href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a></li>
                     <li><a class="nav-link" href="/userProfile"><i class="fas fa-user"></i> Profile</a></li>
                     <li><a class="nav-link"  href="/logout">Logout</a></li>
@@ -84,8 +85,20 @@
     <!-- products -->
 
     <div class="container mx-auto mt-4">
-        <div class="row justify-content-end"> <!-- Align content to the right end of the page -->
-            <div class="col-auto"> <!-- Specify the column size for the form -->
+        <div class="row">
+            <div class="col-md-4"> <!-- Column for search bar -->
+                <form action="/shop" method="get">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Search products" name="search" aria-label="Search" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                        </div>
+                    </div>
+                 
+                </form>
+                
+            </div>
+            <div class="col-md-4 ml-auto"> <!-- Column for sorting dropdown -->
                 <!-- Sorting dropdown -->
                 <form id="sortForm" action="/shop" method="GET"> <!-- Add an id and method to the form -->
                     <div class="form-group">
@@ -100,41 +113,48 @@
         </div>
     </div>
     
-
-    <div class="container mx-auto mt-4">
-        <div class="row">    
-          <%products.forEach((product)=>{%>
     
-             <div class="col-md-4">
-      <div class="card" style="width: 18rem;">
-        <a href="/productDetails/<%= product._id %>">
-            <img src='<%= product.image[0]%>' style="width:100%; height:auto;" class="img-fluid" alt="<%= product.name %>">
-        </a>
-        <div class="card-body">
-          <h5 class="card-title"><%=product.name%></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><%=product.description%></h6>
-              <h4>₹<%=product.price%></h4>
-          <!-- <p class="card-text">Sennheiser’s dynamic drivers deliver a well-extended sound response with dynamic bass for a unique listening experience and closed-back around-ear headphones reduce unwanted background noise for your comfort.</p> -->
-          <h5><%=product.color_status%></h5>
-          <input type="hidden" name="" class="product-quantity" value="<%=product.quantity%>">
-          <input type="hidden" name="qty" value="qty">
-          <button type="button" class="btn mr-2">
-            <i class="fa-solid fa-heart"></i> Favorite
-        </button>
-        <button type="button" class="btn add-to-cart-btn" <% if (product.quantity === 0) { %> disabled <% } %> data-product-id="<%= product._id %>">
-            <% if (product.quantity === 0) { %>
-                Out of Stock
-            <% } else { %>
-                Add to Cart <i class="fas fa-shopping-cart"></i>
-            <% } %>
-        </button>
+    <div class="container mx-auto mt-4">
+        <div class="row">
+            <% if (products.length > 0) { %> <!-- Check if there are products to display -->
+                <% products.forEach((product) => { %>
+                    <div class="col-md-4">
+                        <div class="card" style="width: 18rem;">
+                            <a href="/productDetails/<%= product._id %>">
+                                <img src='<%= product.image[0] %>' style="width:100%; height:auto;" class="img-fluid" alt="<%= product.name %>">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title"><%= product.name %></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><%= product.description %></h6>
+                                <h4>₹<%= product.price %></h4>
+                                <!-- <p class="card-text">Sennheiser’s dynamic drivers deliver a well-extended sound response with dynamic bass for a unique listening experience and closed-back around-ear headphones reduce unwanted background noise for your comfort.</p> -->
+                                <h5><%= product.color_status %></h5>
+                                <input type="hidden" name="" class="product-quantity" value="<%= product.quantity %>">
+                                <input type="hidden" name="qty" value="qty">
+                                <button type="button" class="add-to-wishlist-btn btn mr-2" data-product-id="<%= product._id %>">
+                                    <i class="fa-solid fa-heart"></i> Favorite
+                                </button>
+                                <button type="button" class="btn add-to-cart-btn" <% if (product.quantity === 0) { %> disabled <% } %> data-product-id="<%= product._id %>">
+                                    <% if (product.quantity === 0) { %>
+                                        Out of Stock
+                                    <% } else { %>
+                                        Add to Cart <i class="fas fa-shopping-cart"></i>
+                                    <% } %>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %> <!-- If no products found, display the message -->
+                <div class="col-md-12 d-flex align-items-center justify-content-center" style="height: 400px;">
+                    <div class="alert alert-info"  role="alert">
+                        No result found.
+                    </div>
                 </div>
+            <% } %>
         </div>
-        
-          </div> 
-          <%})%> 
-        </div>
-     </div>
+    </div>
+    
    <!-- pagination for shop product listing -->
    <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
@@ -319,9 +339,59 @@
         }
     });
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////
+ // Add a click event listener to all "Add to Wishlist" buttons
+document.querySelectorAll('.add-to-wishlist-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+        // Get the product ID from the button's data attribute
+        const productId = button.getAttribute('data-product-id');
+
+        try {
+            // Send a POST request to your server to add the product to the wishlist
+            const response = await fetch('/wishlist/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: '<%= userId %>', productId })
+            });
+
+            // Check if the request was successful
+            if (response.ok) {
+                const data = await response.json();
+                // Display success message using SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: data.message
+                });
+            } else {
+                // Handle error response from the server
+                const errorData = await response.json();
+                // Display error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorData.message
+                });
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Display error message using SweetAlert
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred. Please try again.'
+            });
+        }
+    });
+});
 
 
     </script>
+    <!-- SweetAlert CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

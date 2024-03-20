@@ -4,6 +4,13 @@ const { productCollection } = require("../model/productModel");
 const cartCollection = require("../model/cartModel");
 const orderCollection=require('../model/oderModel');
 const addressCollection=require('../model/addressModel');
+const whishListCollection=require('../model/whishList')
+const couponCollection=require('../model/couponModel')
+const offerCollection=require('../model/offerModel')
+const WalletModel=require('../model/walletModel')
+
+
+
 const { render } = require("ejs");
 
 exports.addToCart = async (req, res) => {
@@ -15,7 +22,7 @@ exports.addToCart = async (req, res) => {
     if (!product) {
       return res.status(400).send("Product not found to add to cart");
     }
-
+  
     // Calculate the total price for the item
     let price = product.price * quantity;
     console.log(price,'dfjd');
@@ -25,7 +32,7 @@ exports.addToCart = async (req, res) => {
 
     // Initialize totalprice as 0 if the cart doesn't exist
     let totalprice
-  console.log("cart total",cart);
+  console.log("cart total",cart);// some time this may showing as null
     if (cart) {
       // If the cart exists, get its current totalprice
       totalprice = cart.totalprice || 0;
@@ -66,6 +73,8 @@ exports.addToCart = async (req, res) => {
     // Save the cart to the database
     await cart.save();
   
+ 
+     
     res.status(201).json({ success: true, cart });
   } catch (error) {
     console.error("Error adding item to cart:", error);

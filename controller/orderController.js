@@ -4,7 +4,18 @@ const { productCollection } = require("../model/productModel");
 const cartCollection = require("../model/cartModel");
 const orderCollection = require("../model/oderModel");
 const addressCollection = require("../model/addressModel");
+const whishListCollection=require('../model/whishList')
+const couponCollection=require('../model/couponModel')
+const offerCollection=require('../model/offerModel')
+const WalletModel=require('../model/walletModel')
+
+
+const Razorpay=require("razorpay")
+
 const { render } = require("ejs");
+
+
+
 
 
 exports.checkOutGet = async (req, res) => {
@@ -18,9 +29,11 @@ exports.checkOutGet = async (req, res) => {
             console.log(cart,'gd');
              // Find the user's address
              const addresses = await addressCollection.find({ user: req.session.userId });
+              // Retrieve available coupons
+        const coupons = await couponCollection.find();
 
             if (cart&& addresses) {
-                res.render('user/checkOut', { userId: req.session.userId,cart,addresses}); // Pass the cart details to the checkout page
+                res.render('user/checkOut', { userId: req.session.userId,cart,addresses,coupons}); // Pass the cart details to the checkout page
             } else {
                 res.status(404).send('Cart not found');
             }
@@ -99,6 +112,7 @@ exports.placeOrderPost = async (req, res) => {
 };
 exports.cancelOrder = async (req, res) => {
     const orderId = req.params.orderId;
+    const userId=req.session.userId
 
     try {
         console.log("entered into the cancel")
@@ -110,10 +124,7 @@ exports.cancelOrder = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Order not found' });
         }
 
-        // Check if the order status is 'success'
-        // if (order.status !== 'success') {
-        //     return res.status(400).json({ success: false, message: 'Order cannot be canceled as it is not in success status' });
-        // }
+       
 
         // Update the order status to 'cancelled'
         order.status = 'cancelled';
@@ -126,8 +137,33 @@ exports.cancelOrder = async (req, res) => {
             );
         }
 
+        if(order.paymentMethod!='cashOnDelivery'){
+            await WalletModel.findOneAndUpdate(
+                {user:userId},
+                {$inc:{balance:order.total}},
+                {new:true,upsert:true}
+            );
+            await WalletModel.findOneAndUpdate(
+                {user:userId},
+                {
+                    $push:{
+                        wallethistory:{
+                            process:"Refund for Cancelled Order",
+                            amount:order.total,
+                            date:Date.now()
+
+                        }
+                    }
+                }, 
+                {new:true}
+            );
+        }
+
+
+
         // Respond with success message
         res.status(200).json({ success: true, message: 'Order canceled successfully' });
+
     } catch (error) {
         console.error('Error canceling order:', error);
         res.status(500).json({ success: false, error: 'Internal Server Error' });
@@ -157,9 +193,70 @@ exports.returnOrder = async (req, res) => {
                     { $inc: { quantity: item.quantity } } // Increase quantity by item.quantity
                 );
             }
+            const userId = req.session.userId;
+            await WalletModel.findOneAndUpdate(
+                { user: userId },
+                { $inc: { balance: order.total } }, // Increase wallet balance by the order total
+                { new: true, upsert: true }
+            );
+    
+            await WalletModel.findOneAndUpdate(
+                { user: userId },
+                {
+                    $push: {
+                        wallethistory: {
+                            process: "Refund for Returned Order",
+                            amount: order.total,
+                            date: Date.now()
+                        }
+                    }
+                },
+                { new: true }
+            );
+    
         res.status(200).json({ success: true, message: 'Order returned successfully' });
     } catch (error) {
         console.error('Error returning order:', error);
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 };
+
+exports.createOrder = async (req, res) => {
+    try {
+        
+var instance = new Razorpay({
+    key_id: 'rzp_test_ccxHgWWTrm3eOa',
+    key_secret: '19rQW81DMnDzYCrZEoyPeC3p',
+  });
+        console.log("entered..");
+        const userId = req.session.userId;
+        let cart = await cartCollection.findOne({ userId: userId });
+        if (!cart) {
+            return res.status(404).json({ error: 'Cart not found' });
+        }
+
+        
+        const amount = cart.totalprice
+        const currency = 'INR';
+
+        const options = {
+            amount: amount*100,
+            currency: currency,
+            receipt: 'order_rcptid_' + Date.now()
+        };
+
+        instance.orders.create(options, function (err, order) {
+            if (err) {
+                return res.status(500).json({ error: err.message });
+            }
+            res.json(order);
+        });
+    } catch (error) {
+        console.error('Error creating order:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
+
+

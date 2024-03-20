@@ -5,6 +5,13 @@ const {productCollection}=require("../model/productModel")
 const {cart}=require("../model/cartModel");
 const orderCollection=require('../model/oderModel');
 const addressCollection=require('../model/addressModel');
+const whishListCollection=require('../model/whishList')
+const couponCollection=require('../model/couponModel')
+const bannerCollection=require('../model/bannerModel')
+const offerCollection=require('../model/offerModel')
+const WalletModel=require('../model/walletModel')
+
+
 
 
 const bcrypt = require("bcrypt");
@@ -493,4 +500,3 @@ exports.updateOrderStatus = async (req, res) => {
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 };
-  

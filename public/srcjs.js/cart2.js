@@ -227,12 +227,14 @@ document.addEventListener('DOMContentLoaded', function() {
               if (!data.success) {
                   console.error('Failed to update quantity:', data.error);
                   alert('Failed to update quantity. Please try again later.');
+                    window.location.reload();
               }
-            //   window.location.reload();
+           
           })
           .catch(error => {
               console.error('Error updating quantity:', error);
               alert('An error occurred. Please try again later.');
           });
   }
+
 });

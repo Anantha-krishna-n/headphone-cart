@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/cart2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <style>
+        /* .product {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+} */
+
+.content {
+    flex-grow: 1; /* Allow content area to grow */
+}
+        
+.add-to-cart-container {
+    display: flex;
+    justify-content: flex-end; /* Align items to the end of the flex container (right side) */
+    margin-top: 4px; /* Adjust as needed */
+}
+
+.add-to-cart-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+
+.add-to-cart-btn:hover {
+    background-color: #0056b3; /* Example hover background color */
+}
+    </style>
+
+</head>
+<body style="position: relative; min-height: 100vh;">
+ 
+
+
+    <%-include('../partials/nav.ejs') %>
+   
+    <section id="cart" style="height: 1oopx;"> 
+ 
+    
+<% if(wishlist && wishlist.items[0]) {%>
+  
+  
+        <% wishlist.items.forEach((item)=>{%>
+       
+        <article class="product" >
+            <header>
+                <a class="remove">
+                    <img src="<%= item.productId.image[0] %>"  alt="">
+
+                    <!-- <h3>Remove product</h3> -->
+                </a>
+            </header>
+
+            <div class="content">
+
+                <h1><%= item.productId.name %></h1>
+            <!-- <%=item%> -->
+                <%= item.productId.description %>
+                <!-- Inside the article for each product in the wishlist -->
+                       <form id="removeForm_<%= item.productId._id %>" class="remove-form">
+                            <input type="hidden" name="productId" value="<%= item.productId._id %>">
+                             <button type="button" class="remove-btn">Remove</button>
+                                      </form>
+
+            
+                <!-- <div title="You have selected this product to be shipped in the color yellow." style="top: 0" class="color yellow"></div>
+                <div style="top: 43px" class="type small">Size 11.5</div> -->
+            </div>
+            <footer class="content">
+                <div class="add-to-cart-container">
+                    <button type="button" class=" add-to-cart-btn" <% if (item.productId.quantity === 0) { %> disabled <% } %> data-product-id="<%= item.productId._id %>">
+                        <% if (item.productId.quantity === 0) { %>
+                            Out of Stock
+                        <% } else { %>
+                            Add to Cart <i class="fas fa-shopping-cart"></i>
+                        <% } %>
+                    </button>
+                </div>
+            </footer>
+            
+
+        </article>
+    </section>
+    
+
+        <%}) %>
+
+    <%} else{%>
+
+<!-- <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #fff;">
+  <video autoplay loop muted style="height: 400px; width: 400px;">
+    <source src="/emptyfavourite.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div> -->
+<div id="animation-container" style="width: 400px; height: 400px;"></div>
+
+
+
+   <%  } %>
+   <div style="padding-top: 200px;">
+
+       <%-include('../partials/footer.ejs') %>
+   </div>
+
+
+    <!-- <script src="/srcjs.js/cart2.js"></script> -->
+    <script>
+        // Example initialization
+//...........................................................................fetch for remove.................................................................................
+document.querySelectorAll('.remove-btn').forEach(button => {
+    button.addEventListener('click', async (event) => {
+        event.preventDefault();
+        const productId = button.parentElement.querySelector('input[name="productId"]').value;
+
+        // Display SweetAlert confirmation dialog
+        const confirmation = await Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to remove this product from your wishlist',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, remove it!'
+        });
+
+        if (confirmation.isConfirmed) {
+            try {
+                const response = await fetch('/wishlist/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Display success message using SweetAlert
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message
+                    });
+                    window.location.reload()
+                    // Remove the product from the DOM
+                    button.closest('.product').remove();
+                } else {
+                    const errorData = await response.json();
+                    // Display error message using SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: errorData.message
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Display error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred. Please try again.'
+                });
+            }
+        }
+    });
+});
+document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        const productId = btn.dataset.productId;
+        const quantityInput = btn.parentElement.querySelector('.product-quantity');
+        const quantity = 1; // Get the quantity input value if available, otherwise default to 1
+
+        // Use SweetAlert for confirmation
+        Swal.fire({
+            title: 'Add to Cart',
+            text: 'Are you sure you want to add this item to your cart?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#007bff',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Yes, add it!'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                // Make a POST request to your backend
+                const response = await fetch('/cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId: '<%= userId %>', productId, quantity })
+                });
+
+                // Handle the response
+                const data = await response.json();
+                if (data.success) {
+                    // Show success message using SweetAlert
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Item added to cart successfully!'
+                    });
+                } else {
+                    // Show failure message using SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to add item to cart. Please try again later.'
+                    });
+                }
+                if (data.outOfStock) {
+                    // Show out of stock message using SweetAlert
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Out of Stock',
+                        text: 'This item is out of stock.'
+                    });
+                }
+            }
+        });
+    });
+});
+
+//.............................................................................emptycart Animation.......................................................................................................
+document.addEventListener('DOMContentLoaded', function () {
+        const animationContainer = document.getElementById('animation-container');
+        
+        // Load the Lottie animation
+        const animation = bodymovin.loadAnimation({
+            container: animationContainer,
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'your-animation.json' // Path to your Lottie JSON file
+        });
+    });
+
+
+//.........................................................................fetch for checkout..........................................................................................................
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function() {
+      window.location.href = '/checkout'; // Redirect to the checkout page
+    });
+  }
+});
+
+
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

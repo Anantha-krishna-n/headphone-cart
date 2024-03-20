@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/uploads/logo-resized.png">
+    <!-- <link rel="stylesheet" href="/assets/css/toasify.css"> -->
+    
+
+
+    <title>
+
+        GAMS - Admin
+
+
+
+
+
+    </title>
+
+
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+
+    <link href="/assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
+
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+    <link id="pagestyle" href="/assets/css/material-dashboard.css" rel="stylesheet" />
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+
+    <!-- Include SweetAlert JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    
+
+
+
+    <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+
+
+</head>
+
+
+
+<body class="g-sidenav-show  bg-gray-100">
+
+
+
+
+
+    <aside
+        class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+        id="sidenav-main">
+
+        <div class="sidenav-header">
+            <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+                aria-hidden="true" id="iconSidenav"></i>
+            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard "
+                target="_blank">
+                <!-- <img src="/upload/admin logo.png" class="navbar-brand-img h-100" alt="main_logo"> -->
+                <span class="ms-1 font-weight-bold text-white">Admin Dashboard</span>
+            </a>
+        </div>
+
+
+        <hr class="horizontal light mt-0 mb-2">
+
+        <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+            <ul class="navbar-nav">
+
+
+
+
+
+
+
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/adminDashboard">
+
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">dashboard</i>
+                        </div>
+
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/userManagement">
+
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <span class="nav-link-text ms-1">User Management</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/catagoryManagement">
+
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+
+                        <span class="nav-link-text ms-1">Catagory Management</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/productManagement">
+
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">view_in_ar</i>
+                        </div>
+
+                        <span class="nav-link-text ms-1">Product Management</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/orderManagement">
+
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">receipt_long</i>
+                        </div>
+
+                        <span class="nav-link-text ms-1">Order Management</span>
+                    </a>
+                </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/couponManagement">
+                      
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="fa-solid fa-table-cells-large"></i>
+                        </div>
+                      
+                      <span class="nav-link-text ms-1">Coupon Managenet</span>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link text-white " href="/bannerManagement">
+                      
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                          <i class="fa-solid fa-table-cells-large"></i>
+                        </div>
+                      
+                      <span class="nav-link-text ms-1">Banner Management</span>
+                    </a>
+                  </li>
+
+
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/logoutadmin">
+
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="material-icons opacity-10">assignment</i>
+                        </div>
+
+                        <span class="nav-link-text ms-1">Logout</span>
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content border-radius-lg ">
+        <div class="container-fluid py-4">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card my-4">
+                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                            <div
+                                class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+                                <h6 class="text-white text-capitalize ps-3">Coupon Management</h6>
+                                <div class="d-flex align-items-center">
+
+
+                                    <div class="col-6 text-end">
+                                        <a href="#">
+                                        <p class="btn btn-success btn-sm me-2" id="addCouponBtn">Add Coupon</p>
+                                    </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Pagination controls -->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <% if (currentPage > 1) { %>
+        <li class="page-item"><a class="page-link" href="?page=<%= currentPage - 1 %>">&laquo;</a></li>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="page-item <%= currentPage === i ? 'active' : '' %>"><a class="page-link" href="?page=<%= i %>"><%= i %></a></li>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+        <li class="page-item"><a class="page-link" href="?page=<%= currentPage + 1 %>">&raquo;</a></li>
+        <% } %>
+    </ul>
+</nav>
+
+                        <div class="card-body px-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr style="text-align: center;">
+                                                
+                                                <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                SL.NO</th>
+                                                <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Coupon Name</th>
+                                                <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Coupon Code</th>
+                                                <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Discount Type</th>
+                                                 <th
+                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                 Min Purchase</th>
+                                                <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Start Date</th>
+                                                <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                End Date</th>
+                                                <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Action</th>
+                                    </thead>
+                                    <tbody>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% coupons.forEach((coupon, i) => { %>
+                                        <tr style="text-align: center;">
+                                            <td><%= i + 1 %></td>
+                                            <td><%= coupon.couponName %></td>
+                                            <td><%= coupon.couponCode %></td>
+                                            <td><%= coupon.discountType %></td>
+                                            <td><%= coupon.minimumPurchase %></td>
+                                            <td><%= coupon.startDate?.toDateString() %></td>
+                                            <td><%= coupon.endDate?.toDateString() %></td>
+                                            <td>
+                                                <a href="#" class="edit-coupon-btn" 
+                                                data-coupon-id="<%= coupon._id %>"
+                                                data-coupon-name="<%= coupon.couponName %>"
+                                                data-coupon-code="<%= coupon.couponCode %>"
+                                                data-discount-type="<%= coupon.discountType %>"
+                                                data-discount-value="<%= coupon.discountValue %>"
+                                                data-minimum-purchase="<%= coupon.minimumPurchase %>"
+                                                data-start-date="<%= coupon.startDate?.toISOString() %>"
+                                                data-end-date="<%= coupon.endDate?.toISOString() %>">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                             </a>
+                                             <a href="#" class="delete-coupon-btn" data-coupon-id="<%= coupon._id %>">
+                                                <i class="fa-solid fa-trash"></i> 
+                                            </a>                                       
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                        
+
+                            </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+           <!-- Pagination controls -->
+
+
+                            
+                                   
+                                  
+                                   
+
+
+
+                                   
+                                  
+                                <!-- Button trigger modal -->
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="couponModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="couponModalLabel">Add Coupon</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="mb-0 space-y-2" action="/addcoupon" method="post">
+  
+            <!-- Form fields go here -->
+            <div class="form-group">
+              <label for="category" class="block text-sm font-medium text-gray-600">Coupon Name:</label>
+              <input type="text" id="couponname" name="couponname" class="mt-1 p-2 border border-gray-300 rounded w-full">
+              <div id="nameError" style="color: red;" class="error-message"></div>
+            </div>
+           
+            <label for="category" class="block text-sm font-medium text-gray-600">Coupon Code:</label>
+            <input type="text" id="couponcode" name="couponcode" class="mt-1 p-2 border border-gray-300 rounded w-full">
+            <div id="descriptionError" style="color: red;" class="error-message"></div>
+  
+            <label for="category" class="block text-sm font-medium text-gray-600">Discount Type:</label>
+            <input type="text" id="discounttype" name="discounttype" class="mt-1 p-2 border border-gray-300 rounded w-full">
+            <p id="PriceError"></p>
+  
+            <label for="category" class="block text-sm font-medium text-gray-600">Discount Value:</label>
+            <input type="number" id="discountvalue" name="discountvalue" class="mt-1 p-2 border border-gray-300 rounded w-full">
+  
+            <label for="category" class="block text-sm font-medium text-gray-600">Minimum Purchase:</label>
+            <input type="number" id="minimumpurchase" name="minimumpurchase" class="mt-1 p-2 border border-gray-300 rounded w-full">
+  
+            <label for="category" class="block text-sm font-medium text-gray-600">Start Date:</label>
+            <input type="date" id="startdate" name="startdate" class="mt-1 p-2 border border-gray-300 rounded w-full">
+  
+            <label for="description" class="block text-sm font-medium text-gray-600">End Date:</label>
+            <input type="date" id="enddate" name="enddate" class="mt-1 p-2 border border-gray-300 rounded w-full">
+  
+            <!-- Save button -->
+            <div class="flex items-center justify-center">
+              <button type="submit" id="saveCategory" class="bg-red-500 font-bold py-2 px-4 rounded">Save</button>
+            </div>
+  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /////////////////////////////////////////////////////////////////////////editcoupon////////////////////////////////////////////////////////////////////////// -->
+<!-- Edit Coupon Modal -->
+<div class="modal fade" id="editCouponModal" tabindex="-1" aria-labelledby="editCouponModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCouponModalLabel">Edit Coupon</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form fields for editing coupon -->
+                <form id="editCouponForm" action="/editcoupon/" method="post">
+                    <!-- Hidden input field to store the coupon ID -->
+                    <input type="hidden" id="editCouponId" name="couponId">
+                    <div class="form-group">
+                        <label for="editCouponName" class="block text-sm font-medium text-gray-600">Coupon Name:</label>
+                        <input type="text" id="editCouponName" name="couponname"  class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        <div id="editNameError" style="color: red;" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCouponCode" class="block text-sm font-medium text-gray-600">Coupon Code:</label>
+                        <input type="text" id="editCouponCode" name="couponcode" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        <div id="editDescriptionError" style="color: red;" class="error-message"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDiscountType" class="block text-sm font-medium text-gray-600">Discount Type:</label>
+                        <input type="text" id="editDiscountType" name="discounttype" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                        <p id="editPriceError"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDiscountValue" class="block text-sm font-medium text-gray-600">Discount Value:</label>
+                        <input type="number" id="editDiscountValue" name="discountvalue" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                    </div>
+                    <div class="form-group">
+                        <label for="editMinimumPurchase" class="block text-sm font-medium text-gray-600">Minimum Purchase:</label>
+                        <input type="number" id="editMinimumPurchase" name="minimumpurchase" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                    </div>
+                    <div class="form-group">
+                        <label for="editStartDate" class="block text-sm font-medium text-gray-600">Start Date:</label>
+                        <input type="date" id="editStartDate"  name="startdate" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEndDate" class="block text-sm font-medium text-gray-600">End Date:</label>
+                        <input type="date" id="editEndDate" name="enddate" class="mt-1 p-2 border border-gray-300 rounded w-full">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" form="editCouponForm" id="">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+  
+
+
+        <!-- Include Bootstrap JS and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+        <script>
+            document.getElementById('addCouponBtn').addEventListener('click', function () {
+                $('#couponModal').modal('show');
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+    const editCouponBtns = document.querySelectorAll('.edit-coupon-btn');
+
+    editCouponBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // Get the coupon details from the button attributes
+            const couponId = btn.getAttribute('data-coupon-id');
+            const couponName = btn.getAttribute('data-coupon-name');
+            const couponCode = btn.getAttribute('data-coupon-code');
+            const discountType = btn.getAttribute('data-discount-type');
+            const discountValue = btn.getAttribute('data-discount-value');
+            const minimumPurchase = btn.getAttribute('data-minimum-purchase');
+            let startDate = btn.getAttribute('data-start-date'); // Get the start date
+            let endDate = btn.getAttribute('data-end-date'); // Get the end date
+           ///Before
+            console.log('Start Date:', startDate.split(',')[0]);
+            console.log('End Date:', endDate);
+                  //converting.........
+                  //After...................
+            startDate = startDate.split('T')[0];
+            endDate = endDate.split('T')[0];
+
+            console.log('converted startdate', startDate);
+            console.log('converted enddate', endDate);
+
+            // Populate the edit modal with coupon details
+            document.getElementById('editCouponId').value = couponId;
+            document.getElementById('editCouponName').value = couponName;
+            document.getElementById('editCouponCode').value = couponCode;
+            document.getElementById('editDiscountType').value = discountType;
+            document.getElementById('editDiscountValue').value = discountValue;
+            document.getElementById('editMinimumPurchase').value = minimumPurchase;
+            document.getElementById('editStartDate').value = startDate; // Set start date
+            document.getElementById('editEndDate').value = endDate; // Set end date
+
+            // Show the edit modal
+            $('#editCouponModal').modal('show');
+        });
+    });
+});
+/// Handle click event for delete coupon button
+document.querySelectorAll('.delete-coupon-btn').forEach(btn => {
+    btn.addEventListener('click', function (event) {
+        event.preventDefault();
+        const couponId = btn.getAttribute('data-coupon-id');
+
+        // Show confirmation dialog using SweetAlert
+        swal({
+            title: 'Are you sure?',
+            text: 'Once deleted, you will not be able to recover this coupon!',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                // If user confirms, make AJAX request to delete coupon
+                fetch(`/deletecoupon/${couponId}`, {
+                    method: 'POST'
+                }).then(response => {
+                    if (response.ok) {
+                        // Coupon deleted successfully, show success message
+                        swal('Success', 'Coupon deleted successfully!', 'success').then(() => {
+                            // Reload the page
+                            location.reload();
+                        });
+                    } else {
+                        // Handle error
+                        console.error('Error deleting coupon');
+                    }
+                }).catch(error => {
+                    console.error('Error deleting coupon:', error);
+                });
+            }
+        });
+    });
+});
+
+
+
+        </script>
+    </body>
+</html>

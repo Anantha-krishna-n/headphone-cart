@@ -4,6 +4,13 @@ const {productCollection}=require("../model/productModel")
 const {cart}=require("../model/cartModel");
 const orderCollection=require('../model/oderModel');
 const addressCollection=require('../model/addressModel');
+const whishListCollection=require('../model/whishList')
+const bannerCollection=require('../model/bannerModel')
+const offerCollection=require('../model/offerModel')
+const WalletModel=require('../model/walletModel')
+
+
+
 
 const nodemailer=require("nodemailer");
 
@@ -84,9 +91,11 @@ exports.loginPost= async (req,res)=>{
 exports.homeGet=async (req,res)=>{
     const products=await productCollection.find().populate('category')
     const category=await categoryCollection.find();
+    const banners = await bannerCollection.find(); // Fetch banner images
+
       
-    res.render('user/home',{products,category})
-} 
+    res.render('user/home',{products,category,banners})
+}
 exports.shopGet = async (req, res) => {
     const PAGE_SIZE = 6; // Number of products per page
     const page = parseInt(req.query.page) || 1; // Get the page number from query parameters, default to 1 if not provided
@@ -98,10 +107,29 @@ exports.shopGet = async (req, res) => {
     }
 
     try {
-        const count = await productCollection.countDocuments({ blocked: false }); // Get total count of products
+        let query = { blocked: false };
+
+        // Check if search query is provided
+        if (req.query.search) {
+            // Construct regex pattern for case-insensitive search
+            const searchRegex = new RegExp(req.query.search, 'i');
+            query.$or = [
+                { name: searchRegex }, // Search by product name
+            ];
+        }
+
+        // Check if category query is provided
+        if (req.query.category) {
+            const category = await categoryCollection.findOne({ category_name: req.query.category });
+            if (category) {
+                query.category = category._id; // Filter products by category ObjectId
+            }
+        }
+
+        const count = await productCollection.countDocuments(query); // Get total count of products based on query
         const totalPages = Math.ceil(count / PAGE_SIZE); // Calculate total pages
 
-        const products = await productCollection.find({ blocked: false })
+        const products = await productCollection.find(query)
             .populate('category')
             .sort({ price: sort }) // Sort products by price
             .skip((page - 1) * PAGE_SIZE) // Skip products based on page number
@@ -110,7 +138,7 @@ exports.shopGet = async (req, res) => {
         const categories = await categoryCollection.find();
         const userId = req.session.userId ? req.session.userId._id : null; // Assuming userId is stored in req.session.userId
 
-        res.render("user/shop", { products, categories, userId, totalPages, currentPage: page,req });
+        res.render("user/shop", { products, categories, userId, totalPages, currentPage: page, req });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
@@ -118,6 +146,8 @@ exports.shopGet = async (req, res) => {
 };
 
 
+
+  
 
 exports.forgotPassword=async (req,res)=>{
     res.render("user/emailverification")
@@ -175,7 +205,8 @@ exports.signupPost = async (req, res) => {
                 },
             };
         
-            await userCollection.insertMany([userWithOtp]);
+            await userCollection.insertMa
+            ny([userWithOtp]);
 
             // Send OTP via email
             await sendOtpEmail(userData.email, otpCode);
@@ -205,7 +236,7 @@ exports.signupVerifyOtp = async (req, res) => {
     try {
     
         const {  otp } = req.body;
-        console.log(otp)
+        console.log(otp,"this is the otp.........................")
         if(req.session.verifyEmail){
          verifyEmail=req.session.verifyEmail
          console.log(verifyEmail, "this message from signupVerifyOtp side")
@@ -638,6 +669,7 @@ exports.editAddressPost = async (req, res) => {
             
             // Find the total count of orders
             const totalOrders = await orderCollection.countDocuments({ user: userId });
+            const wallet=await WalletModel.findOne({user: userId})
 
             // Calculate the skip value based on the current page and orders per page
             const skip = (page - 1) * ordersPerPage;
@@ -653,7 +685,7 @@ exports.editAddressPost = async (req, res) => {
             // Calculate the total number of pages
             const totalPages = Math.ceil(totalOrders / ordersPerPage);
 
-            res.render("user/userProfile", { addresses, Orders, User, currentPage: page, totalPages });
+            res.render("user/userProfile", { addresses, Orders, User, currentPage: page, totalPages,wallet });
         } catch (error) {
             console.error('Error fetching user profile:', error);
             res.status(500).send('Internal Server Error');

@@ -195,16 +195,16 @@
                     </a>
                 </li>
 
-                <!-- <li class="nav-item">
-                    <a class="nav-link text-white " href="/admin/orderManagement">
-
+                <li class="nav-item">
+                    <a class="nav-link text-white " href="/bannerManagement">
+                      
                         <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="material-icons opacity-10">receipt_long</i>
+                          <i class="fa-solid fa-table-cells-large"></i>
                         </div>
-
-                        <span class="nav-link-text ms-1">Order Management</span>
+                      
+                      <span class="nav-link-text ms-1">Banner Management</span>
                     </a>
-                </li> -->
+                  </li>
 
 
                 <!-- <li class="nav-item">
@@ -446,7 +446,7 @@
         }
 
         // Check if quantity is a positive number
-        if (parseInt(quantity) <= 0 || isNaN(parseInt(quantity))) {
+        if (parseInt(quantity) < 0 || isNaN(parseInt(quantity))) {
             document.getElementById('quantity_err').textContent = 'Quantity must be a positive integer';
             document.getElementById('quantity_err').style.display = 'block';
             return false; // Prevent form submission
