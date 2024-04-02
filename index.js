@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 const path=require('path')
+const swal = require('sweetalert2');
 
 
 const session=require('express-session');

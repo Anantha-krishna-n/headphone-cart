@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
         type: Number,
         required: false
     },
-    otp: {
+    otp: { 
         code: {
             type: String,
             default: null
@@ -23,7 +23,7 @@ const UserSchema = new mongoose.Schema({
             default: null
         }
 
-        
+         
     },
     
     isBlocked: {

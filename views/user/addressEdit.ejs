@@ -34,32 +34,44 @@
                 <div class="card shadow" style="width: 600px;">
                     <div class="card-body">
                         <h5 class="card-title mb-3">Address</h5>
-                        <form  id="addressForm"  action="/addresses/<%= address._id %>/" method="POST">
+                        <form  id="addressForm"  action="/addresses/<%= address._id %>/" method="POST" onclick="validateForm()">
 
                             <input type="number" hidden id="val" name="val" value="2">
                             <div class="mb-3">
                                 <label for="typeText" class="form-label">Address</label>
-                                <input type="text" id="typeText" placeholder="Type here" name="address" class="form-control" value="<%= address.address %>" />
+                                <input type="text" id="typeText" placeholder="Type here" name="address" class="form-control" value="<%= address.address %>" required/>
+                                <div id="addressError" style="color: red;"></div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="deliveryAddress" class="form-label">Street</label>
-                                <input type="text" id="deliveryAddress" placeholder="Type here" name="street" class="form-control" value="<%= address.street %>"/>
+                                <input type="text" id="deliveryAddress" placeholder="Type here" name="street" class="form-control" value="<%= address.street %>" required/>
+                                <div id="errorsContainer" style="color: red;"></div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="state" class="form-label">State</label>
-                                <input type="text" id="state" placeholder="Type here" name="state" class="form-control" value="<%= address.state %>" />
+                                <input type="text" id="state" placeholder="Type here" name="state" class="form-control" value="<%= address.state %>" required/>
+                                <div id="errorsContainer" style="color: red;"></div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="city" class="form-label">City</label>
-                                <input type="text" id="city" placeholder="Type here" name="city" class="form-control" value="<%= address.city %>" />
+                                <input type="text" id="city" placeholder="Type here" name="city" class="form-control" value="<%= address.city %>" required/>
+                                <div id="errorsContainer" style="color: red;"></div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="country" class="form-label">Country</label>
-                                <input type="text" id="country" placeholder="Type here" name="country" class="form-control" value="<%= address.country %>" />
+                                <input type="text" id="country" placeholder="Type here" name="country" class="form-control" value="<%= address.country %>" required/>
+                                <div id="errorsContainer" style="color: red;"></div>
+
                             </div>
                             <div class="mb-3">
                                 <label for="zipcode" class="form-label">Zipcode</label>
-                                <input type="text" id="zipcode" placeholder="Type here" name="zipcode" class="form-control"value="<%= address.zipCode %>"/>
+                                <input type="text" id="zipcode" placeholder="Type here" name="zipcode" class="form-control"value="<%= address.zipCode %>" />
+                                <div id="errorsContainer" style="color: red;"></div>
+
                             </div>
                             <small id="zipCodeError" class="text-danger"></small>
 
@@ -88,23 +100,48 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-        
         <script>
-            document.getElementById("addressForm").addEventListener("submit", function(event) {
-        var zipcode = document.getElementById("zipcode").value.trim();
-        var zipCodeError = document.getElementById("zipCodeError");
+            function validateForm() {
+                var address = document.getElementById("typeText").value.trim();
+                var street = document.getElementById("deliveryAddress").value.trim();
+                var state = document.getElementById("state").value.trim();
+                var city = document.getElementById("city").value.trim();
+                var country = document.getElementById("country").value.trim();
+                var zipcode = document.getElementById("zipcode").value.trim();
+            
+                var errors = [];
+            
+                if (address === "") {
+                    errors.push("Address cannot be empty");
+                }
+                if (street === "") {
+                    errors.push("Street cannot be empty");
+                }
+                if (state === "") {
+                    errors.push("State cannot be empty");
+                }
+                if (city === "") {
+                    errors.push("City cannot be empty");
+                }
+                if (country === "") {
+                    errors.push("Country cannot be empty");
+                }
+                if (zipcode === "") {
+                    errors.push("Zipcode cannot be empty");
+                } else if (!/^\d+$/.test(zipcode)) {
+                    errors.push("Zipcode must contain only numbers");
+                }
+            
+                if (errors.length > 0) {
+                    alert(errors.join("\n")); // You can also display the errors in a more user-friendly way
+                    event.preventDefault(); // Prevent form submission
+                }
+            }
+            </script>
+            
 
-        if (zipcode === "") {
-            zipCodeError.innerText = "Zipcode cannot be empty";
-            event.preventDefault(); // Prevent form submission
-        } else if (!/^\d+$/.test(zipcode)) {
-            zipCodeError.innerText = "Zipcode must contain only numbers";
-            event.preventDefault(); // Prevent form submission
-        } else {
-            zipCodeError.innerText = ""; // Clear error message if validation passes
-        }
-    });
-        </script>
+        
+        
 </body>
 </html>
 

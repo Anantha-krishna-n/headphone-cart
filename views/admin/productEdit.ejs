@@ -302,11 +302,6 @@
             <span class="validate" id="mrp_err" style="display:none;color:red;"></span>
         </div>
     
-        <div class="form-group">
-            <label for="sales_cost">Offer price</label>
-            <input type="text" class="form-control" id="sales_cost" value="<%=product.offer_price%>" name="offer_price" placeholder="0.00">
-            <span class="validate" id="sales_err" style="display:none;color:red;"></span>
-        </div>
     
         <div class="form-group">
             <label for="quantity">Quantity</label>
@@ -336,9 +331,7 @@
             <label for="category">Category</label>
             <select class="form-control" name="category" id="category">
                 <% catagories.forEach((category) => { %>
-                    <option value="<%=category.id%>" <%= product.category_id == category.id ? 'selected' : '' %>><%=category.categoryname%></option>
-                    <option value=""><%=category.categoryname%></option>
-
+                    <option value="<%= category._id %>" <%= product.category.toString() === category._id.toString() ? 'selected' : '' %>><%= category.category_name %></option>
                 <% }) %>
             </select>
             <span class="validate" id="categ_err" style="display:none;color:red;"></span>

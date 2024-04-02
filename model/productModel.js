@@ -13,9 +13,7 @@ const productSchema = new mongoose.Schema({
     price: {
         type: Number
     },
-    offer_price: {
-        type: Number
-    },
+  
     color_status: {
         type: String,
         enum: ['White', 'Black']
@@ -38,7 +36,8 @@ const productSchema = new mongoose.Schema({
     blocked: { 
         type: Boolean, 
         default: false 
-    }
+    },
+  
 }, { timestamps: true });
 
 const productCollection = mongoose.model('productDetails', productSchema);

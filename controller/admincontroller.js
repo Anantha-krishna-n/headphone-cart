@@ -279,7 +279,7 @@ exports.createproductPOST = async (req, res) => {
         }
     };
 
- 
+    
     exports.editproductPOST = async (req, res) => {
         try {
           console.log('Entered to editproductPOST');
@@ -292,8 +292,6 @@ exports.createproductPOST = async (req, res) => {
               name,
               description,
               price,
-              offer_price,
-          
               delivery_charge,
               color_status,
               category,
@@ -315,7 +313,7 @@ exports.createproductPOST = async (req, res) => {
             if (!existingProduct) {
               return res.status(404).send('Product not found');
             }
-
+ 
 
 
              // Check if the new name is different from the existing name
@@ -334,7 +332,6 @@ exports.createproductPOST = async (req, res) => {
             existingProduct.name = name;
             existingProduct.description = description;
             existingProduct.price = price;
-            existingProduct.offer_price = offer_price;
             // existingProduct.stock_status = stock_status;
             existingProduct.delivery_charge = delivery_charge;
             existingProduct.color_status = color_status;
@@ -386,15 +383,17 @@ exports.createproductPOST = async (req, res) => {
         if (!existingCategory) {
             return res.status(404).send('Category not found for update');
         } 
-         //find any catagoryname exist
-        // const duplicateCategory = await categoryCollection.findOne({
-        //     category_name: category_name,
-        //     _id: { $ne: existingCategory._id }
-        // });
-
-        if (existingCategory) {
-            return res.status(400).send('<script>alert("Category with this name already exists. Please choose a different name."); window.location="/catagoryManagement";</script>');
+        const duplicateCategory = await categoryCollection.findOne({
+            category_name: category_name,
+            _id: { $ne: existingCategory._id }
+        });
+        if (duplicateCategory) {
+            return res.status(400).send(`<script>
+            alert("Category with this name already exists. Please choose a different name.");
+            window.location="/catagoryManagement";
+        </script>`);
         }
+        
         
         const logo_imagePath = req.files['logo_image'] ? req.files['logo_image'][0].path : existingCategory.logo_image;
         
@@ -404,7 +403,7 @@ exports.createproductPOST = async (req, res) => {
         }
         
         // Update the existing category
-        existingCategory.categoryname = categoryname;
+        existingCategory.categoryname = category_name;
         existingCategory.description = description;
         existingCategory.logo_image = logo_imagePath;
         
@@ -448,7 +447,7 @@ exports.toggleBlockProduct=async(req, res)=> {
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
-
+                  
         // Toggle the block status
         product.blocked = !product.blocked;
         await product.save();

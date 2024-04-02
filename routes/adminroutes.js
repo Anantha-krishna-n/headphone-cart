@@ -37,7 +37,8 @@ const upload = multer({
 const { loginGet, dashboardGet, loginPost,userGet,productManagementGet ,categoryManagementGet ,userBlockedGet, logoutGet,addcatagoryGet,addProductGet,createCategoryPOST,createproductPOST,editproductGET,editproductPOST,editcatagoryPOST,editcatagoryGET,deleteCategory, toggleBlockProduct, orderManagementGet,updateOrderStatus }=require('../controller/admincontroller');
 const { couponManagementGet,addcouponPost,editCouponPost,deleteCoupon } = require('../controller/couponController');
 const {bannerManagementGet, addbannerGet, addbannerPost,deleteBanner}=require('../controller/bannerController')
-const{ offerManagementGet, addofferGet}=require("../controller/offerController")
+const{ offerManagementGet, addofferGet, addofferPOst,editofferPost,editofferGet,toggleOffer}=require("../controller/offerController");
+const { salesReportGet,generateSalesReportPDF } = require('../controller/reportController');
 
 
 
@@ -86,6 +87,15 @@ router.post('/addbanner', upload.array("bannerImage", 3), addbannerPost);
 
 router.get('/offerManagement',offerManagementGet)
 router.get('/addoffer',addofferGet)
+router.post('/addoffer',addofferPOst)
+
+
+router.get('/editoffer/:_id',editofferGet)
+router.post('/editoffer/:_id',editofferPost)
+router.post('/toggleOffer/:id', toggleOffer);
+
+router.get('/salesreport',salesReportGet)
+router.get('/salesreport/pdf', generateSalesReportPDF);
 
 
 module.exports=router;     

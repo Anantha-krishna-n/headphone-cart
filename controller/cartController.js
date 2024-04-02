@@ -9,30 +9,37 @@ const couponCollection=require('../model/couponModel')
 const offerCollection=require('../model/offerModel')
 const WalletModel=require('../model/walletModel')
 
-
-
 const { render } = require("ejs");
-
 exports.addToCart = async (req, res) => {
   const { userId, productId, quantity } = req.body;
   try {
     // Retrieve the product from the database
     const product = await productCollection.findById(productId);
-    console.log("Existing product",product);
     if (!product) {
       return res.status(400).send("Product not found to add to cart");
     }
   
     // Calculate the total price for the item
-    let price = product.price * quantity;
-    console.log(price,'dfjd');
+    let price;
+    
+    // Check if the product has an active offer
+    const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
+    if (offer && offer.discount) {
+      // Apply offer discount to the product
+      const discountAmount = (product.price * offer.discount) / 100;
+      price = product.price - discountAmount;
+    } else {
+      // If no offer is applied, use the original price
+      price = product.price;
+    }
+
+    price *= quantity; // Multiply by quantity
 
     // Find the user's cart
     let cart = await cartCollection.findOne({ userId: userId });
 
     // Initialize totalprice as 0 if the cart doesn't exist
-    let totalprice
-  console.log("cart total",cart);// some time this may showing as null
+    let totalprice;
     if (cart) {
       // If the cart exists, get its current totalprice
       totalprice = cart.totalprice || 0;
@@ -40,11 +47,10 @@ exports.addToCart = async (req, res) => {
 
     if (!cart) {
       // If the cart doesn't exist, create a new cart with the item
-      console.log(price,'nerrere');
       cart = new cartCollection({
         userId: userId,
         items: [{ productId: productId, qty: quantity, price: price }],
-        totalprice:product.price
+        totalprice: price
       });
     } else {
       // Check if the item already exists in the cart
@@ -72,9 +78,7 @@ exports.addToCart = async (req, res) => {
 
     // Save the cart to the database
     await cart.save();
-  
- 
-     
+
     res.status(201).json({ success: true, cart });
   } catch (error) {
     console.error("Error adding item to cart:", error);
@@ -82,32 +86,53 @@ exports.addToCart = async (req, res) => {
   }
 }
 
-
 exports.cartGet = async (req, res) => {
   try {
-      if (!req.session.userId) {
-          return res.status(401).json({ success: false, error: 'User not authenticated' });
+    if (!req.session.userId) {
+      return res.status(401).json({ success: false, error: 'User not authenticated' });
+    }
+
+    const userId = req.session.userId._id;
+    const cart = await cartCollection.findOne({ userId: userId }).populate("items.productId");
+
+    // Check if any product in the cart is out of stock and update the cart accordingly
+    if (cart) {
+      let subtotal = 0;
+      for (const item of cart.items) {
+        const product = item.productId;
+
+        // Find the offer for the product
+        const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
+
+        console.log('Offer for product', product.name, ':', offer); // Log the offer details
+
+        // Update item price with offer price if available
+        if (offer && offer.discount) {
+          const discountedPrice = product.price - (product.price * offer.discount) / 100;
+          console.log('Discounted price for', product.name, ':', discountedPrice); // Log the discounted price
+          item.price = discountedPrice;
+        }
+
+        // Calculate the full price for the item
+        const fullPrice = item.qty * item.price;
+        subtotal += fullPrice;
       }
 
-      const userId = req.session.userId._id;
-      const cart = await cartCollection.findOne({ userId: userId }).populate("items.productId");
-     
-      // Check if any product in the cart is out of stock and update the cart accordingly
-      if (cart) {
-          for (const item of cart.items) {
-              const product = await productCollection.findById(item.productId);
-            if(!product){
-              res.status(400).send("product not found in the cartget")
-            }
-          }
-      }
+      // Update the total price in the cart
+      cart.totalprice = subtotal;
 
-      res.render("user/cart", { cart, userId });
+      // Save the updated cart
+      await cart.save();
+    }
+
+    res.render("user/cart", { cart, userId });
   } catch (error) {
-      console.error("Error getting cart:", error);
-      res.status(500).json({ success: false, error: "Internal Server Error" });
+    console.error("Error getting cart:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
   }
 };
+
+
 
 
 exports.removeFromCart = async (req, res) => {
@@ -142,59 +167,73 @@ exports.removeFromCart = async (req, res) => {
   }
 };
       
-     //update quantity of products in cart
-     exports.updateCartItemQuantity = async (req, res) => {
-      try {
-        const { userId } = req.session;
-        const { productId, quantity } = req.body;
-    
-        if (!userId) {
-          return res.status(401).json({ success: false, error: 'User not authenticated' });
-        }
-    
-        // Find the product
-        const product = await productCollection.findById(productId);
-        if (!product) {
-          return res.status(404).json({ success: false, error: 'Product not found' });
-        }
-    
-        // Check if the requested quantity exceeds available stock
-        if (quantity > product.quantity) {
-          return res.status(400).json({ success: false, error: 'Requested quantity exceeds available stock' });
-        }
-    
-        // Find the user's cart
-        const cart = await cartCollection.findOne({ userId: userId });
-        if (!cart) {
-          return res.status(404).json({ success: false, error: 'Cart not found' });
-        }
-    
-        // Find the item in the cart
-        const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
-        if (itemIndex === -1) {
-          return res.status(404).json({ success: false, error: 'Item not found in cart' });
-        }
-    
-        // Update the quantity and price of the item
-        cart.items[itemIndex].qty = quantity;
-        cart.items[itemIndex].price = product.price * quantity;
-    
-        // Recalculate the total price of the cart
-        let totalprice = 0;
-        for (const item of cart.items) {
-          totalprice += item.price;
-        }
-        cart.totalprice = totalprice;
-    
-        // Save the updated cart
-        await cart.save();
-    
-        res.json({ success: true, message: 'Quantity updated successfully', updatedCart: cart });
-      } catch (error) {
-        console.error('Error updating cart item quantity:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
-      }
-    };
+ // Update quantity of products in cart
+ exports.updateCartItemQuantity = async (req, res) => {
+  try {
+    const { userId } = req.session;
+    const { productId, quantity } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, error: 'User not authenticated' });
+    }
+
+    // Find the user's cart
+    const cart = await cartCollection.findOne({ userId: userId });
+    if (!cart) {
+      return res.status(404).json({ success: false, error: 'Cart not found' });
+    }
+
+    // Find the item in the cart
+    const itemIndex = cart.items.findIndex(item => item.productId.toString() === productId);
+    if (itemIndex === -1) {
+      return res.status(404).json({ success: false, error: 'Item not found in cart' });
+    }
+
+    // Find the product
+    const product = await productCollection.findById(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, error: 'Product not found' });
+    }
+
+    // Check if the requested quantity exceeds available stock
+    if (quantity > product.quantity) {
+      return res.status(400).json({ success: false, error: 'Requested quantity exceeds available stock' });
+    }
+
+    // Determine the price to use based on offer availability
+    let price;
+    const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
+    if (offer && offer.discount) {
+      const discountAmount = (product.price * offer.discount) / 100;
+      price = product.price - discountAmount;
+    } else {
+      price = product.price;
+    }
+
+    // Update the quantity of the item
+    cart.items[itemIndex].qty = quantity;
+
+    // Update the item's price in the cart
+    cart.items[itemIndex].price = price * quantity;
+
+    // Recalculate the total price of the cart
+    let totalprice = 0;
+    for (const item of cart.items) {
+      totalprice += item.price;
+    }
+    cart.totalprice = totalprice;
+
+    // Save the updated cart
+    await cart.save();
+
+    res.json({ success: true, message: 'Quantity updated successfully', updatedCart: cart });
+  } catch (error) {
+    console.error('Error updating cart item quantity:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+};
+
+
     
 
 

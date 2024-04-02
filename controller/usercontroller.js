@@ -15,6 +15,7 @@ const WalletModel=require('../model/walletModel')
 const nodemailer=require("nodemailer");
 
 const bcrypt=require('bcrypt');
+const swal = require('sweetalert2');
 
 
 exports.loginGet=(req,res)=>{
@@ -129,11 +130,33 @@ exports.shopGet = async (req, res) => {
         const count = await productCollection.countDocuments(query); // Get total count of products based on query
         const totalPages = Math.ceil(count / PAGE_SIZE); // Calculate total pages
 
-        const products = await productCollection.find(query)
+        let products = await productCollection.find(query)
             .populate('category')
-            .sort({ price: sort }) // Sort products by price
-            .skip((page - 1) * PAGE_SIZE) // Skip products based on page number
-            .limit(PAGE_SIZE); // Limit number of products per page
+            .sort({ price: sort }); // Sort products by price
+
+        // Apply offer prices to products
+        products = await Promise.all(products.map(async (product) => {
+            const productOffer = await offerCollection.findOne({ productName: product.name, isActive: true });
+            const categoryOffer = await offerCollection.findOne({ categoryName: product.category[0]._id,isActive: true });
+
+           
+            console.log(categoryOffer, "category offer");
+            if (productOffer && (!categoryOffer || productOffer.discount > categoryOffer.discount)) {
+                // Apply product offer only if it exists and is greater than category offer
+                product.offerPrice = product.price - (product.price * (productOffer.discount / 100));
+            } else if (categoryOffer) {
+                // Apply category offer if product offer does not exist or category offer is greater
+                product.offerPrice = product.price - (product.price * (categoryOffer.discount / 100));
+            } else {
+                // If no product offer or category offer, or if both exist with category offer being greater, keep the original price
+                product.offerPrice = null;
+            }
+
+            return product;
+        }));
+
+        // Paginate products
+        products = products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
         const categories = await categoryCollection.find();
         const userId = req.session.userId ? req.session.userId._id : null; // Assuming userId is stored in req.session.userId
@@ -147,17 +170,9 @@ exports.shopGet = async (req, res) => {
 
 
 
-  
-
 exports.forgotPassword=async (req,res)=>{
     res.render("user/emailverification")
 }
-
-
-
-
-
-
 
 
 
@@ -364,6 +379,19 @@ const userId = user._id
             // Handle case where product is not found
             return res.status(404).send('Product not found');
         }
+      // Find applicable offer for the product
+      const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
+
+      if (offer) {
+          // Calculate offer price as a percentage discount from the original price
+          const offerPercentage = offer.discount;
+          const offerPrice = product.price - (product.price * (offerPercentage / 100));
+          product.offerPrice = offerPrice;
+      } else {
+          // If no offer is applied, set offerPrice to null
+          product.offerPrice = null;
+      }
+
 
         res.render('user/productDetails', { product,userId});
         }
@@ -678,7 +706,7 @@ exports.editAddressPost = async (req, res) => {
             const Orders = await orderCollection.find({ user: userId })
                 .populate('items.product')
                 .populate('addresses')
-                .sort({ createdAt: -1 }) // Sort by creation date descending
+                .sort({ createdAt: -1 }) 
                 .skip(skip)
                 .limit(ordersPerPage);
 
@@ -712,5 +740,38 @@ exports.editUserDetails = async (req, res) => {
     } catch (error) {
         console.error('Error editing user details:', error);
         res.status(500).send('Internal Server Error');
+    }
+};
+
+exports.resetPasswordGet = (req, res) => {
+    res.render('user/resetPassword',{error: null, success: null });
+};
+
+exports.resetPasswordPost = async (req, res) => {
+    try {
+        const { currentPassword, newPassword, confirmPassword } = req.body;
+        const userId = req.session.userId;
+
+        
+        const user = await userCollection.findById(userId);
+
+        const isPasswordMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!isPasswordMatch) {
+            return res.render('user/resetPassword', { error: 'Current password is incorrect' });
+        }
+
+        if (newPassword !== confirmPassword) {
+            return res.render('user/resetPassword', { error: 'New password and confirmation password do not match' });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        res.redirect('/userProfile');
+    } catch (error) {
+        console.error('Error resetting password:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 };

@@ -327,7 +327,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form class="mb-0 space-y-2" action="/addcoupon" method="post">
+          <form class="mb-0 space-y-2" action="/addcoupon" method="post" onsubmit="return validateForm()">
   
             <!-- Form fields go here -->
             <div class="form-group">
@@ -338,17 +338,25 @@
            
             <label for="category" class="block text-sm font-medium text-gray-600">Coupon Code:</label>
             <input type="text" id="couponcode" name="couponcode" class="mt-1 p-2 border border-gray-300 rounded w-full">
-            <div id="descriptionError" style="color: red;" class="error-message"></div>
+            <div id="codeError" style="color: red;" class="error-message">
+            </div>
   
             <label for="category" class="block text-sm font-medium text-gray-600">Discount Type:</label>
-            <input type="text" id="discounttype" name="discounttype" class="mt-1 p-2 border border-gray-300 rounded w-full">
-            <p id="PriceError"></p>
+                        <select id="discounttype" name="discounttype"
+                            class="mt-1 p-2 border border-gray-300 rounded w-full">
+                            <option value="Percentage">Percentage</option>
+                            <option value="Fixed Amount">Fixed Amount</option>
+                        </select>
+            <div id="typeError" style="color: red;" class="error-message"></div>
   
             <label for="category" class="block text-sm font-medium text-gray-600">Discount Value:</label>
             <input type="number" id="discountvalue" name="discountvalue" class="mt-1 p-2 border border-gray-300 rounded w-full">
+            <div id="valueError" style="color: red;" class="error-message"></div>
+
   
             <label for="category" class="block text-sm font-medium text-gray-600">Minimum Purchase:</label>
             <input type="number" id="minimumpurchase" name="minimumpurchase" class="mt-1 p-2 border border-gray-300 rounded w-full">
+            <div id="purchaseError" style="color: red;" class="error-message"></div>
   
             <label for="category" class="block text-sm font-medium text-gray-600">Start Date:</label>
             <input type="date" id="startdate" name="startdate" class="mt-1 p-2 border border-gray-300 rounded w-full">
@@ -366,6 +374,7 @@
       </div>
     </div>
   </div>
+
   <!-- /////////////////////////////////////////////////////////////////////////editcoupon////////////////////////////////////////////////////////////////////////// -->
 <!-- Edit Coupon Modal -->
 <div class="modal fade" id="editCouponModal" tabindex="-1" aria-labelledby="editCouponModalLabel" aria-hidden="true">
@@ -512,8 +521,63 @@ document.querySelectorAll('.delete-coupon-btn').forEach(btn => {
         });
     });
 });
+/////////////////////////////////////////////////////////////////////
+function validateForm() {
+    var couponName = document.getElementById("couponname").value.trim();
+    var couponCode = document.getElementById("couponcode").value.trim();
+    var discountType = document.getElementById("discounttype").value.trim();
+    var discountValue = parseFloat(document.getElementById("discountvalue").value.trim());
+    var minimumPurchase = parseFloat(document.getElementById("minimumpurchase").value.trim());
 
+    var nameError = document.getElementById("nameError");
+    var codeError = document.getElementById("codeError");
+    var typeError = document.getElementById("typeError");
+    var valueError = document.getElementById("valueError");
+    var purchaseError = document.getElementById("purchaseError");
 
+    nameError.innerHTML = "";
+    codeError.innerHTML = "";
+    typeError.innerHTML = "";
+    valueError.innerHTML = "";
+    purchaseError.innerHTML = "";
+
+    if (couponName === "") {
+      nameError.innerHTML = "Coupon Name cannot be empty";
+      return false;
+    }
+
+    if (couponCode === "") {
+      codeError.innerHTML = "Coupon Code cannot be empty";
+      return false;
+    }
+
+    if (discountType === "") {
+      typeError.innerHTML = "Discount Type cannot be empty";
+      return false;
+    }
+
+    if (isNaN(discountValue)) {
+      valueError.innerHTML = "Discount Value cannot be empty";
+      return false;
+    }
+
+    if (discountValue < 0) {
+      valueError.innerHTML = "Discount Value cannot be negative";
+      return false;
+    }
+
+    if (isNaN(minimumPurchase)) {
+      purchaseError.innerHTML = "Minimum Purchase cannot be empty";
+      return false;
+    }
+
+    if (minimumPurchase < 0) {
+      purchaseError.innerHTML = "Minimum Purchase cannot be negative";
+      return false;
+    }
+
+    return true;
+  }
 
         </script>
     </body>

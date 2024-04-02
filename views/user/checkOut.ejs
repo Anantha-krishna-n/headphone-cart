@@ -212,11 +212,9 @@
     <button class="btn btn-light text-primary border" id="applyCouponBtn" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">Apply</button>
 </div>
                         </div>
-                       <div class="removeCoupon" style="text-align: right;margin-bottom: 3px;">
-                        <a href="/removeCoupon" style="color: red; text-decoration: none;">
-                            Remove coupon
-                        </a>
-                       </div>
+                        <div class="removeCoupon" style="text-align: right;margin-bottom: 3px;">
+                            <a href="#" id="removeCouponLink" style="color: red; text-decoration: none;">Remove coupon</a>
+                        </div>
                         <!-- Coupon Dropdown -->
 <!-- Coupon Dropdown -->
 <div class="input-group mb-3">
@@ -545,7 +543,47 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-
+///////////////////////////////////////////////////
+document.addEventListener('DOMContentLoaded', function() {
+        // Add event listener to the "Remove coupon" link
+        document.getElementById('removeCouponLink').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default behavior of the link
+            
+            // Call the removeCoupon endpoint
+            fetch('/removeCoupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to remove coupon');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Update the total price on the frontend with the updatedTotalPrice received from the backend
+                document.getElementById('totalPriceDisplay').textContent = data.updatedTotalPrice;
+                // Show a success message using SweetAlert2
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Coupon Removed',
+                    text: 'Coupon removed successfully!',
+                    timer: 2000 // Set the timer to automatically close the alert after 2 seconds
+                });
+            })
+            .catch(error => {
+                console.error('Error removing coupon:', error.message);
+                // Handle error response, show error message, etc.
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to Remove Coupon',
+                    text: 'Failed to remove coupon'
+                });
+            });
+        });
+    });
 
 
     </script>

@@ -8,7 +8,7 @@ const whishListCollection=require('../model/whishList')
 const {addToCart, cartGet,removeFromCart,updateCartItemQuantity}=require('../controller/cartController.js')
 
 
-const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword,saveAddressPost,deleteAddress,editAddressGet,editAddressPost,sucessOrder,userProfileGet,editUserDetails}=require('../controller/usercontroller')
+const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword,saveAddressPost,deleteAddress,editAddressGet,editAddressPost,sucessOrder,userProfileGet,editUserDetails,resetPasswordGet,resetPasswordPost}=require('../controller/usercontroller')
 
 
 
@@ -17,7 +17,7 @@ const{ checkOutGet,placeOrderPost,cancelOrder,returnOrder,createOrder}=require("
 
 
 const {addToWishlist,WishlistGet,removeFromWishlist}=require("../controller/whishlistController");
-const { applyCoupon } = require('../controller/couponController.js');
+const { applyCoupon,removeCoupon } = require('../controller/couponController.js');
 const{addToWallet }=require('../controller/walletController')
 
   
@@ -47,6 +47,9 @@ router.get('/productDetails/:productId',checkBlocked,productDetails)
 
 // router.post('/forgotpassword',forgotPasswordPOST)
 router.get('/forgotpassword',forgotPasswordGET)
+
+router.get('/resetPassword', resetPasswordGet);
+router.post('/resetPassword',  resetPasswordPost);
 
 
 router.post('/cart',addToCart)
@@ -81,5 +84,6 @@ router.post('/wishlist/remove',removeFromWishlist);
 
 router.post('/applyCoupon',applyCoupon)
 router.post('/create-order', createOrder);
+router.post('/removeCoupon',removeCoupon)
 module.exports=router;
   

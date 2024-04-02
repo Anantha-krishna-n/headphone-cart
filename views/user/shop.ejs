@@ -35,6 +35,31 @@
     .form-control:focus {
         width: 120px; /* Decreased width when an option is selected */
     }
+/* styles.css */
+
+/* CSS Styles */
+.price-container {
+    display: flex;
+    align-items: center;
+}
+
+.actual-price {
+    margin: 0 10px; /* Adjust the spacing between prices */
+}
+
+.offer-price {
+    margin: 0 10px; /* Adjust the spacing between prices */
+}
+
+.price-separator {
+    flex-grow: 1; /* Expand the separator line to fill the remaining space */
+    border: none; /* Remove default border */
+    border-top: 1px solid #ccc; /* Add a horizontal line */
+    margin: 0 5px; /* Add some margin to the separator line */
+}
+
+
+
 </style>
 <body>
     <nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark sticky-top" aria-label="Furni navigation bar" style="text-decoration-color: black;">
@@ -113,7 +138,6 @@
         </div>
     </div>
     
-    
     <div class="container mx-auto mt-4">
         <div class="row">
             <% if (products.length > 0) { %> <!-- Check if there are products to display -->
@@ -126,8 +150,17 @@
                             <div class="card-body">
                                 <h5 class="card-title"><%= product.name %></h5>
                                 <h6 class="card-subtitle mb-2 text-muted"><%= product.description %></h6>
-                                <h4>₹<%= product.price %></h4>
-                                <!-- <p class="card-text">Sennheiser’s dynamic drivers deliver a well-extended sound response with dynamic bass for a unique listening experience and closed-back around-ear headphones reduce unwanted background noise for your comfort.</p> -->
+                                <div class="price-container">
+                                    <% if (product.offerPrice !== null) { %> <!-- Check if there's an offer price -->
+                                        <!-- Offer Price -->
+                                        <h4>₹<%= product.offerPrice %></h4>
+                                        <!-- Original Price with strike-through -->
+                                        <h5><span class="actual-price" style="text-decoration: line-through;">₹<%= product.price %></span></h5>
+                                    <% } else { %>
+                                        <!-- Original Price -->
+                                        <h4>₹<%= product.price %></h4>
+                                    <% } %>
+                                </div>
                                 <h5><%= product.color_status %></h5>
                                 <input type="hidden" name="" class="product-quantity" value="<%= product.quantity %>">
                                 <input type="hidden" name="qty" value="qty">

@@ -22,64 +22,44 @@
     <%-include('../partials/nav.ejs') %>
    
     <section id="cart"> 
- 
-    
-<% if(cart && cart.items[0]) {%>
-  <% let subtotal = 0; %>
-  
-        <% cart.items.forEach((item)=>{%>
-       
-        <article class="product">
+      <% if(cart && cart.items.length > 0) { %>
+        <% let subtotal = 0; %>
+      
+        <% cart.items.forEach((item) => { %>
+          <article class="product">
             <header>
-                <a class="remove">
-                    <img src="<%= item.productId.image[0] %>"  alt="">
-
-                    <!-- <h3>Remove product</h3> -->
-                </a>
+              <a class="remove">
+                <img src="<%= item.productId.image[0] %>"  alt="">
+              </a>
             </header>
-
+      
             <div class="content">
-
-                <h1><%= item.productId.name %></h1>
-            <!-- <%=item%> -->
-                <%= item.productId.description %>
-                <form id="removeForm_<%= item.productId._id %>" class="remove-form">
-                    <input type="hidden" name="productId" value="<%= item.productId._id %>">
-                    <button type="submit" class="remove-btn">Remove</button>
-                  </form>
-                <!-- <div title="You have selected this product to be shipped in the color yellow." style="top: 0" class="color yellow"></div>
-                <div style="top: 43px" class="type small">Size 11.5</div> -->
+              <h1><%= item.productId.name %></h1>
+              <%= item.productId.description %>
+              <form id="removeForm_<%= item.productId._id %>" class="remove-form">
+                <input type="hidden" name="productId" value="<%= item.productId._id %>">
+                <button type="submit" class="remove-btn">Remove</button>
+              </form>
             </div>
-
+      
             <footer class="content">
-                  
-                <span data-pro-id="<%=item.productId._id%>"
-                 class="qt-minus">-</span>
-                <span class="qt"><%=item.qty%></span>
-                <input type="hidden" name="qty" value="qty">
-
-                
-                <span data-pro-id="<%=item.productId._id%>" class="qt-plus">+</span>
-
-                <% const fullPrice = item.qty * item.productId.price; %>
-                <h2 class="full-price">
-                    <!-- 69.98 -->
-                    <%= fullPrice.toFixed(2) %> <!-- Display the calculated full price with two decimal places -->
-                    <% subtotal += fullPrice; %>
-                </h2>
-                <input type="hidden" name="qty" value="<%=item.qty%>">
-
-                <h2 class="price">
-                    <!-- 34.99 -->
-                    <%= item.productId.price.toFixed(2) %> <!-- Display the price per product with two decimal places -->
-                  </h2>
-                                              
+              <span data-pro-id="<%= item.productId._id %>" class="qt-minus">-</span>
+              <span class="qt"><%= item.qty %></span>
+              <input type="hidden" name="qty" value="qty">
+              <span data-pro-id="<%= item.productId._id %>" class="qt-plus">+</span>
+      
+              <% let itemPrice = item.price.toFixed(2); %>
+              <% if (item.productId.offerPrice) { %>
+                <% itemPrice = item.productId.offerPrice.toFixed(2); %>
+              <% } %>
+      
+              <h2 class="full-price"><%= (item.qty * itemPrice).toFixed(2) %> Rs</h2>
+              <input type="hidden" name="qty" value="<%= item.qty %>">
+              <h2 class="price"><%= itemPrice %> Rs</h2>
             </footer>
-        </article>
-    
-
-        <%}) %>
-
+          </article>
+          <% subtotal += item.qty * parseFloat(itemPrice); %>
+        <% }) %>
 
 <!-- Modal -->
 <div class="modal fade" id="confirmRemoveModal" tabindex="-1" aria-labelledby="confirmRemoveModalLabel" aria-hidden="true">
@@ -100,29 +80,21 @@
     </div>
   </div>
 
-
   
-        <footer id="site-footer">
-            <div class="container clearfix">
-    
-                <div class="left">
-                  <h2 class="subtotal">Subtotal: <span><%= subtotal.toFixed(2) %> Rs</span></h2>
-              
-                </div>
-    
-                <div class="right">
-                  <% const total = subtotal  %>
+  <footer id="site-footer">
+    <div class="container clearfix">
+      <div class="left">
+        <h2 class="subtotal">Subtotal: <span><%= subtotal.toFixed(2) %> Rs</span></h2>
+      </div>
 
-                    <h1 class="total">Total: <span><%= total.toFixed(2) %>
-                    </span> Rs</h1>
-                    <a class="btn" id="checkoutBtn">Checkout</a>
-                </div>
-    
-            </div>
-        </footer>
+      <div class="right">
+        <h1 class="total">Total: <span><%= subtotal.toFixed(2) %> Rs</span></h1>
+        <a class="btn" id="checkoutBtn">Checkout</a>
+      </div>
+    </div>
+  </footer>
 
-    </section>
-    <%} else{%>
+<% } else { %>
 
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
   <video autoplay loop muted style="height: 400px; width: 400px;">
@@ -131,8 +103,7 @@
   </video>
 </div>
 
-
-   <%  } %>
+<% } %>
 
     <script src="/srcjs.js/cart2.js"></script>
     <script>

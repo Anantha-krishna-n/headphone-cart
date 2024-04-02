@@ -1,35 +1,32 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
 
 const offerSchema = new mongoose.Schema({
-    product: {
-        type: Schema.Types.ObjectId,
-        ref: 'productDetails',
-        required: true
+    categoryName: {
+        type: String
     },
-    category: {
-        type: Schema.Types.ObjectId,
-        ref: 'categoryDetails',
-        required: true
+    productName: {
+        type: String
     },
-    discount_percentage: { 
-        type: Number,
-        required: true
+    discount: {
+        type: Number 
     },
-    start_date: {
+  
+    expiryDate: {
         type: Date,
-        required: true
-    },
-    end_date: {
-        type: Date,
-        required: true
-    },
-    active: {
+        default: function() {
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+            return currentDate;
+        },
+        get: function(val) {
+            return val ? new Date(val).toLocaleDateString('en-GB') : '';
+        }
+    },    
+    isActive: {  
         type: Boolean,
         default: true
-    }
-}, { timestamps: true });
+    } 
+});
 
-const offerCollection = mongoose.model('offerDetails', offerSchema);
-
-module.exports = { offerCollection };
+const offerCollection = mongoose.model('offerCollection', offerSchema);
+module.exports = offerCollection;
