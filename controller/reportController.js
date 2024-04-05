@@ -162,3 +162,38 @@ console.log(orders,"vbhsfvs")
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 };
+
+exports.getTopSellingProducts = async (req, res) => {
+    try {
+        // Aggregate pipeline to group orders by product and sum the quantities sold
+        const topSellingProducts = await orderCollection.aggregate([
+            {
+                $unwind: "$items" // Deconstruct the items array
+            },
+            {
+                $group: {
+                    _id: "$items.product", // Group by product
+                    totalQuantitySold: { $sum: "$items.quantity" } // Sum the quantities sold
+                }
+            },
+            {
+                $sort: { totalQuantitySold: -1 } // Sort by total quantity sold in descending order
+            },
+            {
+                $limit: 5 // Limit the result to top 5 selling products
+            }
+        ]);
+
+        // Extract product IDs from the result
+        const productIds = topSellingProducts.map(product => product._id);
+
+        // Assuming you have a Product model, you can populate the product details using product IDs
+        // const products = await Product.find({ _id: { $in: productIds } });
+
+        // Render the EJS template with the top selling products data
+        res.render('topSellingProducts', { topSellingProducts });
+    } catch (error) {
+        console.error("Error retrieving top selling products:", error);
+        res.status(500).json({ success: false, error: "Internal Server Error" });
+    }
+};

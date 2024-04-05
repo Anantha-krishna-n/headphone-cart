@@ -136,10 +136,9 @@ exports.shopGet = async (req, res) => {
 
         // Apply offer prices to products
         products = await Promise.all(products.map(async (product) => {
-            const productOffer = await offerCollection.findOne({ productName: product.name, isActive: true });
-            const categoryOffer = await offerCollection.findOne({ categoryName: product.category[0]._id,isActive: true });
-
-           
+            const productOffer = await offerCollection.findOne({ product:product._id, isActive: true });
+            const categoryOffer = await offerCollection.findOne({ category: product.category[0]._id, isActive: true });
+           console.log(productOffer,"pro offer")
             console.log(categoryOffer, "category offer");
             if (productOffer && (!categoryOffer || productOffer.discount > categoryOffer.discount)) {
                 // Apply product offer only if it exists and is greater than category offer
@@ -379,18 +378,24 @@ const userId = user._id
             // Handle case where product is not found
             return res.status(404).send('Product not found');
         }
-      // Find applicable offer for the product
-      const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
+        const productOffer = await offerCollection.findOne({ product: productId, isActive: true });
+        const category = product.category[0];
+        const categoryOffer = await offerCollection.findOne({ category: category, isActive: true });
 
-      if (offer) {
-          // Calculate offer price as a percentage discount from the original price
-          const offerPercentage = offer.discount;
-          const offerPrice = product.price - (product.price * (offerPercentage / 100));
-          product.offerPrice = offerPrice;
-      } else {
-          // If no offer is applied, set offerPrice to null
-          product.offerPrice = null;
-      }
+        if (productOffer && productOffer.discount) {
+            // Calculate offer price as a percentage discount from the original price
+            const offerPercentage = productOffer.discount;
+            const offerPrice = product.price - (product.price * (offerPercentage / 100));
+            product.offerPrice = offerPrice;
+        } else if (categoryOffer && categoryOffer.discount) {
+            // Apply category offer discount to the product
+            const offerPercentage = categoryOffer.discount;
+            const offerPrice = product.price - (product.price * (offerPercentage / 100));
+            product.offerPrice = offerPrice;
+        } else {
+            // If no offer is applied, set offerPrice to null
+            product.offerPrice = null;
+        }
 
 
         res.render('user/productDetails', { product,userId});

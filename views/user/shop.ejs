@@ -140,7 +140,7 @@
     
     <div class="container mx-auto mt-4">
         <div class="row">
-            <% if (products.length > 0) { %> <!-- Check if there are products to display -->
+            <% if (products.length > 0) { %>
                 <% products.forEach((product) => { %>
                     <div class="col-md-4">
                         <div class="card" style="width: 18rem;">
@@ -151,13 +151,10 @@
                                 <h5 class="card-title"><%= product.name %></h5>
                                 <h6 class="card-subtitle mb-2 text-muted"><%= product.description %></h6>
                                 <div class="price-container">
-                                    <% if (product.offerPrice !== null) { %> <!-- Check if there's an offer price -->
-                                        <!-- Offer Price -->
+                                    <% if (product.offerPrice !== null) { %>
                                         <h4>₹<%= product.offerPrice %></h4>
-                                        <!-- Original Price with strike-through -->
                                         <h5><span class="actual-price" style="text-decoration: line-through;">₹<%= product.price %></span></h5>
                                     <% } else { %>
-                                        <!-- Original Price -->
                                         <h4>₹<%= product.price %></h4>
                                     <% } %>
                                 </div>
@@ -178,7 +175,7 @@
                         </div>
                     </div>
                 <% }) %>
-            <% } else { %> <!-- If no products found, display the message -->
+            <% } else { %>
                 <div class="col-md-12 d-flex align-items-center justify-content-center" style="height: 400px;">
                     <div class="alert alert-info"  role="alert">
                         No result found.

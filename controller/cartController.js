@@ -23,11 +23,16 @@ exports.addToCart = async (req, res) => {
     let price;
     
     // Check if the product has an active offer
-    const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
-    if (offer && offer.discount) {
-      // Apply offer discount to the product
-      const discountAmount = (product.price * offer.discount) / 100;
-      price = product.price - discountAmount;
+    const productOffer = await offerCollection.findOne({ product: productId, isActive: true });
+    const category = product.category[0];
+    const categoryOffer = await offerCollection.findOne({ category: category, isActive: true });
+
+    if (productOffer && productOffer.discount) {
+      // Apply product offer discount to the product
+      price = product.price - (product.price * productOffer.discount) / 100;
+    } else if (categoryOffer && categoryOffer.discount) {
+      // Apply category offer discount to the product
+      price = product.price - (product.price * categoryOffer.discount) / 100;
     } else {
       // If no offer is applied, use the original price
       price = product.price;
@@ -86,6 +91,7 @@ exports.addToCart = async (req, res) => {
   }
 }
 
+
 exports.cartGet = async (req, res) => {
   try {
     if (!req.session.userId) {
@@ -101,15 +107,23 @@ exports.cartGet = async (req, res) => {
       for (const item of cart.items) {
         const product = item.productId;
 
-        // Find the offer for the product
-        const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
+        // Find the product offer
+        const productOffer = await offerCollection.findOne({ product: product._id, isActive: true });
 
-        console.log('Offer for product', product.name, ':', offer); // Log the offer details
+        // Find the category offer
+        const categoryOffer = await offerCollection.findOne({ category: { $in: product.category }, isActive: true });
+
+        console.log('Product offer for', product.name, ':', productOffer);
+        console.log('Category offer for', product.name, ':', categoryOffer);
 
         // Update item price with offer price if available
-        if (offer && offer.discount) {
-          const discountedPrice = product.price - (product.price * offer.discount) / 100;
+        if (productOffer && productOffer.discount > 0) {
+          const discountedPrice = product.price - (product.price * productOffer.discount) / 100;
           console.log('Discounted price for', product.name, ':', discountedPrice); // Log the discounted price
+          item.price = discountedPrice;
+        } else if (categoryOffer && categoryOffer.discount > 0) {
+          const discountedPrice = product.price - (product.price * categoryOffer.discount) / 100;
+          console.log('Discounted price for', product.name, 'based on category offer:', discountedPrice); // Log the discounted price
           item.price = discountedPrice;
         }
 

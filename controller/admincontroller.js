@@ -54,13 +54,62 @@ req.session.adminID=false
 }
 };
  
+exports.dashboardGet = async (req, res) => {
+    try {
+        // Retrieve monthly and yearly total revenue data
+        const monthlyTotalRevenue = await orderCollection.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+                        $lte: new Date()
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: "$total" } // Sum the total price of orders
+                }
+            }
+        ]);
+
+        const yearlyTotalRevenue = await orderCollection.aggregate([
+            {
+                $match: {
+                    createdAt: {
+                        $gte: new Date(new Date().getFullYear(), 0, 1),
+                        $lte: new Date()
+                    }
+                }
+            },
+            {
+                $group: {
+                    _id: null,
+                    totalRevenue: { $sum: "$total" } // Sum the total price of orders
+                }
+            }
+        ]);
+
+        // Extract total revenue from aggregation results
+        const monthlyTotalRevenueAmount = monthlyTotalRevenue.length > 0 ? monthlyTotalRevenue[0].totalRevenue : 0;
+        const yearlyTotalRevenueAmount = yearlyTotalRevenue.length > 0 ? yearlyTotalRevenue[0].totalRevenue : 0;
+
+        // Render admin dashboard view with monthly and yearly total revenue
+        res.render('admin/adminDashboard', {
+            monthlyTotalRevenue: monthlyTotalRevenueAmount,
+            yearlyTotalRevenue: yearlyTotalRevenueAmount
+        });
+    } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+        res.status(500).send('Internal Server Error');
+    }
+};
 
 
 
-exports.dashboardGet=(req,res)=>{
-    res.render("admin/adminDashboard")
 
-}
+
 exports.logoutGet=(req,res)=>{
     
     if(req.session.adminID){
@@ -73,7 +122,7 @@ exports.logoutGet=(req,res)=>{
         req.session=null;
         res.redirect("/admin")
     }
-}
+}  
 
 
 exports.userGet=async (req,res)=>{

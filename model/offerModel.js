@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
 const offerSchema = new mongoose.Schema({
-    categoryName: {
-        type: String
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'categoryDetails'
     },
-    productName: {
-        type: String
+    product: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'productDetails'
     },
     discount: {
         type: Number 
     },
-  
     expiryDate: {
         type: Date,
         default: function() {

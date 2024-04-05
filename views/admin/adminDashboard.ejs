@@ -58,6 +58,7 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 
 <!-- CSS Files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 
 
 
@@ -66,6 +67,8 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 
@@ -404,23 +407,61 @@
     </div>
 
     <div class="row">
-      <div class="col-lg-5 col-sm-5">
-        <div class="card  mb-2">
-  <div class="card-header p-3 pt-2">
-    <div class="icon icon-lg icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
-      <i class="material-icons opacity-10">weekend</i>
-    </div>
-    <div class="text-end pt-1">
-      <p class="text-sm mb-0 text-capitalize">Bookings</p>
-      <h4 class="mb-0">281</h4>
-    </div>
-  </div>
+      <canvas id="monthlyRevenueChart" width="400" height="200"></canvas>
 
-  <hr class="dark horizontal my-0">
-  <div class="card-footer p-3">
-    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+55% </span>than last week</p>
-  </div>
-</div>
+      <div class="col-lg-5 col-sm-5">
+        <div class="card mb-2"> 
+          <canvas id="yearlyRevenueChart" width="400" height="200"></canvas>
+
+         <div class="card-header p-3 pt-2">
+        
+
+        
+        
+         </div>
+         <script>
+          // Function to update the chart based on provided data
+          function updateChart(chartId, labels, data) {
+              const ctx = document.getElementById(chartId).getContext('2d');
+              const myChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                      labels: labels,
+                      datasets: [{
+                          label: 'Total Revenue',
+                          data: data,
+                          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                          borderColor: 'rgba(54, 162, 235, 1)',
+                          borderWidth: 1,
+                          barThickness: 50
+                      }]
+                  },
+                  options: {
+                      scales: {
+                          y: {
+                              beginAtZero: true
+                          }
+                      }
+                  }
+              });
+          }
+  
+          // Data for monthly revenue chart
+          const monthlyLabels = ['Monthly'];
+          const monthlyData = [<%= monthlyTotalRevenue %>];
+  
+          // Data for yearly revenue chart
+          const yearlyLabels = ['Yearly'];
+          const yearlyData = [<%= yearlyTotalRevenue %>];
+  
+          // Update monthly revenue chart
+          updateChart('monthlyRevenueChart', monthlyLabels, monthlyData);
+  
+          // Update yearly revenue chart
+          updateChart('yearlyRevenueChart', yearlyLabels, yearlyData);
+      </script>
+        
+      
 
         <div class="card  mb-2">
   <div class="card-header p-3 pt-2">
@@ -478,7 +519,7 @@
       </div>
     </div>
 
-    <div class="row mt-4">
+    <!-- <div class="row mt-4">
       <div class="col-10">
         <div class="card mb-4 ">
   <div class="d-flex">
@@ -632,7 +673,7 @@
 </div>
 
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 

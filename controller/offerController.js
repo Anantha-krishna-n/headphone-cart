@@ -20,8 +20,10 @@ exports.offerManagementGet = async (req, res) => {
     const offers = await offerCollection
       .find()
       .skip((page - 1) * perPage) // Skip offers based on page number
-      .limit(perPage); // Limit number of offers per page
-
+      .limit(perPage) // Limit number of offers per page
+      .populate('product','name') // Populate the product field
+      .populate('category','category_name'); // Populate the category field
+console.log(offers)
     res.render("admin/offerManagement", { offers, page, totalPages });
   } catch (error) {
     console.error(error);
@@ -39,85 +41,46 @@ exports.addofferGet = async (req, res) => {
     console.log("Error in addoffer Get", error);
   }
 };
-exports.addofferPOst = async (req, res) => {
+exports.addofferPost = async (req, res) => {
   try {
-    let allProducts = await productCollection.find();
-    let allCategory = await categoryCollection.find();
     let addBy = req.body.addBy;
-    let newoffer;
+    let newOffer;
 
-    if (addBy == "product") {
-      const existingProduct = await offerCollection.findOne({
-        productName: req.body.product,
-      });
+    if (addBy === "product") {
+      const product = await productCollection.findOne({ name: req.body.product });
 
-      if (existingProduct) {
+      if (!product) {
         return res.render("admin/addoffer", {
-          allProducts,
-          allCategory,
-          msg: "Offer already added",
-        });
-      } else {
-        // Fetch the product to calculate the offer percentage
-        const product = await productCollection.findOne({
-          name: req.body.product,
-        });
-        const originalPrice = product.price;
-
-        newoffer = new offerCollection({
-          productName: req.body.product,
-          discount: req.body.discount,
-          percentage: ((req.body.discount / originalPrice) * 100).toFixed(2), // Calculate offer percentage
-          expiryDate: req.body.expiryDate,
+          msg: "Product not found",
         });
       }
-    } else if (addBy == "category") {
-      const category = await categoryCollection.findOne({
-        category_name: req.body.category,
+
+      newOffer = new offerCollection({
+        product: product._id,
+        discount: req.body.discount,
+        expiryDate: req.body.expiryDate,
       });
+    } else if (addBy === "category") {
+      const category = await categoryCollection.findOne({ category_name: req.body.category });
 
       if (!category) {
         return res.render("admin/addoffer", {
-          allProducts,
-          allCategory,
           msg: "Category not found",
         });
       }
 
-      const existingCategory = await offerCollection.findOne({
-        categoryName: category.category_name,
+      newOffer = new offerCollection({
+        category: category._id,
+        discount: req.body.discount,
+        expiryDate: req.body.expiryDate,
       });
-      if (existingCategory) {
-        return res.render("admin/addoffer", {
-          allProducts,
-          allCategory,
-          msg: "Offer already added for this category",
-        });
-      } else {
-        // Fetch products in the category to calculate the offer percentage
-        const categoryProducts = await productCollection.find({
-          category: category._id,
-        });
-        const originalTotalPrice = categoryProducts.reduce(
-          (total, product) => total + product.price,
-          0
-        );
-
-        newoffer = new offerCollection({
-          categoryName: category.category_name,
-          discount: req.body.discount,
-          percentage: ((req.body.discount / originalTotalPrice) * 100).toFixed(
-            2
-          ), // Calculate offer percentage
-          expiryDate: req.body.expiryDate,
-        });
-      }
     }
 
-    await newoffer.save();
+    await newOffer.save();
     res.redirect("/offerManagement");
   } catch (error) {
     console.log("Error in the Add offer Post", error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
@@ -147,27 +110,25 @@ exports.editofferPost = async (req, res) => {
 };
 
 exports.toggleOffer = async (req, res) => {
+  const { offerId } = req.params;
+  const { action } = req.query;
+ console.log(offerId,"in the controller")
   try {
-    const offerId = req.params.id; // Get the offer ID from the request parameters
-    const action = req.query.action; // Get the action (list/unlist) from the query parameters
-
-    // Find the offer by ID
+    console.log("enetred.. into unlist")
     const offer = await offerCollection.findById(offerId);
-
-
-    // Check if the offer exists
+     console.log(offer,"is offer.")
     if (!offer) {
-      return res.status(404).send("Offer not found");
+      return res.status(404).json({ message: "Offer not found" });
     }
-    // Toggle the isActive field based on the action
+
     offer.isActive = action === "list";
 
-    await offer.save(); // Save the updated offer
+    await offer.save();
 
-    // Respond with success message or any other data if needed
-    res.status(200).send("Offer status updated successfully");
+    res.json({ message: `Offer ${action === "list" ? "listed" : "unlisted"} successfully` });
   } catch (error) {
-    console.log("Error toggling offer:", error);
-    res.status(500).send("Error toggling offer");
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
