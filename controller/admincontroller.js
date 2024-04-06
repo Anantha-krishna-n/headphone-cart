@@ -53,10 +53,11 @@ req.session.adminID=false
     res.render('admin/adminlogin',{wrong:"wrong crentials"})
 }
 };
- 
+
+
 exports.dashboardGet = async (req, res) => {
     try {
-        // Retrieve monthly and yearly total revenue data
+        // Retrieve monthly total revenue data
         const monthlyTotalRevenue = await orderCollection.aggregate([
             {
                 $match: {
@@ -74,6 +75,7 @@ exports.dashboardGet = async (req, res) => {
             }
         ]);
 
+        // Retrieve yearly total revenue data
         const yearlyTotalRevenue = await orderCollection.aggregate([
             {
                 $match: {
@@ -91,20 +93,73 @@ exports.dashboardGet = async (req, res) => {
             }
         ]);
 
+        // Fetch top 5 most sold products with their quantities
+        const top5Products = await orderCollection.aggregate([
+            { $unwind: "$items" },
+            { $group: { _id: "$items.product", totalQuantity: { $sum: "$items.quantity" } } },
+            { $sort: { totalQuantity: -1 } },
+            { $limit: 5 }
+        ]);
+        // fetch the category also
+        const top5Categories = await productCollection.aggregate([
+            { $match: { _id: { $in: top5Products.map(product => product._id) } } },
+            { $unwind: "$category" },
+            { $group: { _id: "$category", totalQuantity: { $sum: "$quantity" } } },
+            { $sort: { totalQuantity: -1 } },
+            { $limit: 5 }
+        ]);
+        console.log(top5Categories,"cat")
+
+        // Extract product IDs from top 5 products
+        const productIds = top5Products.map(product => product._id);
+
+        // Fetch product details for the top 5 products
+        const top5ProductDetails = await productCollection.find({ _id: { $in: productIds } });
+
+        // Create an object to map product IDs to product names
+        const productIdToNameMap = {};
+        top5ProductDetails.forEach(product => {
+            productIdToNameMap[product._id.toString()] = product.name;
+        });
+
+        // Map product IDs to product names 
+        const top5ProductNames = top5Products.map(product => productIdToNameMap[product._id.toString()]);
+        const top5ProductQuantities = top5Products.map(product => product.totalQuantity);
+ 
+        //map category ID's to category names
+        const productsIds = top5Categories.map(category => category._id);
+        const top5CategoryDetails = await categoryCollection.find({ _id: { $in: productsIds } })
+        const categoryIdToNameMap = {};
+              top5CategoryDetails.forEach(category => {
+              categoryIdToNameMap[category._id.toString()] = category.category_name;
+         });
+         const top5CategoryQuantities = top5Categories.map(category => category.totalQuantity);
+ 
+          // Map category IDs to category names 
+         const top5CategoryNames = top5Categories.map(category => categoryIdToNameMap[category._id.toString()]);
+console.log(top5CategoryNames,"catt")
+console.log(top5CategoryQuantities,"jfbhs")
+
+
         // Extract total revenue from aggregation results
         const monthlyTotalRevenueAmount = monthlyTotalRevenue.length > 0 ? monthlyTotalRevenue[0].totalRevenue : 0;
         const yearlyTotalRevenueAmount = yearlyTotalRevenue.length > 0 ? yearlyTotalRevenue[0].totalRevenue : 0;
 
-        // Render admin dashboard view with monthly and yearly total revenue
+        // Render admin dashboard view with data
         res.render('admin/adminDashboard', {
             monthlyTotalRevenue: monthlyTotalRevenueAmount,
-            yearlyTotalRevenue: yearlyTotalRevenueAmount
+            yearlyTotalRevenue: yearlyTotalRevenueAmount,
+            top5ProductNames: top5ProductNames,
+            top5ProductQuantities: top5ProductQuantities, 
+            top5CategoryNames:top5CategoryNames,
+            top5CategoryQuantities:top5CategoryQuantities
         });
     } catch (error) {
         console.error('Error fetching dashboard data:', error);
         res.status(500).send('Internal Server Error');
     }
 };
+
 
 
 
