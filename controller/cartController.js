@@ -10,6 +10,7 @@ const offerCollection=require('../model/offerModel')
 const WalletModel=require('../model/walletModel')
 
 const { render } = require("ejs");
+
 exports.addToCart = async (req, res) => {
   const { userId, productId, quantity } = req.body;
   try {
@@ -215,20 +216,23 @@ exports.removeFromCart = async (req, res) => {
     }
 
     // Determine the price to use based on offer availability
-    let price;
-    const offer = await offerCollection.findOne({ productName: product.name, isActive: true });
-    if (offer && offer.discount) {
-      const discountAmount = (product.price * offer.discount) / 100;
-      price = product.price - discountAmount;
-    } else {
-      price = product.price;
+    let price = product.price; // Initialize price with the original product price
+    const productOffer = await offerCollection.findOne({ product: productId, isActive: true });
+    const categoryOffer = await offerCollection.findOne({ category: product.category[0], isActive: true });
+
+    if (productOffer && productOffer.discount) {
+      // Apply product offer discount to the price
+      price = price - (price * productOffer.discount) / 100;
+    } else if (categoryOffer && categoryOffer.discount) {
+      // Apply category offer discount to the price
+      price = price - (price * categoryOffer.discount) / 100;
     }
 
     // Update the quantity of the item
     cart.items[itemIndex].qty = quantity;
 
     // Update the item's price in the cart
-    cart.items[itemIndex].price = price * quantity;
+    cart.items[itemIndex].price = price * quantity; // Update the price with offer price multiplied by quantity
 
     // Recalculate the total price of the cart
     let totalprice = 0;

@@ -412,10 +412,8 @@
     
 
 <!-- ////////////////////////////////////////////////////////order table/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-   <div class="content-boxes" id="ordersTable">
+<div class="content-boxes" id="ordersTable">
     <div class="table-header">
-       
         <div class="pagination">
             <button id="prevPageBtn" onclick="showPrevPage()" class="pagination-button"><i class="fa-solid fa-less-than"></i></button>
             <span id="currentPage">Page <%= currentPage %></span>
@@ -438,11 +436,14 @@
         </thead>
         <tbody id="ordersBody">
             <% Orders.forEach((order) => { %>
+                <% let orderDate = new Date(order.createdAt); %>
+                <% let currentDate = new Date(); %>
+                <% let differenceInDays = Math.floor((currentDate - orderDate) / (1000 * 60 * 60 * 24)); %>
                 <tr>
                     <td><%= User.name %></td>
                     <td>
                         <% order.addresses.forEach((address) => { %>
-                            <%= address.address %>, <%= address.city %>,<%= address.state %>, <%= address.country %>, <%= address.zipCode %> <!-- Display address details -->
+                            <%= address.address %>, <%= address.city %>, <%= address.state %>, <%= address.country %>, <%= address.zipCode %> <!-- Display address details -->
                         <% }); %>
                     </td>
                     <td>
@@ -485,16 +486,17 @@
                             </form>
                         <% } else if (order.status.toLowerCase() === 'success') { %>
                             <% order.items.forEach((item) => { %>
-                                <form id="returnForm_<%= order._id %>" action="/returnOrder/<%= order._id %>" method="POST">
-                                    <button class="btn btn-return btn-danger" type="submit" data-productname="<%= item.product.name %>">Return</button>
-                                </form>
+                                <% if (differenceInDays <= 7) { %>
+                                    <form id="returnForm_<%= order._id %>" action="/returnOrder/<%= order._id %>" method="POST">
+                                        <button class="btn btn-sm btn-danger" style=" font-size: 0.75rem;" type="submit" data-productname="<%= item.product.name %>">Return (<%= 7 - differenceInDays %> days left)</button>
+                                    </form>
+                                <% } %>
                             <% }); %>
                         <% } %>
                     </td>
                 </tr>
             <% }); %>
         </tbody>
-        
     </table>
 </div>
 

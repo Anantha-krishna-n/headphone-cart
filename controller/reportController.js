@@ -14,29 +14,33 @@ const  PDFDocument=require('pdfkit');
 const fs = require('fs');
 const path = require('path');
 
-
 exports.salesReportGet = async (req, res) => {
     const perPage = 4; // Number of orders per page
     const page = parseInt(req.query.page) || 1; // Current page number, default to 1
-    const filter = req.query.filter || 'daily'; // Default filter is set to 'daily'
-
     let startDate, endDate;
+    let filter = req.query.filter || 'daily'; // Default filter is set to 'daily'
 
-    // Set start and end dates based on the selected filter
-    if (filter === 'daily') {
-        startDate = new Date();
-        startDate.setHours(0, 0, 0, 0);
-        
-        endDate = new Date();
-        endDate.setHours(23, 59, 59, 999);
-    } else if (filter === 'weekly') {
-        startDate = new Date();
-        startDate.setDate(startDate.getDate() - 7); // Get date from 7 days ago
-        endDate = new Date();
-    } else if (filter === 'monthly') {
-        startDate = new Date();
-        startDate.setDate(1); // Set date to the first day of the current month
-        endDate = new Date();
+    // If custom date filter is selected, override the filter value
+    if (req.query.startDate && req.query.endDate) {
+        startDate = new Date(req.query.startDate); // Start date from query parameters
+        endDate = new Date(req.query.endDate); // End date from query parameters
+        filter = 'custom';
+    } else {
+        // Set start and end dates based on the selected filter
+        if (filter === 'daily') {
+            startDate = new Date();
+            startDate.setHours(0, 0, 0, 0);
+            endDate = new Date();
+            endDate.setHours(23, 59, 59, 999);
+        } else if (filter === 'weekly') {
+            startDate = new Date();
+            startDate.setDate(startDate.getDate() - 7); // Get date from 7 days ago
+            endDate = new Date();
+        } else if (filter === 'monthly') {
+            startDate = new Date();
+            startDate.setDate(1); // Set date to the first day of the current month
+            endDate = new Date();
+        }
     }
 
     try {
@@ -60,17 +64,50 @@ exports.salesReportGet = async (req, res) => {
             })
             .skip((page - 1) * perPage) // Skip orders based on page number
             .limit(perPage); // Limit number of orders per page
-
-        res.render("admin/salesreport", { orders, page, totalPages,filter });
+        res.render("admin/salesreport", { orders, page, totalPages, filter, startDate, endDate });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
 
+exports.customDateFilterGet = async (req, res) => {
+    const perPage = 4; // Number of orders per page
+    const page = parseInt(req.query.page) || 1; // Current page number, default to 1
+    const startDate = new Date(req.query.startDate); // Start date from query parameters
+    const endDate = new Date(req.query.endDate); // End date from query parameters
+    const filter = 'custom';
 
+    try {
+        const totalOrders = await orderCollection.countDocuments({ status: 'success', createdAt: { $gte: startDate, $lte: endDate } });
+        const totalPages = Math.ceil(totalOrders / perPage);
+
+        const orders = await orderCollection.find({ status: 'success', createdAt: { $gte: startDate, $lte: endDate } })
+            .populate({
+                path: 'user',
+                model: 'Usercollections',
+                select: 'name addresses'
+            })
+            .populate({
+                path: 'items.product',
+                model: 'productDetails',
+                select: 'name'
+            })
+            .populate({ 
+                path: 'addresses',
+                model: 'Address'
+            })
+            .skip((page - 1) * perPage)
+            .limit(perPage);
+
+        res.render("admin/salesreport", { orders, page, totalPages, startDate, endDate,filter });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
   
-
+ 
 exports.generateSalesReportPDF = async (req, res) => {
     const perPage = 4; // Number of orders per page
     const page = parseInt(req.query.page) || 1; // Current page number, default to 1
@@ -162,38 +199,4 @@ console.log(orders,"vbhsfvs")
         res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
 };
-
-exports.getTopSellingProducts = async (req, res) => {
-    try {
-        // Aggregate pipeline to group orders by product and sum the quantities sold
-        const topSellingProducts = await orderCollection.aggregate([
-            {
-                $unwind: "$items" // Deconstruct the items array
-            },
-            {
-                $group: {
-                    _id: "$items.product", // Group by product
-                    totalQuantitySold: { $sum: "$items.quantity" } // Sum the quantities sold
-                }
-            },
-            {
-                $sort: { totalQuantitySold: -1 } // Sort by total quantity sold in descending order
-            },
-            {
-                $limit: 5 // Limit the result to top 5 selling products
-            }
-        ]);
-
-        // Extract product IDs from the result
-        const productIds = topSellingProducts.map(product => product._id);
-
-        // Assuming you have a Product model, you can populate the product details using product IDs
-        // const products = await Product.find({ _id: { $in: productIds } });
-
-        // Render the EJS template with the top selling products data
-        res.render('topSellingProducts', { topSellingProducts });
-    } catch (error) {
-        console.error("Error retrieving top selling products:", error);
-        res.status(500).json({ success: false, error: "Internal Server Error" });
-    }
-};
+  

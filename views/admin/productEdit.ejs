@@ -341,16 +341,20 @@
     
         <div class="form-group">
             <label for="gallery">Gallery</label>
-            <input type="file" class="form-control-file" value="<%=product.gallery%>" id="image" name="image" accept="image/*" multiple>
+            <input type="file" class="form-control-file" id="image" name="image" accept="image/*" multiple>
             <span class="validate" id="gallery_err" style="display:none;color:red;"></span>
-            <div id="existing-images"style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <div id="existing-images" style="display: flex; flex-wrap: wrap; gap: 10px;">
                 <% if (product.image && Array.isArray(product.image)) { %>
-                    <% product.image.forEach((image) => { %>
-                        <img src="<%= image %>" alt="Product Image" style="width: 100px; height: 100px; object-fit: cover;">
+                    <% product.image.forEach((image, index) => { %>
+                        <div class="image-container" >
+                            <img src="<%= image %>" alt="Product Image <%= index + 1 %>" class="product-image" width="100" height="100">
+                            <button class="btn btn-danger delete-btn" data-image-id="<%= index %>">Delete</button>
+                        </div>
                     <% }) %>
                 <% } %>
             </div>
         </div>
+        
         </div>
     
         <!-- Submit Button -->
@@ -449,6 +453,34 @@
 
         return true; // Allow form submission
     }
+    document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+        const productId = '<%= product._id %>';
+        const imageIndex = button.getAttribute('data-image-id');
+        
+        try {
+            const response = await fetch(`/products/${productId}/images/${imageIndex}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Image deleted successfully, update the UI as needed
+                button.parentNode.remove();
+            } else {
+                // Handle error case
+                console.error('Error deleting image:', data.error);
+            }
+        } catch (error) {
+            console.error('Error deleting image:', error);
+        }
+    });
+});
+
          </script>
          
 </body>

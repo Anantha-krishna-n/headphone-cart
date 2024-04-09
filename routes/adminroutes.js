@@ -34,11 +34,11 @@ const upload = multer({
 });
 
 
-const { loginGet, dashboardGet, loginPost,userGet,productManagementGet ,categoryManagementGet ,userBlockedGet, logoutGet,addcatagoryGet,addProductGet,createCategoryPOST,createproductPOST,editproductGET,editproductPOST,editcatagoryPOST,editcatagoryGET,deleteCategory, toggleBlockProduct, orderManagementGet,updateOrderStatus }=require('../controller/admincontroller');
+const { loginGet, dashboardGet, loginPost,userGet,productManagementGet ,categoryManagementGet ,userBlockedGet, logoutGet,addcatagoryGet,addProductGet,createCategoryPOST,createproductPOST,editproductGET,editproductPOST,editcatagoryPOST,editcatagoryGET,deleteCategory, toggleBlockProduct, orderManagementGet,updateOrderStatus,deleteProductImage }=require('../controller/admincontroller');
 const { couponManagementGet,addcouponPost,editCouponPost,deleteCoupon } = require('../controller/couponController');
 const {bannerManagementGet, addbannerGet, addbannerPost,deleteBanner}=require('../controller/bannerController')
 const{ offerManagementGet, addofferGet, addofferPost,editofferPost,editofferGet,toggleOffer}=require("../controller/offerController");
-const { salesReportGet,generateSalesReportPDF,getTopSellingProducts } = require('../controller/reportController');
+const { salesReportGet,generateSalesReportPDF,customDateFilterGet } = require('../controller/reportController');
 
 
 
@@ -63,6 +63,8 @@ router.post('/editproduct/:id',upload.array("image",4), editproductPOST)
 router.post('/createProduct',upload.array("image",4),createproductPOST )
 router.post('/createCategory',upload.fields([{ name: 'logo_image', maxCount: 1 }]),createCategoryPOST)
 router.post('/toggleblockproduct/:id', toggleBlockProduct)
+router.delete('/products/:productId/images/:imageIndex',deleteProductImage);
+
 
 
 
@@ -95,8 +97,9 @@ router.post('/editoffer/:_id',editofferPost)
 router.post('/toggleOffer/:offerId', toggleOffer);
 
 router.get('/salesreport',salesReportGet)
+router.get('/casutomdateFilter', customDateFilterGet);
+
 router.get('/salesreport/pdf', generateSalesReportPDF);
-router.get('/top-selling-products', getTopSellingProducts);
 
 
 module.exports=router;     
