@@ -9,7 +9,9 @@ const bannerCollection=require('../model/bannerModel')
 const offerCollection=require('../model/offerModel')
 const WalletModel=require('../model/walletModel')
 
-
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
 
 
 const nodemailer=require("nodemailer");
@@ -778,5 +780,75 @@ exports.resetPasswordPost = async (req, res) => {
     } catch (error) {
         console.error('Error resetting password:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+exports.downloadInvoice = async (req, res) => {
+    try {
+        console.log("entered..");
+        const { orderId } = req.params; // Corrected variable name to orderId
+        const userId = req.session.userId;
+  console.log(orderId,"hahah")
+        // Check if the user is logged in
+        if (!userId) {
+            return res.status(401).send('Unauthorized');
+        }
+
+        // Find the order by orderId
+        const order = await orderCollection.findById(orderId);
+       console.log(order,"hshsh");
+        // Check if the order exists and is associated with the logged-in user
+        if (!order || !order.user.equals(userId)) {
+            return res.status(404).send('Order not found');
+        }
+
+        // Check if the order status is 'success'
+        if (order.status !== 'success') {
+            return res.status(403).send('Invoice can only be downloaded for successful orders');
+        }
+
+        // Check if 7 days have passed since the order date
+        // const sevenDaysAgo = new Date();
+        // sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+        // if (order.createdAt > sevenDaysAgo) {
+        //     return res.status(403).send('Invoice can only be downloaded 7 days after the order is placed');
+        // }
+
+        const invoicesDir = path.join('D:/project', 'invoice');
+
+        // Check if the invoice directory exists, if not, create it
+        if (!fs.existsSync(invoicesDir)) {
+            fs.mkdirSync(invoicesDir, { recursive: true });
+            console.log(`Directory created: ${invoicesDir}`);
+        }
+        
+        // Generate PDF invoice
+        const invoicePath = path.join(invoicesDir, `invoice_${orderId}.pdf`);
+        const doc = new PDFDocument();
+        doc.pipe(fs.createWriteStream(invoicePath));
+
+        // Add invoice content  
+        doc.fontSize(12).text(`Invoice for Order ID: ${order._id}`);
+        doc.text(`Order Status: ${order.status}`);
+        doc.text(`Payment Method: ${order.paymentMethod}`);
+        doc.text(`Total Price: ${order.total}`);
+
+        // Add order items
+        doc.fontSize(14).text('Order Items:');
+        order.items.forEach((item, index) => {
+            doc.text(`${index + 1}. Product Name: ${item.product.name}`);
+            doc.text(`   Quantity: ${item.quantity}`);
+            doc.text(`   Price per unit: ${item.product.price}`);
+            doc.text(`   Total Price: ${item.quantity * item.product.price}`);
+        });
+
+        doc.end();
+
+        // Serve the PDF as a download
+        res.setHeader('Content-Disposition', `attachment; filename=invoice_${orderId}.pdf`);
+        res.setHeader('Content-Type', 'application/pdf');
+        res.sendFile(path.resolve(invoicePath));
+    } catch (error) {
+        console.error('Error downloading invoice:', error);
+        res.status(500).send('Internal Server Error');
     }
 };

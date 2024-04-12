@@ -368,6 +368,19 @@
     padding: 4px 8px; /* Adjust padding to reduce button size */
     font-size: 8px; /* Adjust font size */
 }
+.invoice-btn {
+  font-size: 12px; /* Adjust the font size as needed */
+  padding: 5px 10px; /* Adjust the padding to reduce the size */
+  border-radius: 5px; /* Add border radius for rounded corners */
+  background-color: #f0f0f0; /* Add background color */
+  color: #333; /* Add text color */
+  border: 1px solid #ccc; /* Add border */
+}
+
+/* Hover effect */
+.invoice-btn:hover {
+  background-color: #e0e0e0; /* Change background color on hover */
+}
 
     </style>
 </head>
@@ -414,6 +427,7 @@
 <!-- ////////////////////////////////////////////////////////order table/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 <div class="content-boxes" id="ordersTable">
     <div class="table-header">
+       
         <div class="pagination">
             <button id="prevPageBtn" onclick="showPrevPage()" class="pagination-button"><i class="fa-solid fa-less-than"></i></button>
             <span id="currentPage">Page <%= currentPage %></span>
@@ -432,18 +446,16 @@
                 <th>Status</th>
                 <th>Payment Method</th>
                 <th>Action</th>
+                <th>      </th>
             </tr>
         </thead>
         <tbody id="ordersBody">
             <% Orders.forEach((order) => { %>
-                <% let orderDate = new Date(order.createdAt); %>
-                <% let currentDate = new Date(); %>
-                <% let differenceInDays = Math.floor((currentDate - orderDate) / (1000 * 60 * 60 * 24)); %>
                 <tr>
                     <td><%= User.name %></td>
                     <td>
                         <% order.addresses.forEach((address) => { %>
-                            <%= address.address %>, <%= address.city %>, <%= address.state %>, <%= address.country %>, <%= address.zipCode %> <!-- Display address details -->
+                            <%= address.address %>, <%= address.city %>,<%= address.state %>, <%= address.country %>, <%= address.zipCode %> <!-- Display address details -->
                         <% }); %>
                     </td>
                     <td>
@@ -486,17 +498,22 @@
                             </form>
                         <% } else if (order.status.toLowerCase() === 'success') { %>
                             <% order.items.forEach((item) => { %>
-                                <% if (differenceInDays <= 7) { %>
-                                    <form id="returnForm_<%= order._id %>" action="/returnOrder/<%= order._id %>" method="POST">
-                                        <button class="btn btn-sm btn-danger" style=" font-size: 0.75rem;" type="submit" data-productname="<%= item.product.name %>">Return (<%= 7 - differenceInDays %> days left)</button>
-                                    </form>
-                                <% } %>
+                                <form id="returnForm_<%= order._id %>" action="/returnOrder/<%= order._id %>" method="POST">
+                                    <button class="btn btn-return btn-danger" type="submit" data-productname="<%= item.product.name %>">Return</button>
+                                </form>
                             <% }); %>
+                            
+                        <% } %>
+                    </td>
+                    <td>
+                        <% if (order.status.toLowerCase() === 'success') { %>
+                            <button class="invoice-btn" data-order-id="<%= order._id %>">Invoice</button>
                         <% } %>
                     </td>
                 </tr>
             <% }); %>
         </tbody>
+        
     </table>
 </div>
 
@@ -542,6 +559,74 @@
         });
     });
 });
+//////////////////////////////////////
+// Function to calculate the difference in days between two dates
+function dateDiffInDays(a, b) {
+        const diffInMs = b - a;
+        return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    }
+
+    // Loop through each return form
+    <% Orders.forEach(order => { %>
+    document.querySelectorAll('form[id^="returnForm_<%= order._id %>"]').forEach(form => {
+        const orderId = '<%= order._id %>'; // Get order ID from the template
+        const orderDate = new Date('<%= order.createdAt %>'); // Get order creation date
+        
+        const currentDate = new Date(); // Get current date
+        
+        // Calculate the difference in days between current date and order date
+        const daysDifference = dateDiffInDays(orderDate, currentDate);
+        
+        // If 7 days have passed since the order date, disable the return button and show the Download button
+        if (daysDifference >= 7) {
+            const returnButton = form.querySelector('.btn-return');
+            returnButton.disabled = true; // Disable the return button
+            returnButton.style.display = 'none'; // Hide the return button
+            returnButton.innerHTML = `Return (${7 - daysDifference} days remaining)`
+         
+            
+            // Insert the Download button after the return button
+            form.appendChild(downloadButton);
+        }
+    });
+<% }); %>
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add click event listener to download buttons
+    var invoiceButtons = document.querySelectorAll('.invoice-btn');
+    invoiceButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            // Get the order ID from the data-order-id attribute
+            var orderId = this.getAttribute('data-order-id');
+            
+            // Make a fetch request to download the invoice
+            fetch(`/download-invoice/${orderId}`)
+                .then(response => {
+                    // Check if the response is successful
+                    if (!response.ok) {
+                        throw new Error('Failed to download invoice');
+                    }
+                    // Parse the response as text
+                    return response.text();
+                })
+                .then(data => {
+                    // Handle the downloaded invoice data here
+                    console.log('Downloaded invoice:', data);
+                    // Optionally, you can further process or display the downloaded invoice data
+                })
+                .catch(error => {
+                    // Handle any errors that occur during the fetch request
+                    console.error('Error downloading invoice:', error);
+                    // Optionally, display an error message to the user
+                    alert('Error downloading invoice. Please try again later.');
+                });
+        });
+    });
+});
+
+
+
+
 </script>
 
 
@@ -682,7 +767,7 @@
         </button>
     </div>
 </div>
-    
+         
 </div>
 <!-- //////////////////////////////////////////////////////////////////////forCoupoons/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 
@@ -702,7 +787,8 @@
             <div class="wallethistory">
                 <% if (wallet && wallet.wallethistory.length > 0) { %>
                     <% wallet.wallethistory.forEach(function(history) { %>
-                        <p><%= history.process %> - <%= history.amount %> INR - <%= history.date.toLocaleString() %></p>
+                        <%=history.orderId%>
+                        <p><%= history.process %> - <%= history.amount %> INR - <%= history.orderId ? 'Order ID: ' + history.orderId + ' - ' : '' %><%= history.date.toLocaleString() %></p>
                     <% }); %>
                 <% } else { %>
                     <p>No wallet history available</p>

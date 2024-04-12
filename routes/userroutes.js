@@ -8,7 +8,7 @@ const whishListCollection=require('../model/whishList')
 const {addToCart, cartGet,removeFromCart,updateCartItemQuantity}=require('../controller/cartController.js')
 
 
-const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword,saveAddressPost,deleteAddress,editAddressGet,editAddressPost,sucessOrder,userProfileGet,editUserDetails,resetPasswordGet,resetPasswordPost}=require('../controller/usercontroller')
+const { loginGet, signupGet, loginPost,homeGet, signupPost,logoutGet,singleProductGet, shopGet,signupVerifyOtp,emailResendOtp, forgotPasswordGET, productDetails,forgotPassword,forgotPasswordPost,verifyOTP,setNewPassword,saveAddressPost,deleteAddress,editAddressGet,editAddressPost,sucessOrder,userProfileGet,editUserDetails,resetPasswordGet,resetPasswordPost,downloadInvoice}=require('../controller/usercontroller')
 
 
 
@@ -85,5 +85,8 @@ router.post('/wishlist/remove',removeFromWishlist);
 router.post('/applyCoupon',applyCoupon)
 router.post('/create-order', createOrder);
 router.post('/removeCoupon',removeCoupon)
+router.get('/download-invoice/:orderId',downloadInvoice);
+
+
 module.exports=router;
   

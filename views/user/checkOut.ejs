@@ -5,17 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 
     <style>
         .checkout-form {
             height: 100vh; /* Adjust the height as needed */
             overflow-y: auto; /* Add vertical scrollbar if needed */
         }
-       
+        .custom-toast-error {
+ background-color: #f44336; /* Red */
+ color: white;
+ border: 1px solid #f44336;
+ box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
     </style>
 </head>
 
@@ -261,6 +269,8 @@
 
 
                         <hr />
+                        <h5>after 7 days cannot return</h5>
+                        <hr />
 
                         <!-- Payment Options -->
                         <h6 class="mb-3">Select Payment Method</h6>
@@ -423,27 +433,42 @@ document.getElementById("addressForm").addEventListener("submit", function(event
                                 console.log('Order placed:', responseData);
                                 window.location.href = "/sucessOrder";
                             } else {
+                                const errorData = await response.json();
+
                                 console.error('Failed to place order:', response.statusText);
+                                toastr.error('Failed to place order: ' + errorData.error, '', {
+                                toastClass: 'custom-toast-error',
+                                  closeButton: true
+                                       });
+
                             }
                         } else if (paymentMethod === 'online') {
                             // If Online Payment is selected, initiate Razorpay payment
                             initiateRazorpayPayment(userId, addressId, paymentMethod);
                         } else {
                             console.error('Invalid payment method');
+                            toastr.error('Invalid payment method');
+
                         }
                     } else {
                         console.error('No payment method selected');
+                        toastr.error('No payment method selected');
+
                     }
                 } else {
                     console.error('No address selected');
+                    toastr.error('No address selected');
+                    
                 }
             } catch (error) {
                 console.error('Error placing order:', error);
+                toastr.error('Error placing order: ' + error.message);
+              
             }
         });
     }
 });
-
+  
 
 // Function to initiate Razorpay payment
 async function initiateRazorpayPayment(userId, addressId) {
@@ -589,6 +614,8 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <%-include('../partials/footer.ejs') %>
 
 </body>

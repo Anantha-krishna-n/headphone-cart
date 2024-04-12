@@ -129,81 +129,91 @@
         <div class="container-fluid py-4">
             <div class="row">
                 <div class="col-12">
-                    <div class="card my-4">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
-                                <h6 class="text-white text-capitalize ps-3">Sales Report</h6>
-                                <form action="/salesreport" class="d-flex" method="GET">
-                                    <div class="form-group">
-                                        <label for="startDate" style="color: aliceblue;">Start Date</label>
-                                        <input type="date" class="form-control bg-white" id="startDate" name="startDate" required>
-                                    </div>
-                                    &nbsp;
-                                    &nbsp;
-                                    <div class="form-group">
-                                        <label for="endDate" style="color: aliceblue;">End Date</label>
-                                        <input type="date" class="form-control bg-white" id="endDate" name="endDate" required>
-                                    </div>
-                                    <input type="hidden" name="filter" value="custom">
-                                    <button type="submit" class="btn btn-primary btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 0.25rem; width: 80px; height: 30px;">Apply</button>
-                                </form>
-                                <div class="d-flex align-items-center">
-                                    <div class="col-6 text-end">
-                                        <form action="/salesreport" method="GET">
-                                            <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    Filter
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                                                    <li><a class="dropdown-item" href="/salesreport?filter=daily">Daily</a></li>
-                                                    <li><a class="dropdown-item" href="/salesreport?filter=weekly">Weekly</a></li>
-                                                    <li><a class="dropdown-item" href="/salesreport?filter=monthly">Monthly</a></li>
-                                                </ul>
-                                            </div>
-                                        </form>
-                                    </div>
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                        <div class="bg-gradient-danger shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between">
+                            <h6 class="text-white text-capitalize ps-3">Sales Report</h6>
+                            <form action="/salesreport" class="d-flex" method="GET">
+                                <div class="form-group">
+                                    <label for="startDate" style="color: aliceblue;">Start Date</label>
+                                    <input type="date" class="form-control bg-white" id="startDate" name="startDate" required>
+                                </div>
+                                &nbsp;
+                                &nbsp;
+                                <div class="form-group">
+                                    <label for="endDate" style="color: aliceblue;">End Date</label>
+                                    <input type="date" class="form-control bg-white" id="endDate" name="endDate" required>
+                                </div>
+                                <input type="hidden" name="filter" value="custom">
+                                <button type="submit" class="btn btn-primary btn-sm" style="padding: 0.25rem 0.5rem; font-size: 0.75rem; border-radius: 0.25rem; width: 80px; height: 30px;">Apply</button>
+                            </form>
+                            <div class="d-flex align-items-center">
+                                <div class="col-6 text-end">
+                                    <form action="/salesreport" method="GET">
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Filter
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                <li><a class="dropdown-item" href="/salesreport?filter=daily">Daily</a></li>
+                                                <li><a class="dropdown-item" href="/salesreport?filter=weekly">Weekly</a></li>
+                                                <li><a class="dropdown-item" href="/salesreport?filter=monthly">Monthly</a></li>
+                                            </ul>
+                                        </div>
+                                    </form>
+                                </div>
                                     <div class="col-6 text-start">
                                         <a href="/salesreport/pdf?filter=<%= filter %>" class="btn btn-primary">Download PDF</a>
                                     </div>
+                                    
+                          
                                 </div>
                             </div>
                         </div>
                         <!-- Inside your navigation -->
-                        <nav aria-label="Page navigation">
+                        <nav aria-label="Page navigation" class="pagination-nav">
                             <ul class="pagination justify-content-center">
                                 <% if (page > 1) { %>
                                     <li class="page-item">
-                                        <a class="page-link" href="?page=1&filter=<%= filter %>&startDate=<%= startDate %>&endDate=<%= endDate %>" aria-label="First">
-                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                        <a class="page-link" href="/salesreport?page=1&filter=<%= filter %>" aria-label="First">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">First</span>
                                         </a>
                                     </li>
                                     <li class="page-item">
-                                        <a class="page-link" href="?page=<%= page - 1 %>&filter=<%= filter %>&startDate=<%= startDate %>&endDate=<%= endDate %>" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
+                                        <a class="page-link" href="/salesreport?page=<%= page - 1 %>&filter=<%= filter %>" aria-label="Previous">
+                                            <span aria-hidden="true">&lsaquo;</span>
+                                            <span class="sr-only">Previous</span>
                                         </a>
                                     </li>
                                 <% } %>
-                                
+                        
                                 <% for (let i = 1; i <= totalPages; i++) { %>
                                     <li class="page-item <%= (i === page) ? 'active' : '' %>">
-                                        <a class="page-link" href="?page=<%= i %>&filter=<%= filter %>&startDate=<%= startDate %>&endDate=<%= endDate %>"><%= i %></a>
+                                        <a class="page-link" href="/salesreport?page=<%= i %>&filter=<%= filter %>&startDate=<%= startDate %>&endDate=<%= endDate %>"><%= i %></a>
                                     </li>
                                 <% } %>
-                                
+                        
                                 <% if (page < totalPages) { %>
                                     <li class="page-item">
-                                        <a class="page-link" href="?page=<%= page + 1 %>&filter=<%= filter %>&startDate=<%= startDate %>&endDate=<%= endDate %>" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
+                                        <a class="page-link" href="/salesreport?page=<%= page + 1 %>&filter=<%= filter %>" aria-label="Next">
+                                            <span aria-hidden="true">&rsaquo;</span>
+                                            <span class="sr-only">Next</span>
                                         </a>
                                     </li>
                                     <li class="page-item">
-                                        <a class="page-link" href="?page=<%= totalPages %>&filter=<%= filter %>&startDate=<%= startDate %>&endDate=<%= endDate %>" aria-label="Last">
-                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                        <a class="page-link" href="/salesreport?page=<%= totalPages %>&filter=<%= filter %>" aria-label="Last">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Last</span>
                                         </a>
                                     </li>
                                 <% } %>
                             </ul>
                         </nav>
+                        
+                        
+                        
+                        
+                        
                         
                         
                         
@@ -253,6 +263,7 @@
 
                                     </thead>
                                     <tbody>
+                                        <%console.log(orders)%>
                                         <% orders.forEach((order, index)=> { %>
                                             <tr style="text-align: center;">
                                                 <td>

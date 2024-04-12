@@ -72,7 +72,12 @@ exports.placeOrderPost = async (req, res) => {
    
         const totalprice = cart.totalprice;
         console.log(totalprice, "real");
-
+                
+        
+        if (paymentMethod === 'cashOnDelivery' && totalprice > 1000) {
+            return res.status(400).json({ success: false, error: 'Cannot order more than 1000 INR with cash on delivery' });
+        }
+        
         // Create a new order document
         const order = new orderCollection({
             user: userId,
@@ -143,20 +148,19 @@ exports.cancelOrder = async (req, res) => {
                 {$inc:{balance:order.total}},
                 {new:true,upsert:true}
             );
-            await WalletModel.findOneAndUpdate(
-                {user:userId},
-                {
-                    $push:{
-                        wallethistory:{
-                            process:"Refund for Cancelled Order",
-                            amount:order.total,
-                            date:Date.now()
-
-                        }
+           const wallet = await WalletModel.findOneAndUpdate(
+            { user: userId },
+            {
+                $push: {
+                    wallethistory: {
+                        process: `Refund for Cancelled Order - ${orderId}`, // Include orderId in the process field
+                        amount: order.total,
+                        date: Date.now()
                     }
-                }, 
-                {new:true}
-            );
+                }
+            },
+            { new: true, upsert: true }
+        );
         }
 
 
@@ -171,6 +175,7 @@ exports.cancelOrder = async (req, res) => {
 };
 exports.returnOrder = async (req, res) => {
     const orderId = req.params.orderId;
+
 
     try {
         const order = await orderCollection.findById(orderId);
@@ -205,13 +210,13 @@ exports.returnOrder = async (req, res) => {
                 {
                     $push: {
                         wallethistory: {
-                            process: "Refund for Returned Order",
+                            process: `Refund for Returned Order - oderid ${orderId}`, // Include orderId in the process field
                             amount: order.total,
                             date: Date.now()
                         }
                     }
                 },
-                { new: true }
+                { new: true, upsert: true }
             );
     
         res.status(200).json({ success: true, message: 'Order returned successfully' });

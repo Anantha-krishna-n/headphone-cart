@@ -38,7 +38,7 @@ const { loginGet, dashboardGet, loginPost,userGet,productManagementGet ,category
 const { couponManagementGet,addcouponPost,editCouponPost,deleteCoupon } = require('../controller/couponController');
 const {bannerManagementGet, addbannerGet, addbannerPost,deleteBanner}=require('../controller/bannerController')
 const{ offerManagementGet, addofferGet, addofferPost,editofferPost,editofferGet,toggleOffer}=require("../controller/offerController");
-const { salesReportGet,generateSalesReportPDF,customDateFilterGet } = require('../controller/reportController');
+const { salesReportGet,generateSalesReportPDF, } = require('../controller/reportController');
 
 
 
@@ -97,7 +97,7 @@ router.post('/editoffer/:_id',editofferPost)
 router.post('/toggleOffer/:offerId', toggleOffer);
 
 router.get('/salesreport',salesReportGet)
-router.get('/casutomdateFilter', customDateFilterGet);
+
 
 router.get('/salesreport/pdf', generateSalesReportPDF);
 
