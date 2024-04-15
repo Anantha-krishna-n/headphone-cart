@@ -7,13 +7,25 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,700">
     <link rel="stylesheet" href="/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 </head>
+<style>
+    .toast-success {
+    background-color: #4CAF50; /* Green background */
+}
+
+.toast-success .toast-message {
+    color: white; /* White text */
+}
+</style>
 <body>
     
     <div class="background-image"></div>
 
     <div class="container login-container">
         <div class="row justify-content-center">
+            <div id="toast-container" class="toast-top-right"></div>
             <div class="col-md-6">
                 <form action="/signup" method="POST" class="login" onsubmit="return validateForm()">
                     <h2>Welcome, User!</h2>
@@ -36,6 +48,9 @@
                         <input type="password" class="form-control" placeholder="Confirm-Password" name="confirmpassword" id="confirmpassword" required>
                     </div>
                     <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Referral Code (Optional)" name="referralCode">
+                    </div>
+                    <div class="form-group">
                         <input type="submit" class="btn btn-primary" value="Sign Up">
                     </div>
                                         <p id="errorMsg" style="color: red;"><%= msg %></p>
@@ -49,7 +64,7 @@
 
 
   
-
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

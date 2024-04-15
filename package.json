@@ -29,6 +29,7 @@
     "pdfkit": "^0.15.0",
     "razorpay": "^2.9.2",
     "session": "^0.1.0",
-    "sweetalert2": "^11.10.7"
+    "sweetalert2": "^11.10.7",
+    "toastr": "^2.1.4"
   }
 }

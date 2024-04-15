@@ -39,14 +39,14 @@ exports.loginGet=(req,res)=>{
 exports.loginPost=(req,res)=>{
     console.log("gg")
     let admindata={
-        adminEmail: "admin@gmail.com",
-        passcode:'123'
+        adminEmail: process.env.AdminId,
+        passcode:process.env.AdminPass
     };
 const {email,password }=req.body;
 if(admindata.adminEmail===email && admindata.passcode===password){
     req.session.adminID=true;
     console.log('1sr');
-    res.redirect('/adminDashboard');
+    res.redirect('/adminDashboard');  
 }else{
 req.session.adminID=false
     console.log('2nd');  

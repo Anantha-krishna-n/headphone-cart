@@ -30,7 +30,7 @@ exports.addToWishlist = async (req, res) => {
             }
         } else {
             // If wishlist doesn't exist for the user, create a new wishlist
-            const newWishlist = new Wishlist({
+            const newWishlist = new whishListCollection({
                 userId,
                 items: [{ productId }] // Push productId as an object
             });

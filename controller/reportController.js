@@ -124,6 +124,8 @@ exports.generateSalesReportPDF = async (req, res) => {
       startDate = new Date(req.query.startDate);
       endDate = new Date(req.query.endDate);
       // Ensure end date is set to the end of the day
+      console.log(req.query.startDate,"fine")
+      console.log(req.query.endDate,"ff");
       if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
         // Handle invalid dates, e.g., by sending an error response
         return res.status(400).send({ error: 'Invalid startDate or endDate' });
@@ -132,8 +134,6 @@ exports.generateSalesReportPDF = async (req, res) => {
     // Ensure end date is set to the end of the day
     endDate.setHours(23, 59, 59, 999)
   }
-  console.log(startDate,"fine")
-  console.log(endDate,"ff");
   try {
       const orders = await orderCollection
           .find({
@@ -158,47 +158,85 @@ exports.generateSalesReportPDF = async (req, res) => {
           .limit(perPage); // Limit number of orders per page
  
       // Create a new PDF document
-      const doc = new PDFDocument();
+      const directory = path.join("D:", "project", "public", "invoices");
+      if (!fs.existsSync(directory)) {
+          fs.mkdirSync(directory, { recursive: true });
+      }
 
       // Set the path for the PDF file
-      const pdfPath = path.join("D:", "project", "sales_report.pdf");
+      const pdfPath = path.join(directory, "sales_report.pdf");
+
+      // Log the PDF path
+      console.log("PDF Path:", pdfPath);
 
       // Pipe the PDF output to a writable stream
-      doc.pipe(fs.createWriteStream(pdfPath));
+      const writeStream = fs.createWriteStream(pdfPath);
 
+      // Handle stream errors
+      writeStream.on("error", (error) => {
+          console.error("Error creating PDF file:", error);
+          res.status(500).json({ success: false, error: "Internal Server Error" });
+      });
+
+      const doc = new PDFDocument();
+
+      // Pipe the PDF output to the writable stream
+      doc.pipe(writeStream);
       // Add content to the PDF document
-      doc.text("Sales Report").moveDown();
+      const headers = [
+        "SL.No", "Name", "Address", "Product", "Quantity", "Payment Method", "Total Price", "Order Status", "Purchase Date"
+      ];
+
+      // Define the width of each column
+      const columnWidths = [50, 100, 200, 150, 70, 100, 90, 90, 100];
 
       // Add table headers
-      doc.text("SL.No", { width: 50, align: "center" });
-      doc.text("Name", { width: 100, align: "center" });
-      doc.text("Address", { width: 200, align: "center" });
-      doc.text("Product", { width: 150, align: "center" });
-      doc.text("Quantity", { width: 70, align: "center" });
-      doc.text("Payment Method", { width: 100, align: "center" });
-      doc.text("Total Price", { width: 90, align: "center" });
-      doc.text("Order Status", { width: 90, align: "center" });
-      doc.text("Purchase Date", { width: 100, align: "center" });
-      doc.moveDown();
+      let x = 50; // Starting x position
+      headers.forEach((header, index) => {
+        doc.text(header, x, 100, { width: columnWidths[index], align: 'center' });
+        x += columnWidths[index];
+      });
+      doc.moveDown(2);
 
       // Add table rows
       let rowIndex = 1;
+      const rowHeight = 50; // Adjust this value to increase or decrease space between rows
       orders.forEach(order => {
-          doc.text(rowIndex.toString(), { width: 50, align: "center" });
-          doc.text(order.user.name, { width: 100, align: "center" });
+          let y = 100 + rowIndex * rowHeight; // Starting y position for each row
+          let x = 50; // Starting x position
+          doc.text(rowIndex.toString(), x, y, { width: columnWidths[0], align: 'center' });
+          x += columnWidths[0];
+      
+          doc.text(order.user.name, x, y, { width: columnWidths[1], align: 'center' });
+          x += columnWidths[1];
+      
           const addressText = order.addresses.map(address => `${address.address}, ${address.city}, ${address.state}, ${address.country}, ${address.zipCode}`).join("\n");
-          doc.text(addressText, { width: 200, align: "center" });
+          doc.text(addressText, x, y, { width: columnWidths[2], align: 'center' });
+          x += columnWidths[2];
+      
           const productText = order.items.map(item => item.product.name).join("\n");
-          doc.text(productText, { width: 150, align: "center" });
+          doc.text(productText, x, y, { width: columnWidths[3], align: 'center' });
+          x += columnWidths[3];
+      
           const quantityText = order.items.map(item => item.quantity).join("\n");
-          doc.text(quantityText, { width: 70, align: "center" });
-          doc.text(order.paymentMethod, { width: 100, align: "center" });
-          doc.text(order.total.toString(), { width: 90, align: "center" });
-          doc.text(order.status, { width: 90, align: "center" });
-          doc.text(order.createdAt.toDateString(), { width: 100, align: "center" });
-
+          doc.text(quantityText, x, y, { width: columnWidths[4], align: 'center' });
+          x += columnWidths[4];
+      
+          doc.text(order.paymentMethod, x, y, { width: columnWidths[5], align: 'center' });
+          x += columnWidths[5];
+      
+          doc.text(order.total.toString(), x, y, { width: columnWidths[6], align: 'center' });
+          x += columnWidths[6];
+      
+          doc.text(order.status, x, y, { width: columnWidths[7], align: 'center' });
+          x += columnWidths[7];
+      
+          doc.text(order.createdAt.toDateString(), x, y, { width: columnWidths[8], align: 'center' });
+          doc.moveDown();
+      
           rowIndex++;
-      }); 
+      });
+
 
       // Finalize the PDF document
       doc.end();

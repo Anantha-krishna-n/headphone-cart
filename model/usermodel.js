@@ -42,7 +42,11 @@ addresses: [{
      usedCoupons: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'couponCollection'
-    }]
+    }],
+    referralCode: {
+        type: String,
+        unique: true
+    },
     
 });
 

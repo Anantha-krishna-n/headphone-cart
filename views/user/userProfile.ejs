@@ -15,6 +15,7 @@
 
 <!-- Include SweetAlert JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 
     <style>
@@ -606,13 +607,20 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!response.ok) {
                         throw new Error('Failed to download invoice');
                     }
-                    // Parse the response as text
-                    return response.text();
+                    // Parse the response as blob
+                    return response.blob();
                 })
-                .then(data => {
-                    // Handle the downloaded invoice data here
-                    console.log('Downloaded invoice:', data);
-                    // Optionally, you can further process or display the downloaded invoice data
+                .then(blob => {
+                    // Create a URL for the blob
+                    var url = window.URL.createObjectURL(blob);
+                    // Create a temporary <a> element to trigger the download
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = `invoice_${orderId}.pdf`; // Set the filename
+                    // Trigger the click event on the <a> element
+                    a.click();
+                    // Clean up resources
+                    window.URL.revokeObjectURL(url);
                 })
                 .catch(error => {
                     // Handle any errors that occur during the fetch request
@@ -754,6 +762,9 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div>
             <strong>Phone:</strong> <span id="userPhone"><%= User.number %></span>
+        </div>
+        <div>
+            <strong>ReferalCode:</strong><span id="userReferal"><%=User.referralCode %></span>
         </div>
         <% addresses.forEach((address,i)=>{ %>
             <div class="address-box">
@@ -1000,6 +1011,7 @@ function showPrevPage() {
     return true; // Allow form submission
   }
         </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -25,6 +25,7 @@ const mongoose=require('mongoose');
 const env=require('dotenv');
 const morgan = require('morgan');
 const nodemailer=require("nodemailer");
+require('dotenv').config();
 
 
 
@@ -66,7 +67,7 @@ app.use((req,res,next)=>{
 
 //database connecting
 //const mongoose=require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/project')
+mongoose.connect(process.env.MongoDB)
 .then(()=>{
     console.log("mongodb connected");
 })
