@@ -374,6 +374,33 @@
       </div>
     </div>
   </div>
+  <script>
+    // Function to validate form fields
+    function validateForm() {
+      // Get form inputs
+      var discountValue = document.getElementById("discountvalue").value;
+      var minimumPurchase = document.getElementById("minimumpurchase").value;
+      var isValid = true;
+  
+      // Check if discount value is negative
+      if (discountValue < 0) {
+        document.getElementById("valueError").innerHTML = "Discount value cannot be negative";
+        isValid = false;
+      } else {
+        document.getElementById("valueError").innerHTML = ""; // Clear error message
+      }
+  
+      // Check if minimum purchase is negative
+      if (minimumPurchase < 0) {
+        document.getElementById("purchaseError").innerHTML = "Minimum purchase cannot be negative";
+        isValid = false;
+      } else {
+        document.getElementById("purchaseError").innerHTML = ""; // Clear error message
+      }
+  
+      return isValid;
+    }
+  </script>
 
   <!-- /////////////////////////////////////////////////////////////////////////editcoupon////////////////////////////////////////////////////////////////////////// -->
 <!-- Edit Coupon Modal -->

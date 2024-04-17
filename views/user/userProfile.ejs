@@ -587,19 +587,20 @@ function dateDiffInDays(a, b) {
          
             
             // Insert the Download button after the return button
-            form.appendChild(downloadButton);
+            // form.appendChild(downloadButton);
         }
     });
 <% }); %>
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Add click event listener to download buttons
+    console.log("hdfls");
     var invoiceButtons = document.querySelectorAll('.invoice-btn');
-    invoiceButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
+    invoiceButtons.forEach(function(button) { 
+        button.addEventListener('click', function() 
+        {console.log(orderId,"hjhjhj");
             // Get the order ID from the data-order-id attribute
             var orderId = this.getAttribute('data-order-id');
-            
+                    
             // Make a fetch request to download the invoice
             fetch(`/download-invoice/${orderId}`)
                 .then(response => {

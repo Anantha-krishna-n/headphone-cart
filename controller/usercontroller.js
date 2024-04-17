@@ -209,9 +209,9 @@ exports.signupPost = async (req, res) => {
       } while (existingReferral);
       return referralCode;
     };
-
-    // Function to credit wallet
-    const creditWallet = async (user, amount) => {
+       
+    // Function to credit wallet  
+    const creditWallet = async (user, amount) => {  
 
       const wallet = await WalletModel.findOne({ user:user});
       if (wallet) {
@@ -250,7 +250,9 @@ exports.signupPost = async (req, res) => {
       });
       console.log(referrer,"one");
       console.log(userData,"two");
-
+      
+      const old=referrer.referralCode
+      console.log(old,"hihih");
       if(referrer.referralCode===userData.referralCode){
               userData.referralCode=await generateReferralCode();
       }
@@ -889,6 +891,11 @@ exports.resetPasswordPost = async (req, res) => {
   }
 };
 
+
+
+
+const logoPath = path.join("D:", "project", "public", "logo.png"); 
+
 exports.downloadInvoice = async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -901,7 +908,7 @@ exports.downloadInvoice = async (req, res) => {
     if (!order) {
       return res.status(404).send("Order not found");
     }
-
+console.log("helloo");
     // Create a new PDF document
     const userDirectory = path.join("D:", "project", "public", "invoices");
     if (!fs.existsSync(userDirectory)) {
@@ -910,6 +917,7 @@ exports.downloadInvoice = async (req, res) => {
 
     // Create a new PDF document
     const doc = new PDFDocument();
+     
     const fileName = `invoice_${order._id}.pdf`;
     const filePath = path.join(userDirectory, fileName);
 

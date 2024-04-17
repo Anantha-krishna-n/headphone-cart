@@ -93,7 +93,7 @@ exports.salesReportGet = async (req, res) => {
 
 
 
-
+const logoPath = path.join("D:", "project", "public", "logo.png"); 
 
 exports.generateSalesReportPDF = async (req, res) => {
   const perPage = 4; // Number of orders per page
@@ -182,16 +182,25 @@ exports.generateSalesReportPDF = async (req, res) => {
 
       // Pipe the PDF output to the writable stream
       doc.pipe(writeStream);
+
+      doc.image(logoPath, 10, 20, { width: 200,height:100 }); // Adjust position and size as needed
+
+      const currentDate = new Date().toLocaleString(); // Get current date and time
+      const textWidth = doc.widthOfString(currentDate);
+      const topPadding = 10; // Adjust top padding as needed
+      const rightPadding = 20; // Adjust right padding as needed
+      const textXPosition = doc.page.width - textWidth - rightPadding;
+      doc.text(currentDate, textXPosition, topPadding);
       // Add content to the PDF document
       const headers = [
         "SL.No", "Name", "Address", "Product", "Quantity", "Payment Method", "Total Price", "Order Status", "Purchase Date"
       ];
 
       // Define the width of each column
-      const columnWidths = [50, 100, 200, 150, 70, 100, 90, 90, 100];
+      const columnWidths = [35, 60, 125, 80, 45, 65, 40, 50, 90];
 
       // Add table headers
-      let x = 50; // Starting x position
+      let x = 10; // Starting x position
       headers.forEach((header, index) => {
         doc.text(header, x, 100, { width: columnWidths[index], align: 'center' });
         x += columnWidths[index];
@@ -203,7 +212,7 @@ exports.generateSalesReportPDF = async (req, res) => {
       const rowHeight = 50; // Adjust this value to increase or decrease space between rows
       orders.forEach(order => {
           let y = 100 + rowIndex * rowHeight; // Starting y position for each row
-          let x = 50; // Starting x position
+          let x = 10; // Starting x position
           doc.text(rowIndex.toString(), x, y, { width: columnWidths[0], align: 'center' });
           x += columnWidths[0];
       
@@ -213,7 +222,7 @@ exports.generateSalesReportPDF = async (req, res) => {
           const addressText = order.addresses.map(address => `${address.address}, ${address.city}, ${address.state}, ${address.country}, ${address.zipCode}`).join("\n");
           doc.text(addressText, x, y, { width: columnWidths[2], align: 'center' });
           x += columnWidths[2];
-      
+       
           const productText = order.items.map(item => item.product.name).join("\n");
           doc.text(productText, x, y, { width: columnWidths[3], align: 'center' });
           x += columnWidths[3];
@@ -241,8 +250,17 @@ exports.generateSalesReportPDF = async (req, res) => {
       // Finalize the PDF document
       doc.end();
 
-      // Send the generated PDF file as a response
-      res.download(pdfPath, "sales_report.pdf");
+      writeStream.on('finish', () => {
+        // Send the generated PDF file as a response
+        res.download(pdfPath, "sales_report.pdf", (err) => {
+          if (err) {
+            console.error("Error downloading PDF:", err);
+            res.status(500).json({ success: false, error: "Internal Server Error" });
+          } else {
+            console.log("PDF sent successfully");
+          }
+        });
+      });
   } catch (error) {
       console.error("Error generating sales report PDF:", error);
       res.status(500).json({ success: false, error: "Internal Server Error" });
