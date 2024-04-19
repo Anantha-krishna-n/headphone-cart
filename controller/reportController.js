@@ -96,7 +96,7 @@ exports.salesReportGet = async (req, res) => {
 const logoPath = path.join("D:", "project", "public", "logo.png"); 
 
 exports.generateSalesReportPDF = async (req, res) => {
-  const perPage = 4; // Number of orders per page
+  const perPage = 10; // Number of orders per page
   const page = parseInt(req.query.page) || 1; // Current page number, default to 1
   const filter = req.query.filter || "daily"; // Default filter is set to 'daily'
 
@@ -135,6 +135,18 @@ exports.generateSalesReportPDF = async (req, res) => {
     endDate.setHours(23, 59, 59, 999)
   }
   try {
+
+   // Calculate the sum of the total prices of the first 5 orders
+   const initialOrders = await orderCollection
+   .find({
+     status: "success",
+     createdAt: { $gte: startDate, $lte: endDate },
+   })
+   .limit(10);
+
+ totalPriceSum = initialOrders.reduce((sum, order) => sum + order.total, 0);
+
+
       const orders = await orderCollection
           .find({
               status: "success",
@@ -245,6 +257,10 @@ exports.generateSalesReportPDF = async (req, res) => {
       
           rowIndex++;
       });
+      const totalSalesY = 100 + (rowIndex + 1) * rowHeight; // Position it below the sales report
+
+      // Add total price sum below the sales report
+      doc.text(`Total Sales: $${totalPriceSum.toFixed(2)}`, 10, totalSalesY);;
 
 
       // Finalize the PDF document

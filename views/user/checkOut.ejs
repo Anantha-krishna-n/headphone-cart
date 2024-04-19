@@ -179,7 +179,26 @@
                     </div>
               
               
-
+<!-- ///////////////////////////////////////////////////////////////////////////////// -->
+<div class="modal fade" id="paymentFailureModal" tabindex="-1" role="dialog" aria-labelledby="paymentFailureModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="paymentFailureModalLabel">Payment Failed</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Payment failed. Would you like to retry?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" id="retryPaymentBtn" class="btn btn-primary">Retry Payment</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
                     
                     <!-- Checkout -->
@@ -200,7 +219,7 @@
                        
                         <div class="d-flex justify-content-between">
                             <p class="mb-2">Discount:</p>
-                            <p class="mb-2 text-danger"></p>
+                            <p class="mb-2 text-danger"><%=cart.discount%></p>
                         </div>
 
                         <div class="d-flex justify-content-between">
@@ -468,10 +487,23 @@ document.getElementById("addressForm").addEventListener("submit", function(event
         });
     }
 });
-  
+  // Function to handle Razorpay payment failure
+function handlePaymentFailure(userId, addressId, paymentMethod) {
+    console.error('Payment failed');
+    toastr.error('Payment failed');
+
+    $('#paymentFailureModal').modal('show');
+
+// Retry payment when the retry button is clicked
+$('#retryPaymentBtn').on('click', async () => {
+    $('#paymentFailureModal').modal('hide'); // Hide the modal
+    // Retry the payment process
+    initiateRazorpayPayment(userId, addressId, paymentMethod);
+});
+}
 
 // Function to initiate Razorpay payment
-async function initiateRazorpayPayment(userId, addressId) {
+async function initiateRazorpayPayment(userId, addressId, paymentMethod) {
     try {
         const response = await fetch('/create-order', {
             method: 'POST'
@@ -487,21 +519,31 @@ async function initiateRazorpayPayment(userId, addressId) {
                 description: 'Payment for Order',
                 order_id: data.id,
                 handler: async function (response) {
-                    console.log('Payment success:', response);
-                    const placeOrderResponse = await fetch('/place-order', {
-               
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            userId: userId,
-                            addressId: addressId,
-                            paymentMethod: "online"
-                        })
-                    });
-                    // Redirect or show success message
-                    window.location.href = "/sucessOrder";
+                    console.log('Payment response:', response);
+                    if (response.error) {
+                        // Handle payment failure
+                        handlePaymentFailure(userId, addressId, paymentMethod);
+                    } else {
+                        // Payment success
+                        const placeOrderResponse = await fetch('/place-order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                userId: userId,
+                                addressId: addressId,
+                                paymentMethod: "online"
+                            })
+                        });
+                        if (placeOrderResponse.ok) {
+                            console.log('Order placed successfully');
+                            window.location.href = "/sucessOrder";
+                        } else {
+                            console.error('Failed to place order:', placeOrderResponse.statusText);
+                            toastr.error('Failed to place order: ' + placeOrderResponse.statusText);
+                        }
+                    }
                 },
                 prefill: {
                     name: 'John Doe',
@@ -516,9 +558,11 @@ async function initiateRazorpayPayment(userId, addressId) {
             rzp.open();
         } else {
             console.error('Failed to create order:', response.statusText);
+            toastr.error('Failed to create order: ' + response.statusText);
         }
     } catch (error) {
         console.error('Error initiating Razorpay payment:', error);
+        toastr.error('Error initiating Razorpay payment: ' + error.message);
     }
 }
 
@@ -545,8 +589,10 @@ document.addEventListener('DOMContentLoaded', function() {
             Swal.fire({
                 icon: 'success',
                 title: 'Coupon Applied',
-                text: 'Coupon applied successfully!',
-                timer: 2000 // Set the timer to automatically close the alert after 2 seconds
+                text: 'Coupon applied successfully!'
+            }).then(() => {
+                // Reload the page
+                window.location.reload();
             });
         })
         .catch(error => {
@@ -568,47 +614,50 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
 ///////////////////////////////////////////////////
 document.addEventListener('DOMContentLoaded', function() {
-        // Add event listener to the "Remove coupon" link
-        document.getElementById('removeCouponLink').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent the default behavior of the link
-            
-            // Call the removeCoupon endpoint
-            fetch('/removeCoupon', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to remove coupon');
-                }
-                return response.json();
-            })
-            .then(data => {
-                // Update the total price on the frontend with the updatedTotalPrice received from the backend
-                document.getElementById('totalPriceDisplay').textContent = data.updatedTotalPrice;
-                // Show a success message using SweetAlert2
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Coupon Removed',
-                    text: 'Coupon removed successfully!',
-                    timer: 2000 // Set the timer to automatically close the alert after 2 seconds
-                });
-            })
-            .catch(error => {
-                console.error('Error removing coupon:', error.message);
-                // Handle error response, show error message, etc.
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed to Remove Coupon',
-                    text: 'Failed to remove coupon'
-                });
+    // Add event listener to the "Remove coupon" link
+    document.getElementById('removeCouponLink').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the default behavior of the link
+        
+        // Call the removeCoupon endpoint
+        fetch('/removeCoupon', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to remove coupon');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update the total price on the frontend with the updatedTotalPrice received from the backend
+            document.getElementById('totalPriceDisplay').textContent = data.updatedTotalPrice;
+            // Show a success message using SweetAlert2
+            Swal.fire({
+                icon: 'success',
+                title: 'Coupon Removed',
+                text: 'Coupon removed successfully!'
+            }).then(() => {
+                // Reload the page
+                window.location.reload();
+            });
+        })
+        .catch(error => {
+            console.error('Error removing coupon:', error.message);
+            // Handle error response, show error message, etc.
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to Remove Coupon',
+                text: 'Failed to remove coupon'
             });
         });
     });
+});
 
 
     </script>

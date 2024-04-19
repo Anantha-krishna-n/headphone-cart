@@ -165,6 +165,7 @@ exports.applyCoupon = async (req, res) => {
         discountAmount = Math.min(discountAmount, cart.totalprice);
 
         // Deduct the discount amount from the total price
+        cart.discount = discountAmount;
         cart.totalprice -= discountAmount;
 
         // Add the used coupon to the user's list of used coupons
@@ -175,7 +176,7 @@ exports.applyCoupon = async (req, res) => {
         cart = await cart.save();
 
         // Send the updated total price back to the client
-        res.json({ updatedTotalPrice: cart.totalprice });
+        res.json({ updatedTotalPrice: cart.totalprice,discountAmount: discountAmount });
     } catch (error) {
         console.error('Error applying coupon:', error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -226,7 +227,7 @@ if (coupon.discountType === 'Percentage') {
 
         // Add the discount amount back to the total price
         cart.totalprice += discountAmountToAddBack;
-
+         cart.discount=0
         // Remove the coupon from the user's list of used coupons
         await user.save();
 

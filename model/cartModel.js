@@ -24,6 +24,10 @@ const cartSchema = new mongoose.Schema({
     totalprice:{
            type:Number,
     },
+    discount: {  // New field for discount amount
+        type: Number,
+        default: 0 // Default value is 0
+    },
     createdAt: {
         type: Date,
         default: Date.now

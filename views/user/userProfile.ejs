@@ -593,46 +593,37 @@ function dateDiffInDays(a, b) {
 <% }); %>
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("hdfls");
     var invoiceButtons = document.querySelectorAll('.invoice-btn');
     invoiceButtons.forEach(function(button) { 
-        button.addEventListener('click', function() 
-        {console.log(orderId,"hjhjhj");
-            // Get the order ID from the data-order-id attribute
+        button.addEventListener('click', function() {
             var orderId = this.getAttribute('data-order-id');
-                    
-            // Make a fetch request to download the invoice
-            fetch(`/download-invoice/${orderId}`)
-                .then(response => {
-                    // Check if the response is successful
-                    if (!response.ok) {
-                        throw new Error('Failed to download invoice');
-                    }
-                    // Parse the response as blob
-                    return response.blob();
-                })
-                .then(blob => {
-                    // Create a URL for the blob
-                    var url = window.URL.createObjectURL(blob);
-                    // Create a temporary <a> element to trigger the download
-                    var a = document.createElement('a');
-                    a.href = url;
-                    a.download = `invoice_${orderId}.pdf`; // Set the filename
-                    // Trigger the click event on the <a> element
-                    a.click();
-                    // Clean up resources
-                    window.URL.revokeObjectURL(url);
-                })
-                .catch(error => {
-                    // Handle any errors that occur during the fetch request
-                    console.error('Error downloading invoice:', error);
-                    // Optionally, display an error message to the user
-                    alert('Error downloading invoice. Please try again later.');
-                });
+            console.log(orderId); // Verify that orderId is retrieved correctly
+
+            // Dynamically create a form element
+            var form = document.createElement('form');
+            form.setAttribute('method', 'GET');
+            form.setAttribute('action', `/download-invoice/${orderId}`);
+
+            // Create a hidden input field for orderId
+            var orderIdInput = document.createElement('input');
+            orderIdInput.setAttribute('type', 'hidden');
+            orderIdInput.setAttribute('name', 'orderId');
+            orderIdInput.setAttribute('value', orderId);
+
+            // Append the input field to the form
+            form.appendChild(orderIdInput);
+
+            // Append the form to the document body
+            document.body.appendChild(form);
+
+            // Submit the form
+            form.submit();
+
+            // Remove the form from the document body after submission
+            document.body.removeChild(form);
         });
     });
 });
-
 
 
 

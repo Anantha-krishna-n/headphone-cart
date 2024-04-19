@@ -892,13 +892,9 @@ exports.resetPasswordPost = async (req, res) => {
 };
 
 
-
-
-const logoPath = path.join("D:", "project", "public", "logo.png"); 
-
 exports.downloadInvoice = async (req, res) => {
   try {
-    const orderId = req.params.orderId;
+    const orderId = req.query.orderId; // Retrieve orderId from query parameters
     const order = await orderCollection
       .findById(orderId)
       .populate("user")
@@ -908,7 +904,7 @@ exports.downloadInvoice = async (req, res) => {
     if (!order) {
       return res.status(404).send("Order not found");
     }
-console.log("helloo");
+
     // Create a new PDF document
     const userDirectory = path.join("D:", "project", "public", "invoices");
     if (!fs.existsSync(userDirectory)) {
@@ -923,6 +919,8 @@ console.log("helloo");
 
     doc.pipe(fs.createWriteStream(filePath));
 
+
+ 
     // Write content to the PDF document
     doc.fontSize(16).text("Invoice", { align: "center" }).moveDown();
 
@@ -953,6 +951,7 @@ console.log("helloo");
     doc.end();
 
     // Send the PDF file as a response for download
+ 
     res.download(filePath);
   } catch (error) {
     console.error(error);
