@@ -1,0 +1,75 @@
+[{
+  "_id": {
+    "$oid": "65c73d73337e59c5193b5c62"
+  },
+  "category_name": "gamming",
+  "description": "                                                                                                                                                                                                                                                                                                complete gamming aspects",
+  "logo_image": "public\\uploads\\logo_image-1707556211150.jpg",
+  "createdAt": {
+    "$date": "2024-02-10T09:10:11.186Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-25T05:51:19.080Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65c7431f2dba95bf2803cdcc"
+  },
+  "category_name": "tws",
+  "description": "                                                                        true wireless stereo",
+  "logo_image": "public\\uploads\\logo_image-1707557663179.jpg",
+  "createdAt": {
+    "$date": "2024-02-10T09:34:23.225Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-25T04:48:29.460Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65cc416aae3e26633eb76b48"
+  },
+  "category_name": "wired earphones",
+  "description": "wired earphones with 3.5mm audio jack",
+  "logo_image": "public\\uploads\\logo_image-1707884906410.webp",
+  "createdAt": {
+    "$date": "2024-02-14T04:28:26.451Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-14T04:28:26.451Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65dc24706c89e1ad13441acb"
+  },
+  "category_name": "overhead",
+  "description": "                                                                                                                                                                                                                                                                                                                                                    This is a overheadphone ",
+  "logo_image": "public\\uploads\\logo_image-1708926064578.jpg",
+  "createdAt": {
+    "$date": "2024-02-26T05:41:04.593Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-25T05:53:21.077Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660a7f625520b5047b66ecc5"
+  },
+  "category_name": "gdfgfdg",
+  "description": "fgdggfg",
+  "logo_image": "public\\uploads\\logo_image-1711964002180.jpg",
+  "createdAt": {
+    "$date": "2024-04-01T09:33:22.208Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-01T09:33:22.208Z"
+  },
+  "__v": 0
+}]

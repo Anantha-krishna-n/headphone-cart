@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "65fa849513d9f236eeda04f3"
+  },
+  "bannerImage": [
+    "bannerImage-1710916757099.jpg"
+  ],
+  "bannerTitle": " THE FINAL UX300 HEADPHONE",
+  "bannerSubTitle": "Wireless Convenience Fused With Quality Sound",
+  "bannerUrl": "http://localhost:3000/productDetails/65fa836c13d9f236eeda04cc",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65fa86f613d9f236eeda0536"
+  },
+  "bannerImage": [
+    "bannerImage-1710917366609.jpg"
+  ],
+  "bannerTitle": "PurePlay",
+  "bannerSubTitle": "Simplify the Best Sounding TWS",
+  "bannerUrl": "http://localhost:3000/productDetails/65fa868213d9f236eeda0517",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661f5d6f52e3f9539cfa7e06"
+  },
+  "bannerImage": [
+    "bannerImage-1713331567466.jpg"
+  ],
+  "bannerTitle": "Inclucating the Meze Sound",
+  "bannerSubTitle": "Audiophiles Love",
+  "bannerUrl": "http://localhost:3000/productDetails/65bb22215edddd8826f7a7c1",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661f5e0652e3f9539cfa7e4a"
+  },
+  "bannerImage": [
+    "bannerImage-1713331718794.jpg"
+  ],
+  "bannerTitle": "Our new collection",
+  "bannerSubTitle": "Beginner Friendly IEM bundle",
+  "bannerUrl": "http://localhost:3000/productDetails/65c99cb0edb300d80b48887f",
+  "__v": 0
+}]

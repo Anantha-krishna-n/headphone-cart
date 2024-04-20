@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "65eea9beac4f431c3500f5f9"
+  },
+  "userId": {
+    "$oid": "65b3b0fec301a028a03e2ae1"
+  },
+  "items": [],
+  "__v": 48
+},
+{
+  "_id": {
+    "$oid": "661cb3522ef3ee4b24baa639"
+  },
+  "userId": {
+    "$oid": "661caf82ecc0f28fc89a34a8"
+  },
+  "items": [],
+  "__v": 0
+}]

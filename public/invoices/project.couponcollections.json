@@ -1,0 +1,51 @@
+[{
+  "_id": {
+    "$oid": "6614b93e22cc6a5e95b5b39a"
+  },
+  "couponName": "coupon",
+  "couponCode": "cp20",
+  "discountType": "Fixed Amount",
+  "discountValue": 3000,
+  "minimumPurchase": 500,
+  "startDate": {
+    "$date": "2024-04-09T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-04-16T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661defd12a51a0e1f89b0da2"
+  },
+  "couponName": "summer sale",
+  "couponCode": "sm2024",
+  "discountType": "Percentage",
+  "discountValue": 5,
+  "minimumPurchase": 1000,
+  "startDate": {
+    "$date": "2024-04-16T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-04-23T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661df53e2a51a0e1f89b0eac"
+  },
+  "couponName": "YearEnd sale",
+  "couponCode": "ye10",
+  "discountType": "Percentage",
+  "discountValue": 5,
+  "minimumPurchase": 1000,
+  "startDate": {
+    "$date": "2024-04-16T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2024-04-23T00:00:00.000Z"
+  },
+  "__v": 0
+}]

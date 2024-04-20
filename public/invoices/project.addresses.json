@@ -1,0 +1,54 @@
+[{
+  "_id": {
+    "$oid": "65d723691dc02a90a4cf116b"
+  },
+  "user": {
+    "$oid": "65b3b0fec301a028a03e2ae1"
+  },
+  "address": " verygood adrees",
+  "street": " nice street",
+  "city": "agra",
+  "state": "delhi",
+  "country": "india",
+  "zipCode": "56565665",
+  "createdAt": {
+    "$date": "2024-02-22T10:35:21.586Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e696e5d2a5a009e9102f5b"
+  },
+  "user": {
+    "$oid": "65b3b0fec301a028a03e2ae1"
+  },
+  "address": " this is ahome ",
+  "street": "12th street",
+  "city": "Erankulam",
+  "state": "kerala",
+  "country": "India",
+  "zipCode": "695736",
+  "createdAt": {
+    "$date": "2024-03-05T03:52:05.988Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65ed43f6b595f4e10aec8901"
+  },
+  "user": {
+    "$oid": "65ed4393b595f4e10aec88f0"
+  },
+  "address": "this is a address",
+  "street": "street",
+  "city": "Trivandrum",
+  "state": "kerala",
+  "country": "India",
+  "zipCode": "695736",
+  "createdAt": {
+    "$date": "2024-03-10T05:24:06.894Z"
+  },
+  "__v": 0
+}]

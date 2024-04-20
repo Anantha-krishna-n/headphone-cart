@@ -1,0 +1,321 @@
+[{
+  "_id": {
+    "$oid": "65f96b5476b1797c2c2c0a39"
+  },
+  "user": {
+    "$oid": "65b3b0fec301a028a03e2ae1"
+  },
+  "__v": 0,
+  "balance": 11600.1,
+  "wallethistory": [
+    {
+      "amount": 600,
+      "date": {
+        "$date": "2024-04-11T04:24:04.193Z"
+      },
+      "_id": {
+        "$oid": "661765e403426aba8b6fd9ff"
+      }
+    },
+    {
+      "process": "Refund for Returned Order - 661519605569106074bee4fd",
+      "amount": 600,
+      "date": {
+        "$date": "2024-04-11T04:52:09.442Z"
+      },
+      "_id": {
+        "$oid": "66176c79278dffa5c501edd4"
+      }
+    },
+    {
+      "process": "Refund for Returned Order - oderid 661519605569106074bee4fd",
+      "amount": 600,
+      "date": {
+        "$date": "2024-04-11T05:02:03.043Z"
+      },
+      "_id": {
+        "$oid": "66176ecba38d3e8646e67bfd"
+      }
+    },
+    {
+      "process": "Refund for Returned Order - oderid 661519605569106074bee4fd",
+      "amount": 600,
+      "date": {
+        "$date": "2024-04-11T05:04:07.854Z"
+      },
+      "_id": {
+        "$oid": "66176f47a38d3e8646e67c84"
+      }
+    },
+    {
+      "process": "Refund for Cancelled Order - 6613945bbf5272715f5c8103",
+      "amount": 3600,
+      "date": {
+        "$date": "2024-04-11T05:07:37.520Z"
+      },
+      "_id": {
+        "$oid": "661770195c3964a48b1930f6"
+      }
+    },
+    {
+      "process": "Refund for Returned Order - oderid 661777ff0b47448d67f450ae",
+      "amount": 4800,
+      "date": {
+        "$date": "2024-04-11T07:19:36.611Z"
+      },
+      "_id": {
+        "$oid": "66178f080b47448d67f45208"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661cc6f31c70e95988eecba9"
+  },
+  "user": {
+    "$oid": "661cc28f0c95cf1aac17b1ee"
+  },
+  "balance": 150,
+  "wallethistory": [
+    {
+      "process": "Referral Bonus",
+      "amount": 50,
+      "_id": {
+        "$oid": "661cc6f31c70e95988eecbaa"
+      },
+      "date": {
+        "$date": "2024-04-15T06:19:31.137Z"
+      }
+    },
+    {
+      "process": "Referral Bonus",
+      "amount": 50,
+      "_id": {
+        "$oid": "661cc74e6dd9cb8e62fe22d1"
+      },
+      "date": {
+        "$date": "2024-04-15T06:21:02.463Z"
+      }
+    },
+    {
+      "process": "Referral Bonus",
+      "amount": 50,
+      "_id": {
+        "$oid": "661cc927d28a3ce198ec436a"
+      },
+      "date": {
+        "$date": "2024-04-15T06:28:55.840Z"
+      }
+    }
+  ],
+  "__v": 2
+},
+{
+  "_id": {
+    "$oid": "661cd2350a0578694c6454a1"
+  },
+  "user": {
+    "$oid": "661cd2320a0578694c64549e"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661cd2350a0578694c6454a2"
+      },
+      "date": {
+        "$date": "2024-04-15T07:07:33.752Z"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661cdc45c265d911a7453ab3"
+  },
+  "user": {
+    "$oid": "661cdc41c265d911a7453ab0"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661cdc45c265d911a7453ab4"
+      },
+      "date": {
+        "$date": "2024-04-15T07:50:29.017Z"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661d101dab426d17c1bbcc31"
+  },
+  "user": {
+    "$oid": "661d101dab426d17c1bbcc2e"
+  },
+  "balance": 100,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661d101dab426d17c1bbcc32"
+      },
+      "date": {
+        "$date": "2024-04-15T11:31:41.341Z"
+      }
+    },
+    {
+      "process": "Referral for now Bonus",
+      "amount": 50,
+      "_id": {
+        "$oid": "661d101dab426d17c1bbcc36"
+      },
+      "date": {
+        "$date": "2024-04-15T11:31:41.352Z"
+      }
+    }
+  ],
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "661d1104e7bf965c08c51f15"
+  },
+  "user": {
+    "$oid": "661d1104e7bf965c08c51f12"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661d1104e7bf965c08c51f16"
+      },
+      "date": {
+        "$date": "2024-04-15T11:35:32.686Z"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661d1214be561788f5ff24b9"
+  },
+  "user": {
+    "$oid": "661d1214be561788f5ff24b6"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661d1214be561788f5ff24ba"
+      },
+      "date": {
+        "$date": "2024-04-15T11:40:04.396Z"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661e2fe815df9310e92af1f9"
+  },
+  "user": {
+    "$oid": "661e2fe815df9310e92af1f5"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661e2fe815df9310e92af1fa"
+      },
+      "date": {
+        "$date": "2024-04-16T07:59:36.122Z"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661e307d906dd71fe6accb9d"
+  },
+  "user": {
+    "$oid": "661e307d906dd71fe6accb99"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661e307d906dd71fe6accb9e"
+      },
+      "date": {
+        "$date": "2024-04-16T08:02:05.822Z"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661fa71bb70262f253d3fc9a"
+  },
+  "user": {
+    "$oid": "661fa71bb70262f253d3fc96"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661fa71bb70262f253d3fc9b"
+      },
+      "date": {
+        "$date": "2024-04-17T10:40:27.976Z"
+      }
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "661faa1bdd935ebba5b6717e"
+  },
+  "user": {
+    "$oid": "661faa1bdd935ebba5b6717a"
+  },
+  "balance": 50,
+  "wallethistory": [
+    {
+      "process": "Referral Bonussss",
+      "amount": 50,
+      "_id": {
+        "$oid": "661faa1bdd935ebba5b6717f"
+      },
+      "date": {
+        "$date": "2024-04-17T10:53:15.331Z"
+      }
+    }
+  ],
+  "__v": 0
+}]

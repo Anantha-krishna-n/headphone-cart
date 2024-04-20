@@ -1,0 +1,365 @@
+[{
+  "_id": {
+    "$oid": "65bb19de5edddd8826f7a77f"
+  },
+  "name": "wired headphone",
+  "description": "wired headphones with 3mm dynamic drive",
+  "price": 44,
+  "stock_status": "In Stock",
+  "color_status": "White",
+  "delivery_charge": 2,
+  "image": [
+    "\\uploads\\image-1712565045316.webp"
+  ],
+  "category": [
+    {
+      "$oid": "65c73d73337e59c5193b5c62"
+    }
+  ],
+  "blocked": true,
+  "createdAt": {
+    "$date": "2024-02-01T04:11:10.289Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-08T08:34:33.205Z"
+  },
+  "__v": 5,
+  "quantity": 5
+},
+{
+  "_id": {
+    "$oid": "65bb1d0a5edddd8826f7a797"
+  },
+  "name": "7HZ x Crinacle- Zero: 2",
+  "description": "In-Ears With 1 Dynamic Driver Without Mic",
+  "price": 1200,
+  "stock_status": "In Stock",
+  "color_status": "White",
+  "delivery_charge": 2,
+  "image": [
+    "\\uploads\\image-1706773285159.jpg",
+    "\\uploads\\image-1706773285164.jpg",
+    "\\uploads\\image-1706773285169.jpg",
+    "\\uploads\\image-1706773285172.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65c7431f2dba95bf2803cdcc"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-02-01T04:24:42.927Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-17T11:32:35.077Z"
+  },
+  "__v": 4,
+  "quantity": 24
+},
+{
+  "_id": {
+    "$oid": "65bb22215edddd8826f7a7c1"
+  },
+  "name": "HEDD AUDIO",
+  "description": "HEDD Audio - HEDD phone TWO\r\nFlagship Open-Back Headph",
+  "price": 1000,
+  "stock_status": "In Stock",
+  "color_status": "Black",
+  "delivery_charge": null,
+  "image": [
+    "\\uploads\\image-1711430318232.jpg",
+    "\\uploads\\image-1711430318242.jpg",
+    "\\uploads\\image-1711430318254.jpg",
+    "\\uploads\\image-1711430318264.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65dc24706c89e1ad13441acb"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-02-01T04:46:25.764Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-01T06:30:01.074Z"
+  },
+  "__v": 4,
+  "quantity": 7
+},
+{
+  "_id": {
+    "$oid": "65bb3924bc83e057462fd52d"
+  },
+  "name": "wired headphones",
+  "description": "KZ - AZ09 Pro\r\nC-Pin True Wireless Module",
+  "price": 450,
+  "stock_status": "In Stock",
+  "color_status": "Black",
+  "delivery_charge": 2,
+  "image": [
+    "\\uploads\\image-1706776789231.jpg",
+    "\\uploads\\image-1706776789240.jpg",
+    "\\uploads\\image-1706776789243.jpg",
+    "\\uploads\\image-1706776789248.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65c73d73337e59c5193b5c62"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-02-01T06:24:36.394Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T07:40:08.475Z"
+  },
+  "__v": 3,
+  "offer_price": 45,
+  "quantity": 6
+},
+{
+  "_id": {
+    "$oid": "65bb76d8b28df0d183a7bcd3"
+  },
+  "name": "HIFIMAN",
+  "description": "HiFiMAN - Sundara (2022)\r\nPlanar Magnetic Open",
+  "price": 300,
+  "stock_status": "In Stock",
+  "color_status": "Black",
+  "delivery_charge": 5,
+  "image": [
+    "\\uploads\\image-1706784472703.jpg",
+    "\\uploads\\image-1706784472731.jpg",
+    "\\uploads\\image-1706784472746.jpg",
+    "\\uploads\\image-1706784472754.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65dc24706c89e1ad13441acb"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-02-01T10:47:52.787Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-19T07:24:18.986Z"
+  },
+  "__v": 2,
+  "quantity": 4
+},
+{
+  "_id": {
+    "$oid": "65bc683535ce6caf59477b19"
+  },
+  "name": "Sony",
+  "description": "Sony - INZONE H9\r\nNoise Cancelling Headphone For Gaming",
+  "price": 800,
+  "stock_status": "In Stock",
+  "color_status": "White",
+  "delivery_charge": 15,
+  "image": [
+    "\\uploads\\image-1706846261687.jpg",
+    "\\uploads\\image-1706846261691.jpg",
+    "\\uploads\\image-1706846261695.jpg",
+    "\\uploads\\image-1706846261708.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65c73d73337e59c5193b5c62"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-02-02T03:57:41.735Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-16T03:53:47.019Z"
+  },
+  "__v": 2,
+  "quantity": 0
+},
+{
+  "_id": {
+    "$oid": "65c99cb0edb300d80b48887f"
+  },
+  "name": "KZ - ZVX",
+  "description": "KZ PRESENTS THE A HIGH-PERFORMANCE DYNAMIC DRIVER\r\n",
+  "price": 1600,
+  "stock_status": "In Stock",
+  "color_status": "Black",
+  "delivery_charge": 2,
+  "image": [
+    "\\uploads\\image-1707711664473.jpg",
+    "\\uploads\\image-1707711664478.jpg",
+    "\\uploads\\image-1707711664484.jpg",
+    "\\uploads\\image-1707711664489.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65cc416aae3e26633eb76b48"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-02-12T04:21:04.494Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-12T04:03:48.203Z"
+  },
+  "__v": 4,
+  "quantity": 5
+},
+{
+  "_id": {
+    "$oid": "65dc24cc6c89e1ad13441ad4"
+  },
+  "name": "KZ",
+  "description": "KZ - ZVX\r\nIn-Ears With 1 Dynamic Driver",
+  "price": 100,
+  "color_status": "White",
+  "quantity": 0,
+  "delivery_charge": 1,
+  "image": [
+    "\\uploads\\image-1708926156423.jpg",
+    "\\uploads\\image-1708926156457.jpg",
+    "\\uploads\\image-1708926156478.jpg",
+    "\\uploads\\image-1708926156486.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65c73d73337e59c5193b5c62"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-02-26T05:42:36.523Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-05T07:30:55.598Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e6c6a3d45fd3c9f53df869"
+  },
+  "name": "7HZ",
+  "description": "7HZ - Salnotes Zero\r\nIn-Ears With 1 Dynamic Driver",
+  "price": 999,
+  "color_status": "Black",
+  "quantity": 2,
+  "delivery_charge": 2,
+  "image": [
+    "\\uploads\\image-1709622947152.jpg",
+    "\\uploads\\image-1709622947166.jpg",
+    "\\uploads\\image-1709622947173.jpg",
+    "\\uploads\\image-1709622947190.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65cc416aae3e26633eb76b48"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-03-05T07:15:47.214Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-26T05:02:11.391Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e6c859d45fd3c9f53df895"
+  },
+  "name": "FINAL AUDIO",
+  "description": "Final - E1000\r\nIn-Ears With 1 Dynamic Driver",
+  "price": 150,
+  "color_status": "Black",
+  "quantity": 1,
+  "delivery_charge": 2,
+  "image": [
+    "\\uploads\\image-1709623385132.webp",
+    "\\uploads\\image-1709623385135.jpg",
+    "\\uploads\\image-1709623385142.jpg",
+    "\\uploads\\image-1709623385149.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65c73d73337e59c5193b5c62"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-03-05T07:23:05.158Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-16T03:53:47.036Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "65fa836c13d9f236eeda04cc"
+  },
+  "name": "Final - UX3000",
+  "description": "Noise Cancelling Wireless Headphone\r\nspatial audio",
+  "price": 14999,
+  "color_status": "Black",
+  "quantity": 5,
+  "delivery_charge": 2,
+  "image": [
+    "\\uploads\\image-1710916460718.jpg",
+    "\\uploads\\image-1710916460722.webp",
+    "\\uploads\\image-1710916460722.jpg",
+    "\\uploads\\image-1710916460724.webp"
+  ],
+  "category": [
+    {
+      "$oid": "65dc24706c89e1ad13441acb"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-03-20T06:34:20.732Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-11T04:03:30.281Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65fa868213d9f236eeda0517"
+  },
+  "name": "LYPERTEK X HEADPHONE ZONE",
+  "description": "PurePlay Z3\r\nTrue Wireless Earbuds",
+  "price": 6000,
+  "color_status": "Black",
+  "quantity": 5,
+  "delivery_charge": 3,
+  "image": [
+    "\\uploads\\image-1710917249982.jpg",
+    "\\uploads\\image-1710917249987.jpg",
+    "\\uploads\\image-1710917249991.jpg",
+    "\\uploads\\image-1710917249994.jpg"
+  ],
+  "category": [
+    {
+      "$oid": "65c7431f2dba95bf2803cdcc"
+    }
+  ],
+  "blocked": false,
+  "createdAt": {
+    "$date": "2024-03-20T06:47:30.002Z"
+  },
+  "updatedAt": {
+    "$date": "2024-04-11T03:55:16.270Z"
+  },
+  "__v": 1
+}]

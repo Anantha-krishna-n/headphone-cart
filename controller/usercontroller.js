@@ -41,7 +41,7 @@ exports.logoutGet = (req, res) => {
       }
       res.redirect("/");
     });
-  } else {
+  } else {                                                               
     res.redirect("/");
   }
 };

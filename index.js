@@ -68,7 +68,7 @@ app.use((req,res,next)=>{
 //database connecting
 //const mongoose=require('mongoose')
 mongoose.connect(process.env.MongoDB)
-.then(()=>{
+.then((data)=>{
     console.log("mongodb connected");
 })
 .catch(()=>{

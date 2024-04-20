@@ -1,0 +1,36 @@
+[{
+  "_id": {
+    "$oid": "66221fe144d06a1beefd45e3"
+  },
+  "userId": {
+    "$oid": "65b3b0fec301a028a03e2ae1"
+  },
+  "items": [
+    {
+      "productId": {
+        "$oid": "65e6c859d45fd3c9f53df895"
+      },
+      "qty": 1,
+      "price": 145.5,
+      "_id": {
+        "$oid": "66225624267c0b12f4061b5b"
+      }
+    },
+    {
+      "productId": {
+        "$oid": "65bb76d8b28df0d183a7bcd3"
+      },
+      "qty": 1,
+      "price": 285,
+      "_id": {
+        "$oid": "66225628267c0b12f4061b81"
+      }
+    }
+  ],
+  "discount": 0,
+  "createdAt": {
+    "$date": "2024-04-19T07:40:17.778Z"
+  },
+  "__v": 3,
+  "totalprice": 430.5
+}]

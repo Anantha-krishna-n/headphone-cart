@@ -1,0 +1,70 @@
+[{
+  "_id": {
+    "$oid": "660bc93f7d365ec6de6304e5"
+  },
+  "product": {
+    "$oid": "65fa868213d9f236eeda0517"
+  },
+  "discount": 12,
+  "expiryDate": {
+    "$date": "2024-04-23T00:00:00.000Z"
+  },
+  "isActive": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660bca22144123d62fd5b21d"
+  },
+  "category": {
+    "$oid": "65dc24706c89e1ad13441acb"
+  },
+  "discount": 5,
+  "expiryDate": {
+    "$date": "2024-04-16T00:00:00.000Z"
+  },
+  "isActive": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660bcc31144123d62fd5b253"
+  },
+  "product": {
+    "$oid": "65e6c859d45fd3c9f53df895"
+  },
+  "discount": 3,
+  "expiryDate": {
+    "$date": "2024-04-10T00:00:00.000Z"
+  },
+  "isActive": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660bcc41144123d62fd5b25c"
+  },
+  "category": {
+    "$oid": "65c7431f2dba95bf2803cdcc"
+  },
+  "discount": 10,
+  "expiryDate": {
+    "$date": "2024-04-15T00:00:00.000Z"
+  },
+  "isActive": false,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "660bcc54144123d62fd5b265"
+  },
+  "product": {
+    "$oid": "65bc683535ce6caf59477b19"
+  },
+  "discount": 4,
+  "expiryDate": {
+    "$date": "2024-04-09T00:00:00.000Z"
+  },
+  "isActive": false,
+  "__v": 0
+}]
