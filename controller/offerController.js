@@ -21,9 +21,9 @@ exports.offerManagementGet = async (req, res) => {
       .find()
       .skip((page - 1) * perPage) // Skip offers based on page number
       .limit(perPage) // Limit number of offers per page
-      .populate('product','name') // Populate the product field
-      .populate('category','category_name'); // Populate the category field
-console.log(offers)
+      .populate("product", "name") // Populate the product field
+      .populate("category", "category_name"); // Populate the category field
+    console.log(offers);
     res.render("admin/offerManagement", { offers, page, totalPages });
   } catch (error) {
     console.error(error);
@@ -47,7 +47,9 @@ exports.addofferPost = async (req, res) => {
     let newOffer;
 
     if (addBy === "product") {
-      const product = await productCollection.findOne({ name: req.body.product });
+      const product = await productCollection.findOne({
+        name: req.body.product,
+      });
 
       if (!product) {
         return res.render("admin/addoffer", {
@@ -61,7 +63,9 @@ exports.addofferPost = async (req, res) => {
         expiryDate: req.body.expiryDate,
       });
     } else if (addBy === "category") {
-      const category = await categoryCollection.findOne({ category_name: req.body.category });
+      const category = await categoryCollection.findOne({
+        category_name: req.body.category,
+      });
 
       if (!category) {
         return res.render("admin/addoffer", {
@@ -80,7 +84,7 @@ exports.addofferPost = async (req, res) => {
     res.redirect("/offerManagement");
   } catch (error) {
     console.log("Error in the Add offer Post", error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -112,11 +116,8 @@ exports.editofferPost = async (req, res) => {
 exports.toggleOffer = async (req, res) => {
   const { offerId } = req.params;
   const { action } = req.query;
- console.log(offerId,"in the controller")
   try {
-    console.log("enetred.. into unlist")
     const offer = await offerCollection.findById(offerId);
-     console.log(offer,"is offer.")
     if (!offer) {
       return res.status(404).json({ message: "Offer not found" });
     }
@@ -125,10 +126,13 @@ exports.toggleOffer = async (req, res) => {
 
     await offer.save();
 
-    res.json({ message: `Offer ${action === "list" ? "listed" : "unlisted"} successfully` });
+    res.json({
+      message: `Offer ${
+        action === "list" ? "listed" : "unlisted"
+      } successfully`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-

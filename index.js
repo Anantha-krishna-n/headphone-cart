@@ -64,10 +64,10 @@ app.use((req,res,next)=>{
 });
 
 
-
+  
 //database connecting
 //const mongoose=require('mongoose')
-mongoose.connect(process.env.MongoDB)
+mongoose.connect("mongodb+srv://ananthakrishnan053:yMcoApInXzHqiy9p@cluster0.aqvogpr.mongodb.net/project")
 .then((data)=>{
     console.log("mongodb connected");
 })

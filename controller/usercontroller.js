@@ -41,7 +41,7 @@ exports.logoutGet = (req, res) => {
       }
       res.redirect("/");
     });
-  } else {                                                               
+  } else {
     res.redirect("/");
   }
 };
@@ -147,8 +147,7 @@ exports.shopGet = async (req, res) => {
           category: product.category[0]._id,
           isActive: true,
         });
-        console.log(productOffer, "pro offer");
-        console.log(categoryOffer, "category offer");
+
         if (
           productOffer &&
           (!categoryOffer || productOffer.discount > categoryOffer.discount)
@@ -209,11 +208,10 @@ exports.signupPost = async (req, res) => {
       } while (existingReferral);
       return referralCode;
     };
-       
-    // Function to credit wallet  
-    const creditWallet = async (user, amount) => {  
 
-      const wallet = await WalletModel.findOne({ user:user});
+    // Function to credit wallet
+    const creditWallet = async (user, amount) => {
+      const wallet = await WalletModel.findOne({ user: user });
       if (wallet) {
         wallet.balance += amount;
         wallet.wallethistory.push({
@@ -221,16 +219,15 @@ exports.signupPost = async (req, res) => {
           amount: amount,
         });
         await wallet.save();
-    } else {
+      } else {
         // If the user does not have a wallet, create a new one
         const newWallet = new WalletModel({
-            user: user, // Provide the user ID here
-            balance: amount,
-            wallethistory: [{ process: "Referral Bonussss", amount: amount }]
+          user: user, // Provide the user ID here
+          balance: amount,
+          wallethistory: [{ process: "Referral Bonussss", amount: amount }],
         });
         await newWallet.save();
-    }
-
+      }
     };
 
     const userData = {
@@ -245,16 +242,14 @@ exports.signupPost = async (req, res) => {
     // Check if a referral code is provided
     let referrer = null;
     if (userData.referralCode) {
-    referrer = await userCollection.findOne({
+      referrer = await userCollection.findOne({
         referralCode: userData.referralCode,
       });
-      console.log(referrer,"one");
-      console.log(userData,"two");
-      
-      const old=referrer.referralCode
-      console.log(old,"hihih");
-      if(referrer.referralCode===userData.referralCode){
-              userData.referralCode=await generateReferralCode();
+
+      const old = referrer.referralCode;
+
+      if (referrer.referralCode === userData.referralCode) {
+        userData.referralCode = await generateReferralCode();
       }
       if (!referrer) {
         req.session.error = "Invalid referral code";
@@ -301,26 +296,22 @@ exports.signupPost = async (req, res) => {
         },
       };
 
-      
       // Send OTP via email
       await sendOtpEmail(userData.email, otpCode);
-      
+
       const userDataOfTheUser = await userCollection.insertMany([userWithOtp]);
       // Store email in session for OTP verification
       req.session.verifyEmail = userData.email;
-      
-      
+
       if (referrer) {
-          userData.referralCode=await generateReferralCode()
+        userData.referralCode = await generateReferralCode();
         // Credit referrer's wallet with the referral bonus
         await creditWallet(userDataOfTheUser[0].id, 50); // for cuurent user
-      
-        
-        
+
         // Credit new user's wallet with the referral bonus
         // await creditWallet(userWithOtp, 50);
-    }
-    
+      }
+
       // Redirect to OTP verification page
       return res.render("user/otpsignup", {
         msg: "Signup successful! Please verify your email.",
@@ -335,14 +326,12 @@ exports.signupPost = async (req, res) => {
   }
 };
 
-
-
 let verifyEmail = "";
 
 exports.signupVerifyOtp = async (req, res) => {
   try {
     const { otp } = req.body;
-    console.log(otp, "this is the otp.........................");
+
     if (req.session.verifyEmail) {
       verifyEmail = req.session.verifyEmail;
       console.log(verifyEmail, "this message from signupVerifyOtp side");
@@ -421,7 +410,6 @@ exports.emailResendOtp = async (req, res) => {
 
     // Send the new OTP via email
     await sendOtpEmail(verifyEmail, otpCode);
-    console.log("New OTP sent successfully");
 
     res.render("user/otpsignup"); // Redirect to the verification page
   } catch (error) {
@@ -524,9 +512,7 @@ function generateOTP() {
 
 exports.forgotPasswordPost = async (req, res) => {
   try {
-    console.log("entered forgotPasswordPost");
     const { email } = req.body;
-    console.log("Email:", email);
 
     const user = await userCollection.findOne({ email });
 
@@ -555,9 +541,7 @@ exports.forgotPasswordPost = async (req, res) => {
 };
 exports.verifyOTP = async (req, res) => {
   try {
-    console.log("entered verifyOTP");
     const { email, otp } = req.body;
-    console.log("Email:", email);
 
     // Retrieve OTP and its expiry time from session
     const sessionOTP = req.session.resetPasswordOTP;
@@ -575,16 +559,13 @@ exports.verifyOTP = async (req, res) => {
 
     // Retrieve user from database
     const user = await userCollection.findOne({ email });
-    console.log("User:", user);
 
     if (!user) {
-      console.log("User not found");
       return res.status(404).send("There is no such user.");
     }
 
     // Check if the received OTP matches the one stored in the session
     if (sessionOTP !== otp) {
-      console.log("Invalid OTP");
       return res.status(400).send("Invalid OTP.");
     }
 
@@ -598,7 +579,6 @@ exports.verifyOTP = async (req, res) => {
 
 exports.setNewPassword = async (req, res) => {
   try {
-    console.log("entered into setnewpassword");
     const { email, password, confirmpassword, otp } = req.body;
 
     // Validate if passwords match
@@ -610,17 +590,14 @@ exports.setNewPassword = async (req, res) => {
     const sessionOTP = req.session.resetPasswordOTP;
     const otpExpiry = req.session.resetPasswordOTPExpires;
 
-    console.log(sessionOTP, "here");
-    console.log(otpExpiry, "kk");
     // Check if OTP exists in session and is not expired
     if (!sessionOTP || otpExpiry < Date.now()) {
       console.log("OTP not found or expired in session");
       return res.status(400).send("Invalid or expired OTP.");
     }
-    console.log(otp, "in setnew");
+
     // Check if the received OTP matches the one stored in the session
     if (sessionOTP !== otp) {
-      console.log("Invalid OTP");
       return res.status(400).send("Invalid OTP.");
     }
 
@@ -827,9 +804,7 @@ exports.userProfileGet = async (req, res) => {
 };
 
 exports.editUserDetails = async (req, res) => {
-  console.log("hdhdh");
   const { editName, editEmail, editPhoneNumber } = req.body;
-  console.log(editName, "jjd");
 
   try {
     // Find the user by their ID
@@ -891,7 +866,6 @@ exports.resetPasswordPost = async (req, res) => {
   }
 };
 
-
 exports.downloadInvoice = async (req, res) => {
   try {
     const orderId = req.query.orderId; // Retrieve orderId from query parameters
@@ -913,14 +887,12 @@ exports.downloadInvoice = async (req, res) => {
 
     // Create a new PDF document
     const doc = new PDFDocument();
-     
+
     const fileName = `invoice_${order._id}.pdf`;
     const filePath = path.join(userDirectory, fileName);
 
     doc.pipe(fs.createWriteStream(filePath));
 
-
- 
     // Write content to the PDF document
     doc.fontSize(16).text("Invoice", { align: "center" }).moveDown();
 
@@ -951,7 +923,7 @@ exports.downloadInvoice = async (req, res) => {
     doc.end();
 
     // Send the PDF file as a response for download
- 
+
     res.download(filePath);
   } catch (error) {
     console.error(error);
