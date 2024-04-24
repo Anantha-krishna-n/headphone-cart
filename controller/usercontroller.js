@@ -868,65 +868,77 @@ exports.resetPasswordPost = async (req, res) => {
 
 exports.downloadInvoice = async (req, res) => {
   try {
-    const orderId = req.query.orderId; // Retrieve orderId from query parameters
-    const order = await orderCollection
-      .findById(orderId)
-      .populate("user")
-      .populate("addresses")
-      .populate("items.product");
-
-    if (!order) {
-      return res.status(404).send("Order not found");
-    }
-
-    // Create a new PDF document
-    const userDirectory = path.join("D:", "project", "public", "invoices");
-    if (!fs.existsSync(userDirectory)) {
-      fs.mkdirSync(userDirectory, { recursive: true });
-    }
-
-    // Create a new PDF document
-    const doc = new PDFDocument();
-
-    const fileName = `invoice_${order._id}.pdf`;
-    const filePath = path.join(userDirectory, fileName);
-
-    doc.pipe(fs.createWriteStream(filePath));
-
-    // Write content to the PDF document
-    doc.fontSize(16).text("Invoice", { align: "center" }).moveDown();
-
-    doc.fontSize(12).text(`Order ID: ${order._id}`).moveDown();
-
-    // Add order details
-    doc.text(`User: ${order.user.name}`).moveDown();
-    order.addresses.forEach((address) => {
-      doc
-        .text(
-          `Address: ${address.address}, ${address.city}, ${address.state}, ${address.country}, ${address.zipCode}`
-        )
-        .moveDown();
-    });
-    doc.moveDown();
-
-    doc.text("Products:");
-    order.items.forEach((item) => {
-      doc.text(
-        `- ${item.product.name}: ${item.quantity} x $${item.product.price}`
-      );
-    });
-    doc.moveDown();
-
-    doc.text(`Total Price: $${order.total}`).moveDown();
-    doc.text(`Payment Method: ${order.paymentMethod}`).moveDown();
-    doc.text(`Status: ${order.status}`).moveDown();
-    doc.end();
-
-    // Send the PDF file as a response for download
-
-    res.download(filePath);
+     const orderId = req.query.orderId;
+     const order = await orderCollection
+       .findById(orderId)
+       .populate("user")
+       .populate("addresses")
+       .populate("items.product");
+ 
+     if (!order) {
+       return res.status(404).send("Order not found");
+     }
+ 
+     const userDirectory = path.join("D:", "project", "public", "invoices");
+     if (!fs.existsSync(userDirectory)) {
+       fs.mkdirSync(userDirectory, { recursive: true });
+     }
+ 
+     const doc = new PDFDocument();
+     const fileName = `invoice_${order._id}.pdf`;
+     const filePath = path.join(userDirectory, fileName);
+ 
+     doc.pipe(fs.createWriteStream(filePath));
+ 
+     // Add current date at the top right corner
+     const currentDate = new Date().toLocaleDateString();
+     doc.fontSize(12).text(currentDate, { align: 'right' }).moveDown();
+ 
+     // Table dimensions
+     const tableMargin = 50;
+     const rowHeight = 20;
+     const colWidth = 150;
+     const numCols = 3; // Product, Quantity, Price
+ 
+     // Header row
+     doc.fontSize(16).text("Invoice", { align: "center" }).moveDown();
+     doc.fontSize(12).text(`Order ID: ${order._id}`).moveDown();
+ 
+     // Table header
+     const headerY = doc.y;
+     doc.fontSize(12).text("Product", tableMargin, headerY).text("Quantity", tableMargin + colWidth, headerY).text("Price", tableMargin + colWidth * 2, headerY).moveDown();
+ 
+     // Table rows
+     let y = doc.y;
+     order.items.forEach((item, index) => {
+       // Add product name, quantity, and price in a row
+       doc.fontSize(12).text(item.product.name, tableMargin, y).text(item.quantity.toString(), tableMargin + colWidth, y).text(`$${item.product.price}`, tableMargin + colWidth * 2, y).moveDown();
+       y = doc.y;
+ 
+       const lineY = y +10 ; // Adjust this value to move the line up or down
+       // Draw horizontal lines to separate rows
+       doc.moveTo(tableMargin, y).lineTo(tableMargin + colWidth * numCols, y).stroke();
+     });
+ 
+     // Calculate the total price
+     const totalPrice = order.items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+ 
+     // Total Price row
+     y = doc.y;
+     doc.fontSize(12).text("Total Price:", tableMargin, y).text(`$${totalPrice}`, tableMargin + colWidth * 2, y).moveDown();
+ 
+     // Draw horizontal lines to separate rows
+     doc.moveTo(tableMargin, y).lineTo(tableMargin + colWidth * numCols, y).stroke();
+ 
+     // Payment Method and Status
+     doc.fontSize(12).text(`Payment Method: ${order.paymentMethod}`).moveDown();
+     doc.text(`Status: ${order.status}`).moveDown();
+ 
+     doc.end();
+ 
+     res.download(filePath);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Internal Server Error");
+     console.error(error);
+     res.status(500).send("Internal Server Error");
   }
-};
+ };
