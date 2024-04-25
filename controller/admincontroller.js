@@ -273,7 +273,7 @@ exports.createCategoryPOST = async (req, res) => {
     ? req.files["logo_image"][0].path
     : null;
 
-  let fileName = logo_image.substring(logo_image.lastIndexOf("\\") + 1);
+  let fileName = logo_image.basename(fullPath)
 
 
   try {
