@@ -98,7 +98,8 @@ exports.salesReportGet = async (req, res) => {
   }
 };
 
-const logoPath = path.join("D:", "project", "public", "logo.png");
+const logoPath = path.join(__dirname, "public", "logo.png");
+
 
 exports.generateSalesReportPDF = async (req, res) => {
   const perPage = 10; // Number of orders per page
