@@ -289,6 +289,7 @@ exports.createCategoryPOST = async (req, res) => {
           '<script>alert("Category with this name already exists. Please choose a different name."); window.location="/catagoryManagement";</script>'
         );
     }
+    console.log(fileName);
     const newCategory = new categoryCollection({
       category_name,
       description,
