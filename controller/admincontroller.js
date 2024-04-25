@@ -496,9 +496,9 @@ exports.editcatagoryPOST = async (req, res) => {
     })
     if (duplicateCategory) {
       return res.status(400).send(`<script>
-            alert("Category with this name already exists. Please choose a different name.");
-            window.location="/catagoryManagement";
-        </script>`);
+        alert("Category with this name already exists. Please choose a different name.");
+        window.location="/catagoryManagement";
+      </script>`);
     }
 
     const logo_imagePath = req.files["logo_image"]
