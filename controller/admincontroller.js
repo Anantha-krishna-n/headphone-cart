@@ -273,6 +273,9 @@ exports.createCategoryPOST = async (req, res) => {
     ? req.files["logo_image"][0].path
     : null;
 
+  let fileName = logo_image.substring(logo_image.lastIndexOf("\\") + 1);
+
+
   try {
     // Check if a category with the same name already exists
     const existingCategory = await categoryCollection.findOne({
@@ -289,7 +292,7 @@ exports.createCategoryPOST = async (req, res) => {
     const newCategory = new categoryCollection({
       category_name,
       description,
-      logo_image,
+      logo_image :fileName,
     });
     await newCategory.save();
     res.redirect("/catagoryManagement"); // Redirect to the category listing page
@@ -492,8 +495,8 @@ exports.editcatagoryPOST = async (req, res) => {
       return res.status(404).send("Category not found for update");
     }
     const duplicateCategory = await categoryCollection.findOne({
-      category_name: category_name
-    })
+      category_name: category_name,
+    });
     if (duplicateCategory) {
       return res.status(400).send(`<script>
         alert("Category with this name already exists. Please choose a different name.");
