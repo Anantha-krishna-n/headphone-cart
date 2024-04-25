@@ -98,7 +98,7 @@ exports.salesReportGet = async (req, res) => {
   }
 };
 
-const logoPath = path.join(__dirname, "public", "logo.png");
+
 
 
 exports.generateSalesReportPDF = async (req, res) => {
@@ -195,7 +195,7 @@ exports.generateSalesReportPDF = async (req, res) => {
     // Pipe the PDF output to the writable stream
     doc.pipe(writeStream);
 
-    doc.image(logoPath, 10, 20, { width: 200, height: 100 }); // Adjust position and size as needed
+   
 
     const currentDate = new Date().toLocaleString(); // Get current date and time
     const textWidth = doc.widthOfString(currentDate);
