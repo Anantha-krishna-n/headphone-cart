@@ -61,7 +61,7 @@ router.post('/editcatagory/:id',upload.fields([{ name: 'logo_image', maxCount: 1
 
 router.post('/editproduct/:id',upload.array("image",4), editproductPOST)
 router.post('/createProduct',upload.array("image",4),createproductPOST )
-router.post('/createCategory',upload.array("image",1),createCategoryPOST)
+router.post('/createCategory',upload.array("logo_image",1),createCategoryPOST)
 router.post('/toggleblockproduct/:id', toggleBlockProduct)
 router.delete('/products/:productId/images/:imageIndex',deleteProductImage);
 
