@@ -492,9 +492,8 @@ exports.editcatagoryPOST = async (req, res) => {
       return res.status(404).send("Category not found for update");
     }
     const duplicateCategory = await categoryCollection.findOne({
-      category_name: category_name,
-      _id: { $ne: existingCategory._id },
-    });
+      category_name: category_name
+    })
     if (duplicateCategory) {
       return res.status(400).send(`<script>
             alert("Category with this name already exists. Please choose a different name.");
