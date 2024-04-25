@@ -277,7 +277,7 @@ exports.createCategoryPOST = async (req, res) => {
 
   try {
     // Check if a category with the same name already exists
- logo_image = logo_image.replace(/\\/g, "/");
+
     const existingCategory = await categoryCollection.findOne({
       category_name,
     });

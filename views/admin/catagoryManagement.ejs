@@ -272,7 +272,7 @@
                                             
                                                 <div class="ProductTableImage">
                                                     <% if (catagory.logo_image) { %>
-                                                        <img src='<%= "/uploads/" + catagory.logo_image.split("uploads\\")[1] %>' style="width:50px;" class="img-fluid">
+                                                        <img src='<%= "/uploads/" + catagory.logo_image.split("uploads\\")[1]?.replace(/\\/g, "/") %>' style="width:50px;" class="img-fluid">
                                                     <% } else { %>
                                                         <!-- Provide a default image source or handle accordingly -->
                                                         <img src='/default-image.jpg' style="width:50px;" class="img-fluid">
