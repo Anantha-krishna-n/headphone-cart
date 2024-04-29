@@ -366,7 +366,7 @@
                                                             </div>
                                                             <div class="card-body" id="image-display-div">
                                                                 <% if (catagories.logo_image) { %>
-                                                                    <img src='<%= "/uploads/" + catagories.logo_image.split("uploads\\")[1] %>' style="width:150px; height:150px " class="img-fluid">
+                                                                    <img src='<%= "/uploads/" + catagories.logo_image.split("uploads\/")[1] %>' style="width:150px; height:150px " class="img-fluid">
                                                                 <% } else { %>
                                                                     <!-- Provide a default image source or handle accordingly -->
                                                                     <img src='/default-image.jpg' style="width:50px;" class="img-fluid">

@@ -83,7 +83,6 @@ exports.salesReportGet = async (req, res) => {
       })
       .skip((page - 1) * perPage) // Skip orders based on page number
       .limit(perPage); // Limit number of orders per page
-
     res.render("admin/salesreport", {
       orders,
       page,
