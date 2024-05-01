@@ -457,7 +457,7 @@ exports.editproductPOST = async (req, res) => {
       existingProduct.quantity = quantity;
       if (images.length > 0) {
         existingProduct.image = images;
-      } // Update array of images
+      } // Update array  of images
 
       // Save the updated product to the database
       await existingProduct.save();
@@ -556,7 +556,6 @@ exports.deleteCategory = async (req, res) => {
 
 exports.toggleBlockProduct = async (req, res) => {
   const productId = req.params.id;
-
   try {
     const product = await productCollection.findById(productId);
     if (!product) {
