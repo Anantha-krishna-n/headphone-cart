@@ -359,6 +359,7 @@ exports.createproductPOST = async (req, res) => {
 };
 
 exports.deleteProductImage = async (req, res) => {
+  
   try {
     const productId = req.params.productId;
     const imageIndex = req.params.imageIndex; // Assuming you pass the image index in the URL
@@ -377,9 +378,8 @@ exports.deleteProductImage = async (req, res) => {
     // Save the updated product
     await product.save();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Image deleted successfully" });
+    res.status(200).json({ success: true, message: "Image deleted successfully" })
+
   } catch (error) {
     console.error("Error deleting image:", error);
     res.status(500).json({ success: false, error: "Internal Server Error" });
@@ -456,8 +456,9 @@ exports.editproductPOST = async (req, res) => {
       existingProduct.category = category;
       existingProduct.quantity = quantity;
       if (images.length > 0) {
-        existingProduct.image = images;
-      } // Update array  of images
+        existingProduct.image = existingProduct.image.concat(images);
+      } // Update array of images
+      
 
       // Save the updated product to the database
       await existingProduct.save();

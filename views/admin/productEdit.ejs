@@ -470,8 +470,9 @@
             const data = await response.json();
 
             if (data.success) {
+                window.location.href = `/editproduct/${productId}`;
                 // Image deleted successfully, update the UI as needed
-                button.parentNode.remove();
+                // button.parentNode.remove();
             } else {
                 // Handle error case
                 console.error('Error deleting image:', data.error);
