@@ -92,7 +92,7 @@ exports.editofferGet = async (req, res) => {
   try {
     const offerid = req.params._id;
     const selectedOffer = await offerCollection.findById(offerid);
-    res.render("admin/editoffer", { selectedOffer });
+    res.render("admin/editOffer", { selectedOffer });
   } catch (error) {
     console.log(error);
   }

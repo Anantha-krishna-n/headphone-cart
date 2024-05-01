@@ -68,6 +68,8 @@ router.delete('/products/:productId/images/:imageIndex',deleteProductImage);
 
 
 
+
+
 router.get("/orderManagement",orderManagementGet)
 router.post('/orders/:orderId/status', updateOrderStatus);
 
