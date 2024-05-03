@@ -265,6 +265,7 @@ exports.userBlockedGet = async (req, res) => {
 exports.addcatagoryGet = (req, res) => {
   res.render("admin/addcatagory");
 };
+const fs = require('fs');
 
 exports.createCategoryPOST = async (req, res) => {
   const { category_name, description } = req.body;
@@ -301,6 +302,9 @@ exports.createCategoryPOST = async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+
+
 
 exports.addProductGet = async (req, res) => {
   if (req.session.adminID) {
@@ -483,55 +487,59 @@ exports.editcatagoryPOST = async (req, res) => {
   try {
     const categoryId = req.params.id;
 
-    // Fetch the user's details by ID
-    const catId = await categoryCollection.findById(categoryId);
-    const { category_name, description } = req.body;
-
-    // Get the existing category by ID
-    const existingCategory = await categoryCollection.findOne({
-      category_name: catId.category_name,
-    });
-
+    // Fetch the category details by ID
+    const existingCategory = await categoryCollection.findById(categoryId);
     if (!existingCategory) {
       return res.status(404).send("Category not found for update");
     }
-    const duplicateCategory = await categoryCollection.findOne({
-      category_name: category_name,
-    });
-    if (duplicateCategory) {
-      return res.status(400).send(`<script>
-        alert("Category with this name already exists. Please choose a different name.");
-        window.location="/catagoryManagement";
-      </script>`);
+
+    // Extract updated details from the request body
+    const { categoryname, description } = req.body;
+
+    // Check if the category name is being updated and it already exists
+    if (existingCategory.category_name !== categoryname) {
+
+      const duplicateCategory = await categoryCollection.findOne({  category_name: categoryname});
+      if (duplicateCategory) {
+        return res.status(400).send(`<script>
+          alert("Category with this name already exists. Please choose a different name.");
+          window.location="/catagoryManagement";
+        </script>`);
+      }
     }
 
-    const logo_imagePath = req.files["logo_image"]
-      ? req.files["logo_image"][0].path
-      : existingCategory.logo_image;
-
-    if (logo_imagePath !== existingCategory.logo_image) {
-      fs.unlinkSync(logo_imagePath); // Delete the invalid image
-      return res
-        .status(400)
-        .send(
-          "Invalid image dimensions. Please upload images that meet the criteria."
-        );
+    // Determine the new logo image path
+    let logo_imagePath = existingCategory.logo_image;
+    if (req.files && req.files["logo_image"]) {
+      logo_imagePath = req.files["logo_image"][0].path;
     }
 
-    // Update the existing category
-    existingCategory.categoryname = category_name;
+    // Update category details
+    existingCategory.category_name = categoryname;
     existingCategory.description = description;
     existingCategory.logo_image = logo_imagePath;
 
     // Save the updated category to the database
     await existingCategory.save();
 
+    // If the logo image has been changed, delete the old image file
+    if (req.files && req.files["logo_image"]) {
+      fs.unlinkSync(existingCategory.logo_image); // Delete the old image file
+    }
+ 
     res.redirect("/catagoryManagement");
   } catch (error) {
     console.error("Error updating category:", error.message);
     res.status(500).send("Internal Server Error for Updating", error.message);
   }
 };
+
+
+
+
+
+
+
 // delete catagory
 
 exports.deleteCategory = async (req, res) => {
