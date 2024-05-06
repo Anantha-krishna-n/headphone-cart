@@ -85,8 +85,8 @@
                                 <div class="dropdown-content" id="categoryDropdownContent">
                                   <% categories.forEach((category) => { %>
                                     <a href="#"><%= category.categoryname %></a>
-                                    <img src='<%= "/uploads/" + category.logo_image.split("uploads\\")[1] %>' alt="" class="img">
-                                    <p><%= category.description %></p>
+                                    <img src='<%= "/uploads/" + category.logo_image.split("uploads\/")[1] %>' alt="" class="img">
+                                    <p><%= category.category_name %></p>
                                     <hr>
                                 <% }) %>
                                 </div>
