@@ -474,7 +474,7 @@ exports.editproductPOST = async (req, res) => {
     console.log(error);
     res.send(error.message);
   }
-};
+};   
 
 exports.editcatagoryGET = async (req, res) => {
   const catagoryID = req.params.id;
@@ -482,6 +482,8 @@ exports.editcatagoryGET = async (req, res) => {
 
   res.render("admin/editcatagory", { catagories });
 };
+
+
 
 exports.editcatagoryPOST = async (req, res) => {
   try {
@@ -523,9 +525,9 @@ exports.editcatagoryPOST = async (req, res) => {
     await existingCategory.save();
 
     // If the logo image has been changed, delete the old image file
-    if (req.files && req.files["logo_image"]) {
-      fs.unlinkSync(existingCategory.logo_image); // Delete the old image file
-    }
+    // if (req.files && req.files["logo_image"]) {
+    //   fs.unlinkSync(existingCategory.logo_image); // Delete the old image file
+    // }
  
     res.redirect("/catagoryManagement");
   } catch (error) {
@@ -533,6 +535,9 @@ exports.editcatagoryPOST = async (req, res) => {
     res.status(500).send("Internal Server Error for Updating", error.message);
   }
 };
+
+
+
 
 
 
